@@ -234,105 +234,124 @@ class _LoginMobileLayoutState extends State<LoginMobileLayout>
                                   horizontal: 10,
                                   vertical: 10,
                                 ),
-                                child: Column(
-                                  children: [
-                                    Text('Login'),
-                                    SizedBox(height: 16),
-                                    TextFormField(
-                                      keyboardType: TextInputType.emailAddress,
-                                      controller: widget.emailController,
-                                      decoration: InputDecoration(
-                                        labelText: 'Email',
-                                        hintText: 'seu.email@exemplo.com',
-                                        filled: true,
-                                        fillColor: Color.fromRGBO(
-                                          241,
-                                          240,
-                                          236,
-                                          1,
-                                        ),
-                                      ),
-                                    ),
-                                    TextFormField(
-                                      controller: widget.passwordController,
-                                      decoration: InputDecoration(
-                                        labelText: 'Password',
-                                        filled: true,
-                                        fillColor: Color.fromRGBO(
-                                          241,
-                                          240,
-                                          236,
-                                          1,
-                                        ),
-                                        suffixIcon: IconButton(
-                                          icon: Icon(
-                                            showPassword
-                                                ? Icons.visibility
-                                                : Icons.visibility_off,
+                                child: AutofillGroup(
+                                  child: Column(
+                                    children: [
+                                      Text('Login'),
+                                      SizedBox(height: 16),
+                                      TextFormField(
+                                        keyboardType:
+                                            TextInputType.emailAddress,
+                                        controller: widget.emailController,
+                                        decoration: InputDecoration(
+                                          labelText: 'Email',
+                                          hintText: 'seu.email@exemplo.com',
+                                          filled: true,
+                                          fillColor: Color.fromRGBO(
+                                            241,
+                                            240,
+                                            236,
+                                            1,
                                           ),
-                                          onPressed: () {
-                                            setState(() {
-                                              showPassword = !showPassword;
-                                            });
-                                          },
                                         ),
+                                        autofillHints: [AutofillHints.email],
                                       ),
-                                      obscureText: !showPassword,
-                                    ),
-                                    SizedBox(height: 16),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        InkWell(
-                                          onTap: widget.onLoginPressed,
-                                          child: Container(
-                                            width: 552 - 200,
-                                            padding: EdgeInsets.symmetric(
-                                              vertical: 12,
-                                              horizontal: 24,
+                                      TextFormField(
+                                        controller: widget.passwordController,
+                                        decoration: InputDecoration(
+                                          labelText: 'Password',
+                                          filled: true,
+                                          fillColor: Color.fromRGBO(
+                                            241,
+                                            240,
+                                            236,
+                                            1,
+                                          ),
+
+                                          suffixIcon: IconButton(
+                                            icon: Icon(
+                                              showPassword
+                                                  ? Icons.visibility
+                                                  : Icons.visibility_off,
                                             ),
-                                            decoration: BoxDecoration(
-                                              color: Color.fromRGBO(
-                                                151,
-                                                109,
-                                                71,
-                                                1,
+                                            onPressed: () {
+                                              setState(() {
+                                                showPassword = !showPassword;
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                        autofillHints: [AutofillHints.password],
+                                        obscureText: !showPassword,
+                                        onEditingComplete: () =>
+                                            widget.onLoginPressed,
+                                      ),
+                                      SizedBox(height: 16),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          InkWell(
+                                            onTap: widget.onLoginPressed,
+                                            child: Container(
+                                              width: 552 - 290,
+                                              padding: EdgeInsets.symmetric(
+                                                vertical: 12,
+                                                horizontal: 24,
                                               ),
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                            ),
-                                            child: Text(
-                                              'Entrar',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
+                                              decoration: BoxDecoration(
                                                 color: Color.fromRGBO(
-                                                  241,
-                                                  240,
-                                                  236,
+                                                  151,
+                                                  109,
+                                                  71,
                                                   1,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
+                                              child: Text(
+                                                'Entrar',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Color.fromRGBO(
+                                                    241,
+                                                    240,
+                                                    236,
+                                                    1,
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        GoogleSignInIconButton(
-                                          action: AuthAction.signIn,
-                                          size: 20,
-                                          clientId: clientId,
-                                          loadingIndicator:
-                                              CircularProgressIndicator(),
-                                          onSignedIn: (_) {
-                                            if (context.mounted) {
-                                              Navigator.of(
-                                                context,
-                                              ).pushReplacementNamed('/home');
-                                            }
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                          GoogleSignInIconButton(
+                                            action: AuthAction.signIn,
+                                            size: 20,
+                                            clientId: clientId,
+                                            loadingIndicator:
+                                                CircularProgressIndicator(),
+                                            onSignedIn: (_) {
+                                              if (context.mounted) {
+                                                Navigator.of(
+                                                  context,
+                                                ).pushReplacementNamed('/home');
+                                              }
+                                            },
+                                            overrideDefaultTapAction: true,
+                                            onTap: () {
+                                              showDialog(
+                                                context: context,
+                                                barrierDismissible: false,
+                                                builder: (_) => const Center(
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             )
@@ -481,7 +500,7 @@ class _LoginMobileLayoutState extends State<LoginMobileLayout>
                                         InkWell(
                                           onTap: widget.onRegisterPressed,
                                           child: Container(
-                                            width: 552 - 200,
+                                            width: 552 - 290,
                                             padding: EdgeInsets.symmetric(
                                               vertical: 12,
                                               horizontal: 24,
