@@ -85,6 +85,27 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     }
 
+    Future<void> googleLogin() async {
+      try {
+        await firebaseAuthDatasource.signInWithGoogle();
+        if (context.mounted) {
+          Navigator.of(context).pushReplacementNamed('/home');
+        }
+      } on FirebaseAuthException catch (e) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                e.code == 'user-cancelled'
+                    ? 'Login com Google cancelado.'
+                    : 'Erro ao fazer login com Google.',
+              ),
+            ),
+          );
+        }
+      }
+    }
+
     return Scaffold(
       body: LayoutBuilder(
         builder: (context, constraints) {
@@ -95,6 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
               passwordController: passwordController,
               firebaseAuthDatasource: firebaseAuthDatasource,
               onLoginPressed: () => login(),
+              onGoogleLoginPressed: () => googleLogin(),
               onRegisterPressed: () => register(),
               formKey: formKey,
             );
@@ -105,6 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
               passwordController: passwordController,
               firebaseAuthDatasource: firebaseAuthDatasource,
               onLoginPressed: () => login(),
+              onGoogleLoginPressed: () => googleLogin(),
               onRegisterPressed: () => register(),
               formKey: formKey,
             );

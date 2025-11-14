@@ -124,7 +124,6 @@ class HomeScreen extends ConsumerWidget {
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                // imagem do filme
                                 if (imageUrl != null)
                                   ClipRRect(
                                     borderRadius: const BorderRadius.only(
@@ -153,7 +152,6 @@ class HomeScreen extends ConsumerWidget {
                                     ),
                                   ),
 
-                                // texto do lado
                                 Expanded(
                                   child: Padding(
                                     padding: const EdgeInsets.all(12),
@@ -162,10 +160,9 @@ class HomeScreen extends ConsumerWidget {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          movie.original_title ??
+                                          movie.title ??
                                               'Título não disponível',
                                           style: const TextStyle(
-                                            fontSize: 18,
                                             fontWeight: FontWeight.bold,
                                             color: Color.fromRGBO(
                                               241,

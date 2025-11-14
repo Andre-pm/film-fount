@@ -1,10 +1,7 @@
 import 'dart:ui';
 
 import 'package:film_fount/features/auth/data/datasources/firebase_auth_datasource.dart';
-import 'package:firebase_ui_auth/firebase_ui_auth.dart';
-import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_svg/svg.dart';
 
 class LoginDesktopLayout extends StatefulWidget {
@@ -12,6 +9,7 @@ class LoginDesktopLayout extends StatefulWidget {
   final TextEditingController emailController;
   final TextEditingController passwordController;
   final FirebaseAuthDatasource firebaseAuthDatasource;
+  final void Function()? onGoogleLoginPressed;
   final void Function()? onLoginPressed;
   final void Function()? onRegisterPressed;
   final GlobalKey<FormState> formKey;
@@ -22,6 +20,7 @@ class LoginDesktopLayout extends StatefulWidget {
     required this.emailController,
     required this.passwordController,
     required this.firebaseAuthDatasource,
+    required this.onGoogleLoginPressed,
     required this.onLoginPressed,
     required this.onRegisterPressed,
     required this.formKey,
@@ -102,7 +101,6 @@ class _LoginDesktopLayoutState extends State<LoginDesktopLayout>
 
   @override
   Widget build(BuildContext context) {
-    final String clientId = dotenv.env['GOOGLE_CLIENT_ID']!;
     return Stack(
       children: [
         AnimatedBuilder(
@@ -233,7 +231,7 @@ class _LoginDesktopLayoutState extends State<LoginDesktopLayout>
                                   InkWell(
                                     onTap: widget.onLoginPressed,
                                     child: Container(
-                                      width: 476,
+                                      width: 456,
                                       padding: EdgeInsets.symmetric(
                                         vertical: 12,
                                         horizontal: 24,
@@ -256,19 +254,14 @@ class _LoginDesktopLayoutState extends State<LoginDesktopLayout>
                                       ),
                                     ),
                                   ),
-                                  GoogleSignInIconButton(
-                                    action: AuthAction.signIn,
-                                    size: 20,
-                                    clientId: clientId,
-                                    loadingIndicator:
-                                        CircularProgressIndicator(),
-                                    onSignedIn: (_) {
-                                      if (context.mounted) {
-                                        Navigator.of(
-                                          context,
-                                        ).pushReplacementNamed('/home');
-                                      }
-                                    },
+                                  const SizedBox(width: 16),
+                                  IconButton(
+                                    onPressed: widget.onGoogleLoginPressed,
+                                    icon: SvgPicture.asset(
+                                      'assets/svg/google_icon.svg',
+                                      width: 35,
+                                      height: 35,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -389,7 +382,7 @@ class _LoginDesktopLayoutState extends State<LoginDesktopLayout>
                                   InkWell(
                                     onTap: widget.onRegisterPressed,
                                     child: Container(
-                                      width: 472,
+                                      width: 456,
                                       padding: EdgeInsets.symmetric(
                                         vertical: 12,
                                         horizontal: 24,
@@ -412,19 +405,14 @@ class _LoginDesktopLayoutState extends State<LoginDesktopLayout>
                                       ),
                                     ),
                                   ),
-                                  GoogleSignInIconButton(
-                                    action: AuthAction.signIn,
-                                    size: 20,
-                                    clientId: clientId,
-                                    loadingIndicator:
-                                        CircularProgressIndicator(),
-                                    onSignedIn: (_) {
-                                      if (context.mounted) {
-                                        Navigator.of(
-                                          context,
-                                        ).pushReplacementNamed('/home');
-                                      }
-                                    },
+                                  const SizedBox(width: 16),
+                                  IconButton(
+                                    onPressed: widget.onGoogleLoginPressed,
+                                    icon: SvgPicture.asset(
+                                      'assets/svg/google_icon.svg',
+                                      width: 35,
+                                      height: 35,
+                                    ),
                                   ),
                                 ],
                               ),
