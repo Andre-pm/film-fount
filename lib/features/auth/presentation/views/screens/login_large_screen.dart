@@ -146,22 +146,25 @@ class _LoginLargeScreenState extends ConsumerState<LoginLargeScreen>
           left: 170,
           child: InkWell(
             onTap: () => authControllerNotifier.signInWithGoogle(),
-            child: Container(
-              width: 552,
-              padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Color.fromRGBO(241, 240, 236, 1),
-                  width: 2,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              child: Container(
+                width: 552,
+                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Color.fromRGBO(241, 240, 236, 1),
+                    width: 1.5,
+                  ),
+                  color: Color.fromRGBO(31, 31, 31, 1),
+                  borderRadius: BorderRadius.circular(8),
                 ),
-                color: Color.fromRGBO(31, 31, 31, 1),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Text(
-                'Criar Conta',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromRGBO(241, 240, 236, 1),
+                child: Text(
+                  'Entrar com Google',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromRGBO(241, 240, 236, 1),
+                  ),
                 ),
               ),
             ),
