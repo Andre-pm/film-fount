@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
-      initialRoute: AppRouter.login,
+      initialRoute: AppRouter.initialRoute,
       routes: AppRouter.routes,
     );
   }
