@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -308,7 +309,9 @@ class _LoginLargeScreenState extends ConsumerState<LoginScreen>
                         animation: _buttonAnimation,
                         builder: (context, child) {
                           return Positioned(
-                            top: 650 + _buttonAnimation.value,
+                            top: isLargeScreen
+                                ? 650 + _buttonAnimation.value
+                                : 730 + _buttonAnimation.value,
                             child: Column(
                               children: [
                                 Text(
@@ -546,6 +549,30 @@ class _LoginLargeScreenState extends ConsumerState<LoginScreen>
                               ),
                             ),
                           ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Desenvolvido por'),
+                    TextButton(
+                      onPressed: () async {
+                        final url = Uri.parse("https://github.com/Andre-pm");
+
+                        if (await canLaunchUrl(url)) {
+                          await launchUrl(
+                            url,
+                            mode: LaunchMode.externalApplication,
+                          );
+                        }
+                      },
+                      child: Text(
+                        '@Andre-pm',
+                        style: TextStyle(
+                          color: const Color.fromRGBO(183, 144, 109, 1),
                         ),
                       ),
                     ),
