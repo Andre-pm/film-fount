@@ -311,24 +311,16 @@ class _LoginLargeScreenState extends ConsumerState<LoginScreen>
                           return Positioned(
                             top: isLargeScreen
                                 ? 650 + _buttonAnimation.value
-                                : 730 + _buttonAnimation.value,
+                                : 710 + _buttonAnimation.value,
                             child: Column(
                               children: [
                                 Text(
                                   'O que é FilmFount?',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: const Color.fromRGBO(
-                                      183,
-                                      144,
-                                      109,
-                                      1,
-                                    ),
-                                  ),
+                                  style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 Icon(
                                   Icons.keyboard_arrow_down_rounded,
-                                  color: const Color.fromRGBO(183, 144, 109, 1),
+                                  color: Color.fromRGBO(241, 240, 236, 1),
                                 ),
                               ],
                             ),
@@ -560,13 +552,11 @@ class _LoginLargeScreenState extends ConsumerState<LoginScreen>
                     Text('Desenvolvido por'),
                     TextButton(
                       onPressed: () async {
-                        final url = Uri.parse("https://github.com/Andre-pm");
-
-                        if (await canLaunchUrl(url)) {
-                          await launchUrl(
-                            url,
-                            mode: LaunchMode.externalApplication,
-                          );
+                        if (!await launchUrl(
+                          Uri.parse("https://github.com/Andre-pm"),
+                          webOnlyWindowName: '_blank',
+                        )) {
+                          throw Exception('Could not launch');
                         }
                       },
                       child: Text(
