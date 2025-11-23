@@ -1,17 +1,57 @@
+import 'package:film_fount/core/domain/enums/menu_option.dart';
+import 'package:film_fount/core/presentation/screens/under_development_screen.dart';
 import 'package:film_fount/features/auth/presentation/views/auth_wrapper.dart';
 import 'package:film_fount/features/auth/presentation/views/login_screen.dart';
-import 'package:film_fount/features/home/presentation/screens/home_screen.dart';
+import 'package:film_fount/features/library/presentation/screens/library_screen.dart';
+import 'package:film_fount/features/search/presentation/screens/search_screen.dart';
+import 'package:film_fount/features/movie_detail/presentation/screens/movie_detail_screen.dart';
 import 'package:flutter/material.dart';
 
 class AppRouter {
   static const initialRoute = '/';
   static const login = '/login';
-  static const home = '/home';
+  static const search = '/search';
   static const movieDetails = '/movie_details';
+  static const profile = '/profile';
+  static const goals = '/goals';
+  static const library = '/library';
 
-  static Map<String, WidgetBuilder> get routes => {
-    initialRoute: (context) => AuthWrapper(),
-    login: (context) => LoginScreen(),
-    home: (context) => HomeScreen(),
-  };
+  static Route<dynamic> onGenerateRoute(RouteSettings settings) {
+    switch (settings.name) {
+      case initialRoute:
+        return FadeRoute(widget: AuthWrapper());
+      case login:
+        return FadeRoute(widget: LoginScreen());
+      case search:
+        return FadeRoute(widget: SearchScreen());
+      case movieDetails:
+        final movieId = settings.arguments as int?;
+        return FadeRoute(widget: MovieDetailScreen(movieId: movieId ?? 0));
+      case profile:
+        return FadeRoute(
+          widget: UnderDevelopmentScreen(selectedOption: MenuOptions.profile),
+        );
+
+      case goals:
+        return FadeRoute(
+          widget: UnderDevelopmentScreen(selectedOption: MenuOptions.goals),
+        );
+      case library:
+        return FadeRoute(widget: LibraryScreen());
+      default:
+        return FadeRoute(widget: AuthWrapper());
+    }
+  }
+}
+
+class FadeRoute extends PageRouteBuilder {
+  final Widget widget;
+
+  FadeRoute({required this.widget})
+    : super(
+        pageBuilder: (context, animation, secondaryAnimation) => widget,
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(opacity: animation, child: child);
+        },
+      );
 }
