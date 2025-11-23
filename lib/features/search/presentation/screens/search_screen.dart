@@ -68,6 +68,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   ),
                   child: TextFormField(
                     controller: movieController,
+                    style: TextStyle(color: Color.fromRGBO(30, 30, 30, 1)),
                     decoration: InputDecoration(
                       labelText: 'Nome do filme',
                       filled: true,
