@@ -4,10 +4,6 @@ import 'package:film_fount/features/auth/presentation/providers/auth_provider.da
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:film_fount/features/auth/domain/repositories/auth_repository.dart';
 
-final authNotifierProvider = AsyncNotifierProvider<AuthNotifier, bool>(
-  AuthNotifier.new,
-);
-
 class AuthNotifier extends AsyncNotifier<bool> {
   late final AuthRepository _repository;
 

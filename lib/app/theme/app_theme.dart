@@ -6,7 +6,9 @@ class AppTheme {
     colorScheme: ColorScheme.fromSeed(
       seedColor: Color.fromRGBO(151, 109, 71, 1),
       surface: Color.fromRGBO(30, 30, 30, 1),
+      primary: Color.fromRGBO(30, 30, 30, 1),
+      onSurface: Color.fromRGBO(241, 240, 236, 1),
     ),
-    textTheme: GoogleFonts.ralewayTextTheme(),
+    fontFamily: GoogleFonts.raleway().fontFamily,
   );
 }
