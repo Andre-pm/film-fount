@@ -1,0 +1,194 @@
+import 'package:film_fount/core/domain/enums/menu_option.dart';
+import 'package:film_fount/core/presentation/extensions/menu_options_ext.dart';
+import 'package:film_fount/features/auth/presentation/providers/auth_provider.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
+
+class MenuBarWidget extends ConsumerWidget {
+  final bool isLargeVersion;
+  final MenuOptions option;
+  const MenuBarWidget({
+    super.key,
+    required this.isLargeVersion,
+    required this.option,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    Future<void> handleLogout(BuildContext context) async {
+      final authControllerNotifier = ref.read(authNotifierProvider.notifier);
+      final success = await authControllerNotifier.signOut();
+      if (success && context.mounted) {
+        Navigator.of(context).pushReplacementNamed('/');
+      }
+    }
+
+    return SliverAppBar(
+      titleSpacing: 100,
+      leadingWidth: 100,
+      floating: true,
+      leading: Padding(
+        padding: EdgeInsets.only(left: 24),
+        child: SvgPicture.asset('assets/svg/logo_navbar_horizontal.svg'),
+      ),
+      backgroundColor: Color.fromRGBO(241, 240, 236, 1),
+      actions: [
+        isLargeVersion
+            ? Row(
+                children: [
+                  PopupMenuButton<String>(
+                    color: Color.fromRGBO(151, 109, 71, 1),
+                    child: Text(
+                      MenuOptions.profile.title,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: option == MenuOptions.profile
+                            ? Color.fromRGBO(151, 109, 71, 1)
+                            : Color.fromRGBO(85, 85, 85, 0.749),
+                      ),
+                    ),
+                    onSelected: (value) {
+                      switch (value) {
+                        case 'accessProfile':
+                          Navigator.of(
+                            context,
+                          ).pushReplacementNamed(MenuOptions.profile.route);
+                          break;
+                        case 'logout':
+                          handleLogout(context);
+                          break;
+                        default:
+                          break;
+                      }
+                    },
+                    itemBuilder: (BuildContext context) =>
+                        <PopupMenuEntry<String>>[
+                          PopupMenuItem(
+                            value: 'accessProfile',
+                            child: Text('Acessar perfil'),
+                          ),
+                          PopupMenuItem(value: 'logout', child: Text('Sair')),
+                        ],
+                  ),
+                  const SizedBox(width: 70),
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(
+                        context,
+                      ).pushReplacementNamed(MenuOptions.library.route);
+                    },
+                    hoverColor: Color.fromRGBO(241, 240, 236, 1),
+                    splashColor: Color.fromRGBO(241, 240, 236, 1),
+                    highlightColor: Color.fromRGBO(241, 240, 236, 1),
+                    child: Text(
+                      MenuOptions.library.title,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: option == MenuOptions.library
+                            ? Color.fromRGBO(151, 109, 71, 1)
+                            : Color.fromRGBO(85, 85, 85, 0.749),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 70),
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(
+                        context,
+                      ).pushReplacementNamed(MenuOptions.goals.route);
+                    },
+                    hoverColor: Color.fromRGBO(241, 240, 236, 1),
+                    splashColor: Color.fromRGBO(241, 240, 236, 1),
+                    highlightColor: Color.fromRGBO(241, 240, 236, 1),
+                    child: Text(
+                      MenuOptions.goals.title,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: option == MenuOptions.goals
+                            ? Color.fromRGBO(151, 109, 71, 1)
+                            : Color.fromRGBO(85, 85, 85, 0.749),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 70),
+                  IconButton(
+                    icon: Icon(Icons.search_rounded),
+                    color: option == MenuOptions.search
+                        ? Color.fromRGBO(151, 109, 71, 1)
+                        : Color.fromRGBO(85, 85, 85, 0.749),
+                    iconSize: 32,
+                    onPressed: () {
+                      Navigator.of(
+                        context,
+                      ).pushReplacementNamed(MenuOptions.search.route);
+                    },
+                  ),
+                ],
+              )
+            : Row(
+                children: [
+                  PopupMenuButton<String>(
+                    color: Color.fromRGBO(151, 109, 71, 1),
+                    icon: Icon(Icons.menu),
+                    onSelected: (value) {
+                      switch (value) {
+                        case 'profile':
+                          Navigator.of(
+                            context,
+                          ).pushReplacementNamed(MenuOptions.profile.route);
+                          break;
+                        case 'library':
+                          Navigator.of(
+                            context,
+                          ).pushReplacementNamed(MenuOptions.library.route);
+                          break;
+                        case 'goals':
+                          Navigator.of(
+                            context,
+                          ).pushReplacementNamed(MenuOptions.goals.route);
+                          break;
+                        case 'logout':
+                          handleLogout(context);
+                          break;
+                        default:
+                          break;
+                      }
+                    },
+                    itemBuilder: (BuildContext context) =>
+                        <PopupMenuEntry<String>>[
+                          PopupMenuItem(
+                            value: 'profile',
+                            child: Text(MenuOptions.profile.title),
+                          ),
+                          PopupMenuItem(
+                            value: 'library',
+                            child: Text(MenuOptions.library.title),
+                          ),
+                          PopupMenuItem(
+                            value: 'goals',
+                            child: Text(MenuOptions.goals.title),
+                          ),
+                          PopupMenuItem(value: 'logout', child: Text('Sair')),
+                        ],
+                  ),
+                  const SizedBox(width: 10),
+                  IconButton(
+                    icon: Icon(Icons.search_rounded),
+                    color: option == MenuOptions.search
+                        ? Color.fromRGBO(151, 109, 71, 1)
+                        : Color.fromRGBO(85, 85, 85, 0.749),
+                    iconSize: 32,
+                    onPressed: () {
+                      Navigator.of(
+                        context,
+                      ).pushReplacementNamed(MenuOptions.search.route);
+                    },
+                  ),
+                ],
+              ),
+      ],
+      actionsPadding: EdgeInsets.symmetric(horizontal: 24),
+    );
+  }
+}
