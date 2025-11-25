@@ -315,25 +315,50 @@ class _LoginLargeScreenState extends ConsumerState<LoginScreen>
                       AnimatedBuilder(
                         animation: _buttonAnimation,
                         builder: (context, child) {
-                          return Positioned(
-                            top: isLargeScreen
-                                ? 650 + _buttonAnimation.value
-                                : 710 + _buttonAnimation.value,
-                            child: Column(
-                              children: [
-                                Text(
-                                  strings.whatIs,
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                Icon(
-                                  Icons.keyboard_arrow_down_rounded,
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onSurface,
-                                ),
-                              ],
-                            ),
-                          );
+                          return isLargeScreen
+                              ? Positioned(
+                                  top: 650 + _buttonAnimation.value,
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        strings.whatIs,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Icon(
+                                        Icons.keyboard_arrow_down_rounded,
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.onSurface,
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                      top: screenHeight * 0.85,
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          strings.whatIs,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Icon(
+                                          Icons.keyboard_arrow_down_rounded,
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.onSurface,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
                         },
                       ),
                     ],
