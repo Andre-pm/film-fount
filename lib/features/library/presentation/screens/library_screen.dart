@@ -1,14 +1,43 @@
+import 'dart:async';
+
 import 'package:film_fount/core/domain/enums/menu_option.dart';
+import 'package:film_fount/core/presentation/providers/core_providers.dart';
 import 'package:film_fount/core/presentation/widgets/menu_bar_widget.dart';
 import 'package:film_fount/features/library/presentation/providers/library_providers.dart';
+import 'package:film_fount/features/movie_detail/presentation/events/watchlist_updated_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LibraryScreen extends ConsumerWidget {
+class LibraryScreen extends ConsumerStatefulWidget {
   const LibraryScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<LibraryScreen> createState() => _LibraryScreenState();
+}
+
+class _LibraryScreenState extends ConsumerState<LibraryScreen> {
+  late StreamSubscription _watchListSub;
+
+  @override
+  void initState() {
+    super.initState();
+    _watchListSub = ref
+        .read(eventBusProvider)
+        .on<WatchListUpdatedEvent>()
+        .listen(
+          (event) =>
+              ref.read(libraryNotifierProvider.notifier).fetchWatchList(),
+        );
+  }
+
+  @override
+  void dispose() {
+    _watchListSub.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final libraryState = ref.watch(libraryNotifierProvider);
 
     return Scaffold(

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:event_bus/event_bus.dart';
 import 'package:film_fount/firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -17,3 +18,6 @@ final firebaseDatabaseProvider = Provider<FirebaseDatabase>(
     databaseURL: DefaultFirebaseOptions.currentPlatform.databaseURL,
   ),
 );
+
+final eventBus = EventBus();
+final eventBusProvider = Provider<EventBus>((ref) => eventBus);
