@@ -339,7 +339,9 @@ class _LoginLargeScreenState extends ConsumerState<LoginScreen>
                                   alignment: Alignment.bottomCenter,
                                   child: Padding(
                                     padding: EdgeInsets.only(
-                                      top: screenHeight * 0.85,
+                                      top:
+                                          screenHeight * 0.85 +
+                                          _buttonAnimation.value,
                                     ),
                                     child: Column(
                                       children: [
