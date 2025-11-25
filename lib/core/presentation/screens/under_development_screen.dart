@@ -5,7 +5,12 @@ import 'package:flutter/material.dart';
 
 class UnderDevelopmentScreen extends StatelessWidget {
   final MenuOptions selectedOption;
-  const UnderDevelopmentScreen({super.key, required this.selectedOption});
+  final IconData icon;
+  const UnderDevelopmentScreen({
+    super.key,
+    required this.selectedOption,
+    required this.icon,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +32,11 @@ class UnderDevelopmentScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      Icon(
+                        size: 50,
+                        icon,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
                       Text(
                         'A funcionalidade de ${selectedOption.title} está em desenvolvimento',
                         softWrap: true,
@@ -34,16 +44,12 @@ class UnderDevelopmentScreen extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
-                          color: Color.fromRGBO(241, 240, 236, 1),
                         ),
                       ),
                       Text(
                         'Assim que ela estiver pronta, você será avisado!',
                         softWrap: true,
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Color.fromRGBO(241, 240, 236, 1),
-                        ),
                       ),
                     ],
                   ),
