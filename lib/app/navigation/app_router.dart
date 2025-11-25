@@ -29,12 +29,18 @@ class AppRouter {
         return FadeRoute(widget: MovieDetailScreen(movieId: movieId ?? 0));
       case profile:
         return FadeRoute(
-          widget: UnderDevelopmentScreen(selectedOption: MenuOptions.profile),
+          widget: UnderDevelopmentScreen(
+            selectedOption: MenuOptions.profile,
+            icon: Icons.person,
+          ),
         );
 
       case goals:
         return FadeRoute(
-          widget: UnderDevelopmentScreen(selectedOption: MenuOptions.goals),
+          widget: UnderDevelopmentScreen(
+            selectedOption: MenuOptions.goals,
+            icon: Icons.check,
+          ),
         );
       case library:
         return FadeRoute(widget: LibraryScreen());

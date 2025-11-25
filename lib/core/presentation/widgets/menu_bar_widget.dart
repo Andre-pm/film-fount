@@ -1,6 +1,7 @@
 import 'package:film_fount/core/domain/enums/menu_option.dart';
 import 'package:film_fount/core/presentation/extensions/menu_options_ext.dart';
 import 'package:film_fount/features/auth/presentation/providers/auth_provider.dart';
+import 'package:film_fount/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -16,6 +17,8 @@ class MenuBarWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final strings = AppLocalizations.of(context)!;
+
     Future<void> handleLogout(BuildContext context) async {
       final authControllerNotifier = ref.read(authNotifierProvider.notifier);
       final success = await authControllerNotifier.signOut();
@@ -32,19 +35,19 @@ class MenuBarWidget extends ConsumerWidget {
         padding: EdgeInsets.only(left: 24),
         child: SvgPicture.asset('assets/svg/logo_navbar_horizontal.svg'),
       ),
-      backgroundColor: Color.fromRGBO(241, 240, 236, 1),
+      backgroundColor: Theme.of(context).colorScheme.onSurface,
       actions: [
         isLargeVersion
             ? Row(
                 children: [
                   PopupMenuButton<String>(
-                    color: Color.fromRGBO(151, 109, 71, 1),
+                    color: Theme.of(context).colorScheme.secondary,
                     child: Text(
-                      MenuOptions.profile.title,
+                      strings.menuOptionProfile,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: option == MenuOptions.profile
-                            ? Color.fromRGBO(151, 109, 71, 1)
+                            ? Theme.of(context).colorScheme.secondary
                             : Color.fromRGBO(85, 85, 85, 0.749),
                       ),
                     ),
@@ -66,9 +69,12 @@ class MenuBarWidget extends ConsumerWidget {
                         <PopupMenuEntry<String>>[
                           PopupMenuItem(
                             value: 'accessProfile',
-                            child: Text('Acessar perfil'),
+                            child: Text(strings.menuOptionAccessProfile),
                           ),
-                          PopupMenuItem(value: 'logout', child: Text('Sair')),
+                          PopupMenuItem(
+                            value: 'logout',
+                            child: Text(strings.menuOptionLogout),
+                          ),
                         ],
                   ),
                   const SizedBox(width: 70),
@@ -78,15 +84,15 @@ class MenuBarWidget extends ConsumerWidget {
                         context,
                       ).pushReplacementNamed(MenuOptions.library.route);
                     },
-                    hoverColor: Color.fromRGBO(241, 240, 236, 1),
-                    splashColor: Color.fromRGBO(241, 240, 236, 1),
-                    highlightColor: Color.fromRGBO(241, 240, 236, 1),
+                    hoverColor: Theme.of(context).colorScheme.onSurface,
+                    splashColor: Theme.of(context).colorScheme.onSurface,
+                    highlightColor: Theme.of(context).colorScheme.onSurface,
                     child: Text(
-                      MenuOptions.library.title,
+                      strings.menuOptionLibrary,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: option == MenuOptions.library
-                            ? Color.fromRGBO(151, 109, 71, 1)
+                            ? Theme.of(context).colorScheme.secondary
                             : Color.fromRGBO(85, 85, 85, 0.749),
                       ),
                     ),
@@ -98,15 +104,15 @@ class MenuBarWidget extends ConsumerWidget {
                         context,
                       ).pushReplacementNamed(MenuOptions.goals.route);
                     },
-                    hoverColor: Color.fromRGBO(241, 240, 236, 1),
-                    splashColor: Color.fromRGBO(241, 240, 236, 1),
-                    highlightColor: Color.fromRGBO(241, 240, 236, 1),
+                    hoverColor: Theme.of(context).colorScheme.onSurface,
+                    splashColor: Theme.of(context).colorScheme.onSurface,
+                    highlightColor: Theme.of(context).colorScheme.onSurface,
                     child: Text(
-                      MenuOptions.goals.title,
+                      strings.menuOptionGoals,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: option == MenuOptions.goals
-                            ? Color.fromRGBO(151, 109, 71, 1)
+                            ? Theme.of(context).colorScheme.secondary
                             : Color.fromRGBO(85, 85, 85, 0.749),
                       ),
                     ),
@@ -115,7 +121,7 @@ class MenuBarWidget extends ConsumerWidget {
                   IconButton(
                     icon: Icon(Icons.search_rounded),
                     color: option == MenuOptions.search
-                        ? Color.fromRGBO(151, 109, 71, 1)
+                        ? Theme.of(context).colorScheme.secondary
                         : Color.fromRGBO(85, 85, 85, 0.749),
                     iconSize: 32,
                     onPressed: () {
@@ -129,7 +135,7 @@ class MenuBarWidget extends ConsumerWidget {
             : Row(
                 children: [
                   PopupMenuButton<String>(
-                    color: Color.fromRGBO(151, 109, 71, 1),
+                    color: Theme.of(context).colorScheme.secondary,
                     icon: Icon(Icons.menu),
                     onSelected: (value) {
                       switch (value) {
@@ -159,24 +165,27 @@ class MenuBarWidget extends ConsumerWidget {
                         <PopupMenuEntry<String>>[
                           PopupMenuItem(
                             value: 'profile',
-                            child: Text(MenuOptions.profile.title),
+                            child: Text(strings.menuOptionProfile),
                           ),
                           PopupMenuItem(
                             value: 'library',
-                            child: Text(MenuOptions.library.title),
+                            child: Text(strings.menuOptionLibrary),
                           ),
                           PopupMenuItem(
                             value: 'goals',
-                            child: Text(MenuOptions.goals.title),
+                            child: Text(strings.menuOptionGoals),
                           ),
-                          PopupMenuItem(value: 'logout', child: Text('Sair')),
+                          PopupMenuItem(
+                            value: 'logout',
+                            child: Text(strings.menuOptionLogout),
+                          ),
                         ],
                   ),
                   const SizedBox(width: 10),
                   IconButton(
                     icon: Icon(Icons.search_rounded),
                     color: option == MenuOptions.search
-                        ? Color.fromRGBO(151, 109, 71, 1)
+                        ? Theme.of(context).colorScheme.secondary
                         : Color.fromRGBO(85, 85, 85, 0.749),
                     iconSize: 32,
                     onPressed: () {

@@ -1,6 +1,7 @@
 import 'package:film_fount/core/domain/enums/menu_option.dart';
 import 'package:film_fount/core/presentation/widgets/menu_bar_widget.dart';
 import 'package:film_fount/features/search/presentation/providers/search_providers.dart';
+import 'package:film_fount/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -14,6 +15,7 @@ class SearchScreen extends ConsumerStatefulWidget {
 class _SearchScreenState extends ConsumerState<SearchScreen> {
   @override
   Widget build(BuildContext context) {
+    final strings = AppLocalizations.of(context)!;
     final movieController = TextEditingController();
     final state = ref.watch(movieSearchNotifierProvider);
     final notifier = ref.read(movieSearchNotifierProvider.notifier);
@@ -40,19 +42,17 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Pesquisa',
+                        strings.seachTitle,
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
-                          color: Color.fromRGBO(241, 240, 236, 1),
                         ),
                       ),
                       Text(
-                        'Encontre informações sobre seus filmes que você deseja assistir',
+                        strings.searchSubtitle,
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.normal,
-                          color: Color.fromRGBO(241, 240, 236, 1),
                         ),
                       ),
                     ],
@@ -70,7 +70,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                     controller: movieController,
                     style: TextStyle(color: Color.fromRGBO(30, 30, 30, 1)),
                     decoration: InputDecoration(
-                      labelText: 'Nome do filme',
+                      labelText: strings.searchMovieTitle,
                       filled: true,
                       fillColor: Color.fromRGBO(241, 240, 236, 1),
                     ),
@@ -86,7 +86,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                         TextStyle(fontWeight: FontWeight.w600),
                       ),
                       backgroundColor: WidgetStateProperty.all<Color>(
-                        const Color.fromRGBO(151, 109, 71, 1),
+                        Theme.of(context).colorScheme.secondary,
                       ),
                       foregroundColor: WidgetStateProperty.all<Color>(
                         Color.fromRGBO(31, 31, 31, 1),
@@ -94,8 +94,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                     ),
                     onPressed: () => notifier.searchMovie(movieController.text),
                     child: Text(
-                      'Pesquisar Filme',
-                      style: TextStyle(color: Color.fromRGBO(241, 240, 236, 1)),
+                      strings.searchMovieButton,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
                     ),
                   ),
                 ),
@@ -114,16 +116,11 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 ),
                 data: (data) {
                   if (data.isEmpty) {
-                    return const SliverToBoxAdapter(
+                    return SliverToBoxAdapter(
                       child: Padding(
                         padding: EdgeInsets.only(top: 25),
                         child: Center(
-                          child: Text(
-                            'Nenhum filme encontrado.',
-                            style: TextStyle(
-                              color: Color.fromRGBO(241, 240, 236, 1),
-                            ),
-                          ),
+                          child: Text(strings.searchMovieEmptyTitle),
                         ),
                       ),
                     );
@@ -191,30 +188,18 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                         children: [
                                           Text(
                                             movie.title ??
-                                                'Título não disponível',
+                                                strings
+                                                    .searchMovieTitleNotFound,
                                             style: const TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              color: Color.fromRGBO(
-                                                241,
-                                                240,
-                                                236,
-                                                1,
-                                              ),
                                             ),
                                           ),
                                           const SizedBox(height: 8),
                                           Text(
                                             movie.overview?.isNotEmpty == true
                                                 ? movie.overview!
-                                                : 'Sem descrição disponível.',
-                                            style: const TextStyle(
-                                              color: Color.fromRGBO(
-                                                200,
-                                                200,
-                                                200,
-                                                1,
-                                              ),
-                                            ),
+                                                : strings
+                                                      .searchMovieDescriptionNotFound,
                                             maxLines: 3,
                                             overflow: TextOverflow.ellipsis,
                                           ),
@@ -231,13 +216,8 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                     }, childCount: data.length),
                   );
                 },
-                error: (error) => SliverToBoxAdapter(
-                  child: Center(
-                    child: Text(
-                      'Houve um erro ao carregar essa página: \n$error',
-                      style: TextStyle(color: Color.fromRGBO(241, 240, 236, 1)),
-                    ),
-                  ),
+                error: (_) => SliverToBoxAdapter(
+                  child: Center(child: Text(strings.searchMovieError)),
                 ),
               ),
             ],

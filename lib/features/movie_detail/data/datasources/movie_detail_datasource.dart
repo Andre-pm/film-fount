@@ -73,7 +73,6 @@ class MovieDetailDatasource {
       '${user!.uid}/watchlist',
     );
     final DataSnapshot snapshot = await watchListRef.get();
-    print(snapshot.value.toString());
     if (snapshot.exists) {
       final watchList = snapshot.value as Map<dynamic, dynamic>;
       for (final entry in watchList.entries) {

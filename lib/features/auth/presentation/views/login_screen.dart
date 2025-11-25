@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:film_fount/core/presentation/widgets/goal_square_widget.dart';
 import 'package:film_fount/features/auth/presentation/providers/auth_provider.dart';
+import 'package:film_fount/l10n/app_localizations.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -95,6 +97,7 @@ class _LoginLargeScreenState extends ConsumerState<LoginScreen>
 
   @override
   Widget build(BuildContext context) {
+    final strings = AppLocalizations.of(context)!;
     final authControllerNotifier = ref.read(authNotifierProvider.notifier);
 
     return Scaffold(
@@ -129,7 +132,7 @@ class _LoginLargeScreenState extends ConsumerState<LoginScreen>
                         child: Container(
                           width: 1399,
                           height: 1049.85,
-                          color: const Color.fromRGBO(151, 109, 71, 1),
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
                       ),
                       ClipRect(
@@ -255,14 +258,16 @@ class _LoginLargeScreenState extends ConsumerState<LoginScreen>
                                     ),
                                     decoration: BoxDecoration(
                                       border: Border.all(
-                                        color: Color.fromRGBO(241, 240, 236, 1),
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.onSurface,
                                         width: 1.5,
                                       ),
                                       color: Color.fromRGBO(31, 31, 31, 1),
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: Text(
-                                      'Entrar com Google',
+                                      strings.googleButton,
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -289,14 +294,16 @@ class _LoginLargeScreenState extends ConsumerState<LoginScreen>
                                     ),
                                     decoration: BoxDecoration(
                                       border: Border.all(
-                                        color: Color.fromRGBO(241, 240, 236, 1),
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.onSurface,
                                         width: 1.5,
                                       ),
                                       color: Color.fromRGBO(31, 31, 31, 1),
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: Text(
-                                      'Entrar com Google',
+                                      strings.googleButton,
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -315,12 +322,14 @@ class _LoginLargeScreenState extends ConsumerState<LoginScreen>
                             child: Column(
                               children: [
                                 Text(
-                                  'O que é FilmFount?',
+                                  strings.whatIs,
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 Icon(
                                   Icons.keyboard_arrow_down_rounded,
-                                  color: Color.fromRGBO(241, 240, 236, 1),
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurface,
                                 ),
                               ],
                             ),
@@ -337,12 +346,12 @@ class _LoginLargeScreenState extends ConsumerState<LoginScreen>
                     vertical: 25,
                   ),
                   child: Text(
-                    'Crie sua biblioteca',
+                    strings.createYourLibrary,
                     style: TextStyle(
                       fontSize: isLargeScreen ? 30 : 25,
                       fontFamily: GoogleFonts.rammettoOne().fontFamily,
                       fontWeight: FontWeight.bold,
-                      color: const Color.fromRGBO(183, 144, 109, 1),
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                   ),
                 ),
@@ -388,12 +397,12 @@ class _LoginLargeScreenState extends ConsumerState<LoginScreen>
                       vertical: 25,
                     ),
                     child: Text(
-                      'Receba recomendações\ne decida que filme assistir',
+                      strings.receiveRecommendations,
                       style: TextStyle(
                         fontSize: isLargeScreen ? 30 : 25,
                         fontFamily: GoogleFonts.rammettoOne().fontFamily,
                         fontWeight: FontWeight.bold,
-                        color: const Color.fromRGBO(183, 144, 109, 1),
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
                       textAlign: TextAlign.end,
                     ),
@@ -459,7 +468,7 @@ class _LoginLargeScreenState extends ConsumerState<LoginScreen>
                         vertical: 25,
                       ),
                       child: Text(
-                        'Crie metas para assistir filmes',
+                        strings.setGoals,
                         style: TextStyle(
                           fontSize: isLargeScreen ? 30 : 25,
                           fontFamily: GoogleFonts.rammettoOne().fontFamily,
@@ -488,7 +497,7 @@ class _LoginLargeScreenState extends ConsumerState<LoginScreen>
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Você assistiu 3 filmes surrealistas esse mês',
+                                      strings.goalTitleExample,
                                       style: TextStyle(
                                         fontFamily: GoogleFonts.radioCanadaBig()
                                             .fontFamily,
@@ -497,7 +506,7 @@ class _LoginLargeScreenState extends ConsumerState<LoginScreen>
                                       ),
                                     ),
                                     Text(
-                                      '3 semanas seguidas',
+                                      strings.goalSubtitleExample,
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18,
@@ -546,27 +555,35 @@ class _LoginLargeScreenState extends ConsumerState<LoginScreen>
                     ),
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Desenvolvido por'),
-                    TextButton(
-                      onPressed: () async {
-                        if (!await launchUrl(
-                          Uri.parse("https://github.com/Andre-pm"),
-                          webOnlyWindowName: '_blank',
-                        )) {
-                          throw Exception('Could not launch');
-                        }
-                      },
-                      child: Text(
-                        '@Andre-pm',
-                        style: TextStyle(
-                          color: const Color.fromRGBO(183, 144, 109, 1),
-                        ),
+                SizedBox(
+                  height: 50,
+                  child: Center(
+                    child: RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        style: Theme.of(context).textTheme.bodyMedium,
+                        children: [
+                          TextSpan(text: strings.footerText),
+                          TextSpan(
+                            text: strings.footerUser,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () async {
+                                if (!await launchUrl(
+                                  Uri.parse("https://github.com/Andre-pm"),
+                                  webOnlyWindowName: '_blank',
+                                )) {
+                                  throw Exception(strings.footerException);
+                                }
+                              },
+                          ),
+                        ],
                       ),
                     ),
-                  ],
+                  ),
                 ),
               ],
             ),

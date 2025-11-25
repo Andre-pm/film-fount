@@ -30,5 +30,6 @@ final movieDetailNotifierProvider =
       return MovieDetailNotifier(
         ref.watch(theMovieDetailRepositoryProvider),
         movieId,
+        ref.watch(eventBusProvider),
       );
     });

@@ -1,14 +1,45 @@
+import 'dart:async';
+
 import 'package:film_fount/core/domain/enums/menu_option.dart';
+import 'package:film_fount/core/presentation/providers/core_providers.dart';
 import 'package:film_fount/core/presentation/widgets/menu_bar_widget.dart';
 import 'package:film_fount/features/library/presentation/providers/library_providers.dart';
+import 'package:film_fount/features/movie_detail/presentation/events/watchlist_updated_event.dart';
+import 'package:film_fount/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LibraryScreen extends ConsumerWidget {
+class LibraryScreen extends ConsumerStatefulWidget {
   const LibraryScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<LibraryScreen> createState() => _LibraryScreenState();
+}
+
+class _LibraryScreenState extends ConsumerState<LibraryScreen> {
+  late StreamSubscription _watchListSub;
+
+  @override
+  void initState() {
+    super.initState();
+    _watchListSub = ref
+        .read(eventBusProvider)
+        .on<WatchListUpdatedEvent>()
+        .listen(
+          (event) =>
+              ref.read(libraryNotifierProvider.notifier).fetchWatchList(),
+        );
+  }
+
+  @override
+  void dispose() {
+    _watchListSub.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final strings = AppLocalizations.of(context)!;
     final libraryState = ref.watch(libraryNotifierProvider);
 
     return Scaffold(
@@ -32,19 +63,17 @@ class LibraryScreen extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Minha Biblioteca',
+                        strings.libraryTitle,
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
-                          color: Color.fromRGBO(241, 240, 236, 1),
                         ),
                       ),
                       Text(
-                        'Sua lista de filmes para assistir',
+                        strings.librarySubtitle,
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.normal,
-                          color: Color.fromRGBO(241, 240, 236, 1),
                         ),
                       ),
                     ],
@@ -107,13 +136,12 @@ class LibraryScreen extends ConsumerWidget {
                                   Text(
                                     watchListItem?.title ?? '',
                                     softWrap: true,
-                                    style: TextStyle(color: Colors.white),
                                   ),
                                   SizedBox(width: 15),
                                   Text(
                                     watchListItem?.watched == true
-                                        ? 'Assistido'
-                                        : 'Não assistido',
+                                        ? strings.libraryMovieIsWatched
+                                        : strings.libraryMovieIsNotWatched,
                                     style: TextStyle(
                                       color: watchListItem?.watched == true
                                           ? Color.fromRGBO(108, 255, 120, 1)
@@ -130,7 +158,31 @@ class LibraryScreen extends ConsumerWidget {
                     );
                   }, childCount: data.watchList?.length),
                 ),
-                error: (e) => SliverToBoxAdapter(child: SizedBox.shrink()),
+                error: (e) => SliverFillRemaining(
+                  child: Container(
+                    color: Color.fromRGBO(38, 38, 38, 1),
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          strings.libraryEmptyTitle,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onSurface,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          strings.libraryEmptySubtitle,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
             ],
           );

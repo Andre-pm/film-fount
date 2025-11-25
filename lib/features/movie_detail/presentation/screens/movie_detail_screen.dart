@@ -1,4 +1,5 @@
 import 'package:film_fount/features/movie_detail/presentation/providers/movie_detail_providers.dart';
+import 'package:film_fount/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -9,6 +10,7 @@ class MovieDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final strings = AppLocalizations.of(context)!;
     final movieDetailState = ref.watch(movieDetailNotifierProvider(movieId));
     final movieDetailNotifier = ref.read(
       movieDetailNotifierProvider(movieId).notifier,
@@ -79,7 +81,6 @@ class MovieDetailScreen extends ConsumerWidget {
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
                       ),
                     ),
                   ),
@@ -90,11 +91,7 @@ class MovieDetailScreen extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 25),
                 child: Text(
                   data.overview ?? '',
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                 ),
               ),
               SizedBox(height: 25),
@@ -126,8 +123,8 @@ class MovieDetailScreen extends ConsumerWidget {
                     ),
                     child: Text(
                       data.isInWatchList == true
-                          ? 'Remover da lista'
-                          : 'Adicionar a lista',
+                          ? strings.movieDetailRemoveLibrary
+                          : strings.movieDetailAddLibrary,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: data.isInWatchList == true

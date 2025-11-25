@@ -13,17 +13,4 @@ extension MenuOptionsExt on MenuOptions {
         return '/goals';
     }
   }
-
-  String get title {
-    switch (this) {
-      case MenuOptions.search:
-        return 'Pesquisar';
-      case MenuOptions.profile:
-        return 'Perfil';
-      case MenuOptions.library:
-        return 'Biblioteca';
-      case MenuOptions.goals:
-        return 'Metas';
-    }
-  }
 }

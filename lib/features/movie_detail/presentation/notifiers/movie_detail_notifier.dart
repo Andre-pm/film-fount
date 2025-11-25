@@ -1,14 +1,17 @@
+import 'package:event_bus/event_bus.dart';
 import 'package:film_fount/core/state/state_notifier.dart';
 import 'package:film_fount/features/movie_detail/domain/entities/movie_detail_entity.dart';
 import 'package:film_fount/features/movie_detail/domain/repositories/the_movie_detail_repository.dart';
+import 'package:film_fount/features/movie_detail/presentation/events/watchlist_updated_event.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
 final class MovieDetailNotifier
     extends StateNotifier<AppState<MovieDetailEntity>> {
   final TheMovieDetailRepository _repository;
   final int movieId;
+  final EventBus eventBus;
 
-  MovieDetailNotifier(this._repository, this.movieId)
+  MovieDetailNotifier(this._repository, this.movieId, this.eventBus)
     : super(const AppState.initial()) {
     fetchMovieDetail(movieId);
   }
@@ -64,6 +67,7 @@ final class MovieDetailNotifier
   void refreshWatchListStatus(bool isInWatchList) {
     state.maybeWhen(
       data: (movieDetail) {
+        eventBus.fire(WatchListUpdatedEvent(updateWatchList: true));
         state = AppState.data(
           movieDetail.copyWith(isInWatchList: isInWatchList),
         );

@@ -1,0 +1,1 @@
+ /Users/andremartins/Documents/Flutter\ Projects/FilmFount/film_fount/lib/l10n/app_localizations_pt.dart /Users/andremartins/Documents/Flutter\ Projects/FilmFount/film_fount/lib/l10n/app_localizations.dart:  /Users/andremartins/Documents/Flutter\ Projects/FilmFount/film_fount/l10n.yaml /Users/andremartins/Documents/Flutter\ Projects/FilmFount/film_fount/lib/l10n/app_pt.arb
