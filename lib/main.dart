@@ -1,10 +1,12 @@
 import 'package:film_fount/app/navigation/app_router.dart';
 import 'package:film_fount/app/theme/app_theme.dart';
 import 'package:film_fount/firebase_options.dart';
+import 'package:film_fount/l10n/app_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 Future<void> main() async {
@@ -51,6 +53,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [Locale('pt')],
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
       initialRoute: AppRouter.initialRoute,

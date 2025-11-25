@@ -1,0 +1,43 @@
+{
+    "googleButton": "Entrar com Google",
+    "whatIs":"O que é FilmFount?",
+    "createYourLibrary":"Crie sua biblioteca",
+    "receiveRecommendations":"Receba recomendações\ne decida que filme assistir",
+    "setGoals":"Crie metas para assistir filmes",
+    "goalTitleExample":"Você assistiu 3 filmes surrealistas esse mês",
+    "goalSubtitleExample":"3 semanas seguidas",
+    "footerText":"Desenvolvido por ",
+    "footerUser":"@Andre-pm",
+    "footerException":"Não foi possível abrir o site",
+    "libraryTitle":"Minha Biblioteca",
+    "librarySubtitle":"Sua lista de filmes para assistir",
+    "libraryMovieIsWatched":"Assistido",
+    "libraryMovieIsNotWatched":"Não assistido",
+    "libraryEmptyTitle":"Parece que a sua lista está vazia!",
+    "libraryEmptySubtitle":"Pesquise um filme e adicione a sua biblioteca para ele aparecer aqui.",
+    "movieDetailRemoveLibrary":"Remover da lista",
+    "movieDetailAddLibrary":"Adicionar a lista",
+    "seachTitle":"Pesquisa",
+    "searchSubtitle":"Encontre informações sobre seus filmes que você deseja assistir",
+    "searchMovieTitle":"Nome do filme",
+    "searchMovieButton":"Pesquisar filme",
+    "searchMovieEmptyTitle":"Nenhum filme encontrado.",
+    "searchMovieTitleNotFound":"Título não disponível",
+    "searchMovieDescriptionNotFound":"Sem descrição disponível.",
+    "searchMovieError":"Houve um erro ao carregar essa página!",
+    "menuOptionSearch":"Pesquisar",
+    "menuOptionProfile":"Perfil",
+    "menuOptionAccessProfile":"Acessar perfil",
+    "menuOptionLibrary":"Biblioteca",
+    "menuOptionGoals":"Metas",
+    "menuOptionLogout":"Sair",
+    "underDevelopmentTitle":"A funcionalidade de {selectedOption} está em desenvolvimento",
+    "@underDevelopmentTitle":{
+        "placeholders":{
+            "selectedOption":{
+                "type":"String"
+            }
+        }
+    },
+    "underDevelopmentSubtitle":"Assim que ela estiver pronta, você será avisado!"
+}

@@ -5,6 +5,7 @@ import 'package:film_fount/core/presentation/providers/core_providers.dart';
 import 'package:film_fount/core/presentation/widgets/menu_bar_widget.dart';
 import 'package:film_fount/features/library/presentation/providers/library_providers.dart';
 import 'package:film_fount/features/movie_detail/presentation/events/watchlist_updated_event.dart';
+import 'package:film_fount/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -38,6 +39,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final strings = AppLocalizations.of(context)!;
     final libraryState = ref.watch(libraryNotifierProvider);
 
     return Scaffold(
@@ -61,14 +63,14 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Minha Biblioteca',
+                        strings.libraryTitle,
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
-                        'Sua lista de filmes para assistir',
+                        strings.librarySubtitle,
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.normal,
@@ -138,8 +140,8 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                                   SizedBox(width: 15),
                                   Text(
                                     watchListItem?.watched == true
-                                        ? 'Assistido'
-                                        : 'Não assistido',
+                                        ? strings.libraryMovieIsWatched
+                                        : strings.libraryMovieIsNotWatched,
                                     style: TextStyle(
                                       color: watchListItem?.watched == true
                                           ? Color.fromRGBO(108, 255, 120, 1)
@@ -165,14 +167,14 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          'Parece que a sua lista está vazia!',
+                          strings.libraryEmptyTitle,
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.onSurface,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         Text(
-                          'Pesquise um filme e adicione a sua biblioteca para ele aparecer aqui.',
+                          strings.libraryEmptySubtitle,
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.onSurface,
                           ),

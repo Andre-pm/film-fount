@@ -1,6 +1,7 @@
 import 'package:film_fount/core/domain/enums/menu_option.dart';
 import 'package:film_fount/core/presentation/extensions/menu_options_ext.dart';
 import 'package:film_fount/features/auth/presentation/providers/auth_provider.dart';
+import 'package:film_fount/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -16,6 +17,8 @@ class MenuBarWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final strings = AppLocalizations.of(context)!;
+
     Future<void> handleLogout(BuildContext context) async {
       final authControllerNotifier = ref.read(authNotifierProvider.notifier);
       final success = await authControllerNotifier.signOut();
@@ -40,7 +43,7 @@ class MenuBarWidget extends ConsumerWidget {
                   PopupMenuButton<String>(
                     color: Theme.of(context).colorScheme.secondary,
                     child: Text(
-                      MenuOptions.profile.title,
+                      strings.menuOptionProfile,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: option == MenuOptions.profile
@@ -66,9 +69,12 @@ class MenuBarWidget extends ConsumerWidget {
                         <PopupMenuEntry<String>>[
                           PopupMenuItem(
                             value: 'accessProfile',
-                            child: Text('Acessar perfil'),
+                            child: Text(strings.menuOptionAccessProfile),
                           ),
-                          PopupMenuItem(value: 'logout', child: Text('Sair')),
+                          PopupMenuItem(
+                            value: 'logout',
+                            child: Text(strings.menuOptionLogout),
+                          ),
                         ],
                   ),
                   const SizedBox(width: 70),
@@ -82,7 +88,7 @@ class MenuBarWidget extends ConsumerWidget {
                     splashColor: Theme.of(context).colorScheme.onSurface,
                     highlightColor: Theme.of(context).colorScheme.onSurface,
                     child: Text(
-                      MenuOptions.library.title,
+                      strings.menuOptionLibrary,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: option == MenuOptions.library
@@ -102,7 +108,7 @@ class MenuBarWidget extends ConsumerWidget {
                     splashColor: Theme.of(context).colorScheme.onSurface,
                     highlightColor: Theme.of(context).colorScheme.onSurface,
                     child: Text(
-                      MenuOptions.goals.title,
+                      strings.menuOptionGoals,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: option == MenuOptions.goals
@@ -159,17 +165,20 @@ class MenuBarWidget extends ConsumerWidget {
                         <PopupMenuEntry<String>>[
                           PopupMenuItem(
                             value: 'profile',
-                            child: Text(MenuOptions.profile.title),
+                            child: Text(strings.menuOptionProfile),
                           ),
                           PopupMenuItem(
                             value: 'library',
-                            child: Text(MenuOptions.library.title),
+                            child: Text(strings.menuOptionLibrary),
                           ),
                           PopupMenuItem(
                             value: 'goals',
-                            child: Text(MenuOptions.goals.title),
+                            child: Text(strings.menuOptionGoals),
                           ),
-                          PopupMenuItem(value: 'logout', child: Text('Sair')),
+                          PopupMenuItem(
+                            value: 'logout',
+                            child: Text(strings.menuOptionLogout),
+                          ),
                         ],
                   ),
                   const SizedBox(width: 10),
