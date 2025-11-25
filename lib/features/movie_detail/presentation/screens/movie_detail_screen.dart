@@ -79,7 +79,6 @@ class MovieDetailScreen extends ConsumerWidget {
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
                       ),
                     ),
                   ),
@@ -90,11 +89,7 @@ class MovieDetailScreen extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 25),
                 child: Text(
                   data.overview ?? '',
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                 ),
               ),
               SizedBox(height: 25),

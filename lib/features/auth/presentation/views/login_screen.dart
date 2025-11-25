@@ -129,7 +129,7 @@ class _LoginLargeScreenState extends ConsumerState<LoginScreen>
                         child: Container(
                           width: 1399,
                           height: 1049.85,
-                          color: const Color.fromRGBO(151, 109, 71, 1),
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
                       ),
                       ClipRect(
@@ -255,7 +255,9 @@ class _LoginLargeScreenState extends ConsumerState<LoginScreen>
                                     ),
                                     decoration: BoxDecoration(
                                       border: Border.all(
-                                        color: Color.fromRGBO(241, 240, 236, 1),
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.onSurface,
                                         width: 1.5,
                                       ),
                                       color: Color.fromRGBO(31, 31, 31, 1),
@@ -289,7 +291,9 @@ class _LoginLargeScreenState extends ConsumerState<LoginScreen>
                                     ),
                                     decoration: BoxDecoration(
                                       border: Border.all(
-                                        color: Color.fromRGBO(241, 240, 236, 1),
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.onSurface,
                                         width: 1.5,
                                       ),
                                       color: Color.fromRGBO(31, 31, 31, 1),
@@ -320,7 +324,9 @@ class _LoginLargeScreenState extends ConsumerState<LoginScreen>
                                 ),
                                 Icon(
                                   Icons.keyboard_arrow_down_rounded,
-                                  color: Color.fromRGBO(241, 240, 236, 1),
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurface,
                                 ),
                               ],
                             ),
@@ -342,7 +348,7 @@ class _LoginLargeScreenState extends ConsumerState<LoginScreen>
                       fontSize: isLargeScreen ? 30 : 25,
                       fontFamily: GoogleFonts.rammettoOne().fontFamily,
                       fontWeight: FontWeight.bold,
-                      color: const Color.fromRGBO(183, 144, 109, 1),
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                   ),
                 ),
@@ -393,7 +399,7 @@ class _LoginLargeScreenState extends ConsumerState<LoginScreen>
                         fontSize: isLargeScreen ? 30 : 25,
                         fontFamily: GoogleFonts.rammettoOne().fontFamily,
                         fontWeight: FontWeight.bold,
-                        color: const Color.fromRGBO(183, 144, 109, 1),
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
                       textAlign: TextAlign.end,
                     ),
@@ -562,7 +568,7 @@ class _LoginLargeScreenState extends ConsumerState<LoginScreen>
                       child: Text(
                         '@Andre-pm',
                         style: TextStyle(
-                          color: const Color.fromRGBO(183, 144, 109, 1),
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
                       ),
                     ),

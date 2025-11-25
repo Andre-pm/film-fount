@@ -44,7 +44,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
-                          color: Color.fromRGBO(241, 240, 236, 1),
                         ),
                       ),
                       Text(
@@ -52,7 +51,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.normal,
-                          color: Color.fromRGBO(241, 240, 236, 1),
                         ),
                       ),
                     ],
@@ -86,7 +84,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                         TextStyle(fontWeight: FontWeight.w600),
                       ),
                       backgroundColor: WidgetStateProperty.all<Color>(
-                        const Color.fromRGBO(151, 109, 71, 1),
+                        Theme.of(context).colorScheme.secondary,
                       ),
                       foregroundColor: WidgetStateProperty.all<Color>(
                         Color.fromRGBO(31, 31, 31, 1),
@@ -95,7 +93,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                     onPressed: () => notifier.searchMovie(movieController.text),
                     child: Text(
                       'Pesquisar Filme',
-                      style: TextStyle(color: Color.fromRGBO(241, 240, 236, 1)),
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
                     ),
                   ),
                 ),
@@ -117,14 +117,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                     return const SliverToBoxAdapter(
                       child: Padding(
                         padding: EdgeInsets.only(top: 25),
-                        child: Center(
-                          child: Text(
-                            'Nenhum filme encontrado.',
-                            style: TextStyle(
-                              color: Color.fromRGBO(241, 240, 236, 1),
-                            ),
-                          ),
-                        ),
+                        child: Center(child: Text('Nenhum filme encontrado.')),
                       ),
                     );
                   }
@@ -194,12 +187,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                                 'Título não disponível',
                                             style: const TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              color: Color.fromRGBO(
-                                                241,
-                                                240,
-                                                236,
-                                                1,
-                                              ),
                                             ),
                                           ),
                                           const SizedBox(height: 8),
@@ -207,14 +194,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                             movie.overview?.isNotEmpty == true
                                                 ? movie.overview!
                                                 : 'Sem descrição disponível.',
-                                            style: const TextStyle(
-                                              color: Color.fromRGBO(
-                                                200,
-                                                200,
-                                                200,
-                                                1,
-                                              ),
-                                            ),
+                                            style: const TextStyle(),
                                             maxLines: 3,
                                             overflow: TextOverflow.ellipsis,
                                           ),
@@ -235,7 +215,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   child: Center(
                     child: Text(
                       'Houve um erro ao carregar essa página: \n$error',
-                      style: TextStyle(color: Color.fromRGBO(241, 240, 236, 1)),
                     ),
                   ),
                 ),

@@ -36,7 +36,6 @@ class LibraryScreen extends ConsumerWidget {
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
-                          color: Color.fromRGBO(241, 240, 236, 1),
                         ),
                       ),
                       Text(
@@ -44,7 +43,6 @@ class LibraryScreen extends ConsumerWidget {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.normal,
-                          color: Color.fromRGBO(241, 240, 236, 1),
                         ),
                       ),
                     ],
@@ -107,7 +105,6 @@ class LibraryScreen extends ConsumerWidget {
                                   Text(
                                     watchListItem?.title ?? '',
                                     softWrap: true,
-                                    style: TextStyle(color: Colors.white),
                                   ),
                                   SizedBox(width: 15),
                                   Text(
@@ -130,7 +127,31 @@ class LibraryScreen extends ConsumerWidget {
                     );
                   }, childCount: data.watchList?.length),
                 ),
-                error: (e) => SliverToBoxAdapter(child: SizedBox.shrink()),
+                error: (e) => SliverFillRemaining(
+                  child: Container(
+                    color: Color.fromRGBO(38, 38, 38, 1),
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Parece que a sua lista está vazia!',
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onSurface,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          'Pesquise um filme e adicione a sua biblioteca para ele aparecer aqui.',
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
             ],
           );

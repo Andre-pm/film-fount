@@ -32,19 +32,19 @@ class MenuBarWidget extends ConsumerWidget {
         padding: EdgeInsets.only(left: 24),
         child: SvgPicture.asset('assets/svg/logo_navbar_horizontal.svg'),
       ),
-      backgroundColor: Color.fromRGBO(241, 240, 236, 1),
+      backgroundColor: Theme.of(context).colorScheme.onSurface,
       actions: [
         isLargeVersion
             ? Row(
                 children: [
                   PopupMenuButton<String>(
-                    color: Color.fromRGBO(151, 109, 71, 1),
+                    color: Theme.of(context).colorScheme.secondary,
                     child: Text(
                       MenuOptions.profile.title,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: option == MenuOptions.profile
-                            ? Color.fromRGBO(151, 109, 71, 1)
+                            ? Theme.of(context).colorScheme.secondary
                             : Color.fromRGBO(85, 85, 85, 0.749),
                       ),
                     ),
@@ -78,15 +78,15 @@ class MenuBarWidget extends ConsumerWidget {
                         context,
                       ).pushReplacementNamed(MenuOptions.library.route);
                     },
-                    hoverColor: Color.fromRGBO(241, 240, 236, 1),
-                    splashColor: Color.fromRGBO(241, 240, 236, 1),
-                    highlightColor: Color.fromRGBO(241, 240, 236, 1),
+                    hoverColor: Theme.of(context).colorScheme.onSurface,
+                    splashColor: Theme.of(context).colorScheme.onSurface,
+                    highlightColor: Theme.of(context).colorScheme.onSurface,
                     child: Text(
                       MenuOptions.library.title,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: option == MenuOptions.library
-                            ? Color.fromRGBO(151, 109, 71, 1)
+                            ? Theme.of(context).colorScheme.secondary
                             : Color.fromRGBO(85, 85, 85, 0.749),
                       ),
                     ),
@@ -98,15 +98,15 @@ class MenuBarWidget extends ConsumerWidget {
                         context,
                       ).pushReplacementNamed(MenuOptions.goals.route);
                     },
-                    hoverColor: Color.fromRGBO(241, 240, 236, 1),
-                    splashColor: Color.fromRGBO(241, 240, 236, 1),
-                    highlightColor: Color.fromRGBO(241, 240, 236, 1),
+                    hoverColor: Theme.of(context).colorScheme.onSurface,
+                    splashColor: Theme.of(context).colorScheme.onSurface,
+                    highlightColor: Theme.of(context).colorScheme.onSurface,
                     child: Text(
                       MenuOptions.goals.title,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: option == MenuOptions.goals
-                            ? Color.fromRGBO(151, 109, 71, 1)
+                            ? Theme.of(context).colorScheme.secondary
                             : Color.fromRGBO(85, 85, 85, 0.749),
                       ),
                     ),
@@ -115,7 +115,7 @@ class MenuBarWidget extends ConsumerWidget {
                   IconButton(
                     icon: Icon(Icons.search_rounded),
                     color: option == MenuOptions.search
-                        ? Color.fromRGBO(151, 109, 71, 1)
+                        ? Theme.of(context).colorScheme.secondary
                         : Color.fromRGBO(85, 85, 85, 0.749),
                     iconSize: 32,
                     onPressed: () {
@@ -129,7 +129,7 @@ class MenuBarWidget extends ConsumerWidget {
             : Row(
                 children: [
                   PopupMenuButton<String>(
-                    color: Color.fromRGBO(151, 109, 71, 1),
+                    color: Theme.of(context).colorScheme.secondary,
                     icon: Icon(Icons.menu),
                     onSelected: (value) {
                       switch (value) {
@@ -176,7 +176,7 @@ class MenuBarWidget extends ConsumerWidget {
                   IconButton(
                     icon: Icon(Icons.search_rounded),
                     color: option == MenuOptions.search
-                        ? Color.fromRGBO(151, 109, 71, 1)
+                        ? Theme.of(context).colorScheme.secondary
                         : Color.fromRGBO(85, 85, 85, 0.749),
                     iconSize: 32,
                     onPressed: () {
