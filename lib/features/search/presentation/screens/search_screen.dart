@@ -15,8 +15,8 @@ class SearchScreen extends ConsumerStatefulWidget {
 class _SearchScreenState extends ConsumerState<SearchScreen> {
   final ScrollController _scrollController = ScrollController();
   bool isLoadingMore = false;
+  bool hasMoreMovies = false;
   final TextEditingController _movieController = TextEditingController();
-  bool hasMoreMovies = true;
 
   @override
   void initState() {
