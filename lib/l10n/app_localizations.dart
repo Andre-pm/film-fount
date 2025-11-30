@@ -297,6 +297,30 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Assim que ela estiver pronta, você será avisado!'**
   String get underDevelopmentSubtitle;
+
+  /// No description provided for @movieDetailSimilarMovieTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Filmes similares'**
+  String get movieDetailSimilarMovieTitle;
+
+  /// No description provided for @movieDetailSimilarMovieDescription.
+  ///
+  /// In pt, this message translates to:
+  /// **'que possuem caracteristicas similares ao filme, seja gênero, palavras-chave...'**
+  String get movieDetailSimilarMovieDescription;
+
+  /// No description provided for @movieDetailRecommendationsTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Filmes Recomendados'**
+  String get movieDetailRecommendationsTitle;
+
+  /// No description provided for @movieDetailRecommendationsDescription.
+  ///
+  /// In pt, this message translates to:
+  /// **'que são populares com usuários que assistiram esse filme'**
+  String get movieDetailRecommendationsDescription;
 }
 
 class _AppLocalizationsDelegate

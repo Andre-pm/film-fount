@@ -115,4 +115,18 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get underDevelopmentSubtitle =>
       'Assim que ela estiver pronta, você será avisado!';
+
+  @override
+  String get movieDetailSimilarMovieTitle => 'Filmes similares';
+
+  @override
+  String get movieDetailSimilarMovieDescription =>
+      'que possuem caracteristicas similares ao filme, seja gênero, palavras-chave...';
+
+  @override
+  String get movieDetailRecommendationsTitle => 'Filmes Recomendados';
+
+  @override
+  String get movieDetailRecommendationsDescription =>
+      'que são populares com usuários que assistiram esse filme';
 }

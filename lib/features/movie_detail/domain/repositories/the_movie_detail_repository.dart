@@ -7,5 +7,5 @@ abstract class TheMovieDetailRepository {
   Future<bool> isOnWatchList(int movieId);
   Future<bool> removeFromWatchList(MovieDetailEntity movie);
   Future<List<MovieEntity>> getSimilarMovies(int movieId, int? page);
-  Future<List<MovieEntity>> getRecommendations(int movieId);
+  Future<List<MovieEntity>> getRecommendations(int movieId, int? page);
 }

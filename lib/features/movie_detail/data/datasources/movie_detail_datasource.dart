@@ -107,7 +107,7 @@ class MovieDetailDatasource {
     }
   }
 
-  Future<List<MovieModel>> getRecommendations(int movieId) async {
+  Future<List<MovieModel>> getRecommendations(int movieId, int? page) async {
     try {
       final response = await client.get(
         '$baseUrl/movie/$movieId/recommendations',
@@ -115,6 +115,7 @@ class MovieDetailDatasource {
           'api_key': apiKey,
           'language': 'pt-BR',
           'include_adult': 'false',
+          'page': page ?? 1,
         },
         options: Options(headers: {'Authorization': 'Bearer $apiKey'}),
       );

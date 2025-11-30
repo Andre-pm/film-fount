@@ -18,6 +18,9 @@ final class MovieDetailNotifier
   }
   int currentMovieId = 0;
   int similarMoviesPage = 1;
+  bool isMoreSimilarMovies = true;
+  int recommendationsPage = 1;
+  bool isMoreRecommendations = true;
 
   Future<void> fetchMovieDetail(int? movieId) async {
     state = const AppState.loading();
@@ -28,7 +31,7 @@ final class MovieDetailNotifier
         _repository.getMovieDetails(id),
         _repository.isOnWatchList(id),
         _repository.getSimilarMovies(id, similarMoviesPage),
-        _repository.getRecommendations(id),
+        _repository.getRecommendations(id, recommendationsPage),
       ]);
       final movieResponse = results[0] as MovieDetailEntity;
       final isInWatchList = results[1] as bool;
@@ -58,20 +61,53 @@ final class MovieDetailNotifier
     }
   }
 
-  Future<void> loadMoreSimilarMovies() async {
+  Future<bool> loadMoreSimilarMovies() async {
     similarMoviesPage++;
     final newMovies = await _repository.getSimilarMovies(
       currentMovieId,
       similarMoviesPage,
     );
-    state.maybeWhen(
-      data: (movieDetail) {
-        final updatedList = [...?movieDetail.similarMovies, ...newMovies];
+    if (newMovies.isEmpty) {
+      isMoreSimilarMovies = false;
+    } else {
+      state.maybeWhen(
+        data: (movieDetail) {
+          final updatedList = [...?movieDetail.similarMovies, ...newMovies];
 
-        state = AppState.data(movieDetail.copyWith(similarMovies: updatedList));
-      },
-      orElse: () {},
+          state = AppState.data(
+            movieDetail.copyWith(similarMovies: updatedList),
+          );
+        },
+        orElse: () {},
+      );
+    }
+    return isMoreSimilarMovies;
+  }
+
+  Future<bool> loadMoreRecommendations() async {
+    recommendationsPage++;
+    final newRecommendations = await _repository.getRecommendations(
+      currentMovieId,
+      recommendationsPage,
     );
+    if (newRecommendations.isEmpty) {
+      isMoreRecommendations = false;
+    } else {
+      state.maybeWhen(
+        data: (movieDetail) {
+          final updatedList = [
+            ...?movieDetail.recommendations,
+            ...newRecommendations,
+          ];
+
+          state = AppState.data(
+            movieDetail.copyWith(recommendations: updatedList),
+          );
+        },
+        orElse: () {},
+      );
+    }
+    return isMoreRecommendations;
   }
 
   Future<void> addToWatchList(MovieDetailEntity movie) async {

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:film_fount/app/theme/app_theme.dart';
 import 'package:film_fount/features/movie_detail/presentation/providers/movie_detail_providers.dart';
+import 'package:film_fount/features/movie_detail/presentation/widgets/related_movies_widget.dart';
 import 'package:film_fount/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,7 +18,11 @@ class MovieDetailScreen extends ConsumerStatefulWidget {
 
 class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
   final ScrollController _similarMoviesScrollController = ScrollController();
-  bool isLoadingMore = false;
+  final ScrollController _recommendationScrollController = ScrollController();
+  bool isLoadingMoreSimilarMovies = false;
+  bool isMoreSimilarMovies = true;
+  bool isLoadingMoreRecommendations = false;
+  bool isMoreRecommendations = true;
   @override
   void initState() {
     super.initState();
@@ -25,16 +30,44 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
       final max = _similarMoviesScrollController.position.maxScrollExtent;
       final current = _similarMoviesScrollController.position.pixels;
 
-      if (!isLoadingMore && current > max - 200) {
-        isLoadingMore = true;
+      if (!isLoadingMoreSimilarMovies && current > max - 200) {
+        setState(() {
+          isLoadingMoreSimilarMovies = true;
+        });
         ref
             .read(movieDetailNotifierProvider(widget.movieId).notifier)
             .loadMoreSimilarMovies()
-            .then((_) {
-              isLoadingMore = false;
+            .then((hasMore) {
+              isMoreSimilarMovies = hasMore;
+              isLoadingMoreSimilarMovies = false;
             });
       }
     });
+
+    _recommendationScrollController.addListener(() {
+      final max = _recommendationScrollController.position.maxScrollExtent;
+      final current = _recommendationScrollController.position.pixels;
+
+      if (!isLoadingMoreRecommendations && current > max - 200) {
+        setState(() {
+          isLoadingMoreRecommendations = true;
+        });
+        ref
+            .read(movieDetailNotifierProvider(widget.movieId).notifier)
+            .loadMoreRecommendations()
+            .then((hasMore) {
+              isMoreRecommendations = hasMore;
+              isLoadingMoreRecommendations = false;
+            });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _similarMoviesScrollController.dispose();
+    _recommendationScrollController.dispose();
   }
 
   @override
@@ -199,185 +232,27 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
                   ),
                 ),
               ),
-              if (data.similarMovies != null)
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+              SizedBox(height: 50),
 
-                  children: [
-                    SizedBox(height: 25),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25),
-                      child: Text(
-                        'Filmes similares',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25),
-                      child: Text(
-                        'que possuem caracteristicas similares ao filme, seja gênero, palavras-chave... ',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 15, bottom: 15),
-                      child: ScrollConfiguration(
-                        behavior: ScrollConfiguration.of(context).copyWith(
-                          dragDevices: {
-                            PointerDeviceKind.touch,
-                            PointerDeviceKind.mouse,
-                            PointerDeviceKind.trackpad,
-                          },
-                        ),
-                        child: SingleChildScrollView(
-                          controller: _similarMoviesScrollController,
-                          padding: EdgeInsets.only(right: 25, left: 25),
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: [
-                              ...data.similarMovies!.map<Widget>((movie) {
-                                return Padding(
-                                  padding: const EdgeInsets.only(right: 15),
-                                  child: InkWell(
-                                    onTap: () {
-                                      Navigator.of(context).pushNamed(
-                                        '/movie_details',
-                                        arguments: movie.id,
-                                      );
-                                    },
-                                    child: ClipRRect(
-                                      borderRadius: const BorderRadius.all(
-                                        Radius.circular(8),
-                                      ),
-                                      child: movie.posterPath != null
-                                          ? Image.network(
-                                              movie.posterPath!,
-                                              width: 100,
-                                              height: 150,
-                                              fit: BoxFit.cover,
-                                            )
-                                          : const SizedBox(
-                                              width: 100,
-                                              height: 150,
-                                              child: Icon(
-                                                Icons.image_not_supported,
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                    ),
-                                  ),
-                                );
-                              }),
-                              isLoadingMore
-                                  ? SizedBox(
-                                      width: 25,
-                                      height: 25,
-                                      child: CircularProgressIndicator(
-                                        color: Theme.of(
-                                          context,
-                                        ).colorScheme.secondary,
-                                      ),
-                                    )
-                                  : SizedBox.shrink(),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              if (data.recommendations?.isNotEmpty ?? false)
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-
-                  children: [
-                    SizedBox(height: 25),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25),
-                      child: Text(
-                        'Filmes Recomendados',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25),
-                      child: Text(
-                        'que são populares com usuários que assistiram esse filme',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
-                      ),
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.only(top: 15, bottom: 15),
-                      child: ScrollConfiguration(
-                        behavior: ScrollConfiguration.of(context).copyWith(
-                          dragDevices: {
-                            PointerDeviceKind.touch,
-                            PointerDeviceKind.mouse,
-                            PointerDeviceKind.trackpad,
-                          },
-                        ),
-                        child: SingleChildScrollView(
-                          padding: EdgeInsets.only(right: 25, left: 25),
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: data.recommendations!.map<Widget>((
-                              movie,
-                            ) {
-                              return Padding(
-                                padding: const EdgeInsets.only(right: 15),
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.of(context).pushNamed(
-                                      '/movie_details',
-                                      arguments: movie.id,
-                                    );
-                                  },
-                                  child: ClipRRect(
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(8),
-                                    ),
-                                    child: movie.posterPath != null
-                                        ? Image.network(
-                                            movie.posterPath!,
-                                            width: 100,
-                                            height: 150,
-                                            fit: BoxFit.cover,
-                                          )
-                                        : const SizedBox(
-                                            width: 100,
-                                            height: 150,
-                                            child: Icon(
-                                              Icons.image_not_supported,
-                                              color: Colors.grey,
-                                            ),
-                                          ),
-                                  ),
-                                ),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+              relatedMoviesWidget(
+                context,
+                scrollController: _similarMoviesScrollController,
+                isLoadingMore: isLoadingMoreSimilarMovies,
+                title: strings.movieDetailSimilarMovieTitle,
+                description: strings.movieDetailSimilarMovieDescription,
+                movieList: data.similarMovies ?? [],
+                hasMore: isMoreSimilarMovies,
+              ),
+              relatedMoviesWidget(
+                context,
+                scrollController: _recommendationScrollController,
+                isLoadingMore: isLoadingMoreRecommendations,
+                title: strings.movieDetailRecommendationsTitle,
+                description: strings.movieDetailRecommendationsDescription,
+                movieList: data.recommendations ?? [],
+                hasMore: isMoreRecommendations,
+              ),
+              SizedBox(height: 35),
             ],
           ),
         ),

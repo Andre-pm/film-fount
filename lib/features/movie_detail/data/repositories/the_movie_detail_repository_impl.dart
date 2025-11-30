@@ -36,15 +36,12 @@ class TheMovieDetailRepositoryImpl implements TheMovieDetailRepository {
   @override
   Future<List<MovieEntity>> getSimilarMovies(int movieId, int? page) async {
     final movieModel = await _datasource.getSuggestion(movieId, page);
-    print('Movie ID: $movieId');
-    print('Filmes Similares\n ${movieModel.toString()}');
     return movieModel.map((model) => model.toEntity()).toList();
   }
 
   @override
-  Future<List<MovieEntity>> getRecommendations(int movieId) async {
-    final movieModel = await _datasource.getRecommendations(movieId);
-    print('Filmes Recomendados\n ${movieModel.toString()}');
+  Future<List<MovieEntity>> getRecommendations(int movieId, int? page) async {
+    final movieModel = await _datasource.getRecommendations(movieId, page);
     return movieModel.map((model) => model.toEntity()).toList();
   }
 }

@@ -39,5 +39,9 @@
             }
         }
     },
-    "underDevelopmentSubtitle":"Assim que ela estiver pronta, você será avisado!"
+    "underDevelopmentSubtitle":"Assim que ela estiver pronta, você será avisado!",
+    "movieDetailSimilarMovieTitle":"Filmes similares",
+    "movieDetailSimilarMovieDescription":"que possuem caracteristicas similares ao filme, seja gênero, palavras-chave...",
+    "movieDetailRecommendationsTitle":"Filmes Recomendados",
+    "movieDetailRecommendationsDescription":"que são populares com usuários que assistiram esse filme"
 }
