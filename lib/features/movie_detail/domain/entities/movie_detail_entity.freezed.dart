@@ -29,6 +29,8 @@ mixin _$MovieDetailEntity {
   String? get releaseDate => throw _privateConstructorUsedError;
   String? get status => throw _privateConstructorUsedError;
   bool get isInWatchList => throw _privateConstructorUsedError;
+  List<MovieEntity>? get similarMovies => throw _privateConstructorUsedError;
+  List<MovieEntity>? get recommendations => throw _privateConstructorUsedError;
 
   /// Create a copy of MovieDetailEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -57,6 +59,8 @@ abstract class $MovieDetailEntityCopyWith<$Res> {
     String? releaseDate,
     String? status,
     bool isInWatchList,
+    List<MovieEntity>? similarMovies,
+    List<MovieEntity>? recommendations,
   });
 }
 
@@ -87,6 +91,8 @@ class _$MovieDetailEntityCopyWithImpl<$Res, $Val extends MovieDetailEntity>
     Object? releaseDate = freezed,
     Object? status = freezed,
     Object? isInWatchList = null,
+    Object? similarMovies = freezed,
+    Object? recommendations = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -138,6 +144,14 @@ class _$MovieDetailEntityCopyWithImpl<$Res, $Val extends MovieDetailEntity>
                 ? _value.isInWatchList
                 : isInWatchList // ignore: cast_nullable_to_non_nullable
                       as bool,
+            similarMovies: freezed == similarMovies
+                ? _value.similarMovies
+                : similarMovies // ignore: cast_nullable_to_non_nullable
+                      as List<MovieEntity>?,
+            recommendations: freezed == recommendations
+                ? _value.recommendations
+                : recommendations // ignore: cast_nullable_to_non_nullable
+                      as List<MovieEntity>?,
           )
           as $Val,
     );
@@ -166,6 +180,8 @@ abstract class _$$MovieDetailEntityImplCopyWith<$Res>
     String? releaseDate,
     String? status,
     bool isInWatchList,
+    List<MovieEntity>? similarMovies,
+    List<MovieEntity>? recommendations,
   });
 }
 
@@ -195,6 +211,8 @@ class __$$MovieDetailEntityImplCopyWithImpl<$Res>
     Object? releaseDate = freezed,
     Object? status = freezed,
     Object? isInWatchList = null,
+    Object? similarMovies = freezed,
+    Object? recommendations = freezed,
   }) {
     return _then(
       _$MovieDetailEntityImpl(
@@ -246,6 +264,14 @@ class __$$MovieDetailEntityImplCopyWithImpl<$Res>
             ? _value.isInWatchList
             : isInWatchList // ignore: cast_nullable_to_non_nullable
                   as bool,
+        similarMovies: freezed == similarMovies
+            ? _value._similarMovies
+            : similarMovies // ignore: cast_nullable_to_non_nullable
+                  as List<MovieEntity>?,
+        recommendations: freezed == recommendations
+            ? _value._recommendations
+            : recommendations // ignore: cast_nullable_to_non_nullable
+                  as List<MovieEntity>?,
       ),
     );
   }
@@ -267,7 +293,11 @@ class _$MovieDetailEntityImpl implements _MovieDetailEntity {
     this.releaseDate,
     this.status,
     this.isInWatchList = false,
-  }) : _genres = genres;
+    final List<MovieEntity>? similarMovies,
+    final List<MovieEntity>? recommendations,
+  }) : _genres = genres,
+       _similarMovies = similarMovies,
+       _recommendations = recommendations;
 
   @override
   final int id;
@@ -302,10 +332,29 @@ class _$MovieDetailEntityImpl implements _MovieDetailEntity {
   @override
   @JsonKey()
   final bool isInWatchList;
+  final List<MovieEntity>? _similarMovies;
+  @override
+  List<MovieEntity>? get similarMovies {
+    final value = _similarMovies;
+    if (value == null) return null;
+    if (_similarMovies is EqualUnmodifiableListView) return _similarMovies;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<MovieEntity>? _recommendations;
+  @override
+  List<MovieEntity>? get recommendations {
+    final value = _recommendations;
+    if (value == null) return null;
+    if (_recommendations is EqualUnmodifiableListView) return _recommendations;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'MovieDetailEntity(id: $id, originalLanguage: $originalLanguage, originalTitle: $originalTitle, overview: $overview, posterPath: $posterPath, title: $title, backdropPath: $backdropPath, genres: $genres, homepage: $homepage, releaseDate: $releaseDate, status: $status, isInWatchList: $isInWatchList)';
+    return 'MovieDetailEntity(id: $id, originalLanguage: $originalLanguage, originalTitle: $originalTitle, overview: $overview, posterPath: $posterPath, title: $title, backdropPath: $backdropPath, genres: $genres, homepage: $homepage, releaseDate: $releaseDate, status: $status, isInWatchList: $isInWatchList, similarMovies: $similarMovies, recommendations: $recommendations)';
   }
 
   @override
@@ -332,7 +381,15 @@ class _$MovieDetailEntityImpl implements _MovieDetailEntity {
                 other.releaseDate == releaseDate) &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.isInWatchList, isInWatchList) ||
-                other.isInWatchList == isInWatchList));
+                other.isInWatchList == isInWatchList) &&
+            const DeepCollectionEquality().equals(
+              other._similarMovies,
+              _similarMovies,
+            ) &&
+            const DeepCollectionEquality().equals(
+              other._recommendations,
+              _recommendations,
+            ));
   }
 
   @override
@@ -350,6 +407,8 @@ class _$MovieDetailEntityImpl implements _MovieDetailEntity {
     releaseDate,
     status,
     isInWatchList,
+    const DeepCollectionEquality().hash(_similarMovies),
+    const DeepCollectionEquality().hash(_recommendations),
   );
 
   /// Create a copy of MovieDetailEntity
@@ -378,6 +437,8 @@ abstract class _MovieDetailEntity implements MovieDetailEntity {
     final String? releaseDate,
     final String? status,
     final bool isInWatchList,
+    final List<MovieEntity>? similarMovies,
+    final List<MovieEntity>? recommendations,
   }) = _$MovieDetailEntityImpl;
 
   @override
@@ -404,6 +465,10 @@ abstract class _MovieDetailEntity implements MovieDetailEntity {
   String? get status;
   @override
   bool get isInWatchList;
+  @override
+  List<MovieEntity>? get similarMovies;
+  @override
+  List<MovieEntity>? get recommendations;
 
   /// Create a copy of MovieDetailEntity
   /// with the given fields replaced by the non-null parameter values.

@@ -1,19 +1,50 @@
+import 'dart:ui';
+
+import 'package:film_fount/app/theme/app_theme.dart';
 import 'package:film_fount/features/movie_detail/presentation/providers/movie_detail_providers.dart';
 import 'package:film_fount/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class MovieDetailScreen extends ConsumerWidget {
+class MovieDetailScreen extends ConsumerStatefulWidget {
   final int movieId;
 
   const MovieDetailScreen({super.key, required this.movieId});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<MovieDetailScreen> createState() => _MovieDetailScreenState();
+}
+
+class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
+  final ScrollController _similarMoviesScrollController = ScrollController();
+  bool isLoadingMore = false;
+  @override
+  void initState() {
+    super.initState();
+    _similarMoviesScrollController.addListener(() {
+      final max = _similarMoviesScrollController.position.maxScrollExtent;
+      final current = _similarMoviesScrollController.position.pixels;
+
+      if (!isLoadingMore && current > max - 200) {
+        isLoadingMore = true;
+        ref
+            .read(movieDetailNotifierProvider(widget.movieId).notifier)
+            .loadMoreSimilarMovies()
+            .then((_) {
+              isLoadingMore = false;
+            });
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final strings = AppLocalizations.of(context)!;
-    final movieDetailState = ref.watch(movieDetailNotifierProvider(movieId));
+    final movieDetailState = ref.watch(
+      movieDetailNotifierProvider(widget.movieId),
+    );
     final movieDetailNotifier = ref.read(
-      movieDetailNotifierProvider(movieId).notifier,
+      movieDetailNotifierProvider(widget.movieId).notifier,
     );
 
     return movieDetailState.when(
@@ -31,60 +62,93 @@ class MovieDetailScreen extends ConsumerWidget {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              Stack(
-                children: [
-                  SizedBox(
-                    width: double.infinity,
-                    height: 300,
-                    child: Image.network(
-                      data.backdropPath ?? '',
-                      fit: BoxFit.cover,
+              SizedBox(
+                height: 300,
+                child: Stack(
+                  children: [
+                    Positioned(
+                      top: 0,
+                      child: data.backdropPath != null
+                          ? SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              height: 300,
+                              child: Image.network(
+                                data.backdropPath!,
+                                fit: BoxFit.cover,
+                              ),
+                            )
+                          : SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              height: 300,
+                              child: Image.asset(
+                                'assets/images/default_banner.png',
+                              ),
+                            ),
                     ),
-                  ),
-                  Positioned(
-                    top: 200,
-                    left: 0,
-                    right: 0,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Colors.transparent,
-                            Color.fromRGBO(30, 30, 30, 1),
-                          ],
+                    Positioned(
+                      top: 200,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.transparent,
+                              Color.fromRGBO(30, 30, 30, 1),
+                            ],
+                          ),
+                        ),
+                        height: 100,
+                      ),
+                    ),
+                    Positioned(
+                      top: 140,
+                      left: 25,
+                      child: data.posterPath != null
+                          ? SizedBox(
+                              height: 150,
+                              width: 100,
+                              child: ClipRRect(
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(8),
+                                ),
+                                child: Image.network(
+                                  data.posterPath!,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            )
+                          : Container(
+                              decoration: BoxDecoration(
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(8),
+                                ),
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                              height: 150,
+                              width: 100,
+                              child: Icon(
+                                Icons.image_not_supported,
+                                color: Colors.grey,
+                              ),
+                            ),
+                    ),
+                    Positioned(
+                      top: 220,
+                      left: 130,
+                      right: 0,
+                      child: Text(
+                        data.title ?? '',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      height: 100,
                     ),
-                  ),
-                  Positioned(
-                    top: 140,
-                    left: 25,
-                    child: SizedBox(
-                      height: 150,
-                      width: 100,
-                      child: Image.network(
-                        data.posterPath ?? '',
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-
-                  Positioned(
-                    top: 220,
-                    left: 130,
-                    right: 0,
-                    child: Text(
-                      data.title ?? '',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               SizedBox(height: 25),
               Padding(
@@ -135,6 +199,185 @@ class MovieDetailScreen extends ConsumerWidget {
                   ),
                 ),
               ),
+              if (data.similarMovies != null)
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+
+                  children: [
+                    SizedBox(height: 25),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25),
+                      child: Text(
+                        'Filmes similares',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25),
+                      child: Text(
+                        'que possuem caracteristicas similares ao filme, seja gênero, palavras-chave... ',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15, bottom: 15),
+                      child: ScrollConfiguration(
+                        behavior: ScrollConfiguration.of(context).copyWith(
+                          dragDevices: {
+                            PointerDeviceKind.touch,
+                            PointerDeviceKind.mouse,
+                            PointerDeviceKind.trackpad,
+                          },
+                        ),
+                        child: SingleChildScrollView(
+                          controller: _similarMoviesScrollController,
+                          padding: EdgeInsets.only(right: 25, left: 25),
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              ...data.similarMovies!.map<Widget>((movie) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(right: 15),
+                                  child: InkWell(
+                                    onTap: () {
+                                      Navigator.of(context).pushNamed(
+                                        '/movie_details',
+                                        arguments: movie.id,
+                                      );
+                                    },
+                                    child: ClipRRect(
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(8),
+                                      ),
+                                      child: movie.posterPath != null
+                                          ? Image.network(
+                                              movie.posterPath!,
+                                              width: 100,
+                                              height: 150,
+                                              fit: BoxFit.cover,
+                                            )
+                                          : const SizedBox(
+                                              width: 100,
+                                              height: 150,
+                                              child: Icon(
+                                                Icons.image_not_supported,
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                    ),
+                                  ),
+                                );
+                              }),
+                              isLoadingMore
+                                  ? SizedBox(
+                                      width: 25,
+                                      height: 25,
+                                      child: CircularProgressIndicator(
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.secondary,
+                                      ),
+                                    )
+                                  : SizedBox.shrink(),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              if (data.recommendations?.isNotEmpty ?? false)
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+
+                  children: [
+                    SizedBox(height: 25),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25),
+                      child: Text(
+                        'Filmes Recomendados',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25),
+                      child: Text(
+                        'que são populares com usuários que assistiram esse filme',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15, bottom: 15),
+                      child: ScrollConfiguration(
+                        behavior: ScrollConfiguration.of(context).copyWith(
+                          dragDevices: {
+                            PointerDeviceKind.touch,
+                            PointerDeviceKind.mouse,
+                            PointerDeviceKind.trackpad,
+                          },
+                        ),
+                        child: SingleChildScrollView(
+                          padding: EdgeInsets.only(right: 25, left: 25),
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: data.recommendations!.map<Widget>((
+                              movie,
+                            ) {
+                              return Padding(
+                                padding: const EdgeInsets.only(right: 15),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).pushNamed(
+                                      '/movie_details',
+                                      arguments: movie.id,
+                                    );
+                                  },
+                                  child: ClipRRect(
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(8),
+                                    ),
+                                    child: movie.posterPath != null
+                                        ? Image.network(
+                                            movie.posterPath!,
+                                            width: 100,
+                                            height: 150,
+                                            fit: BoxFit.cover,
+                                          )
+                                        : const SizedBox(
+                                            width: 100,
+                                            height: 150,
+                                            child: Icon(
+                                              Icons.image_not_supported,
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
             ],
           ),
         ),

@@ -1,3 +1,4 @@
+import 'package:film_fount/features/search/domain/entities/movie_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'movie_detail_entity.freezed.dart';
@@ -17,5 +18,7 @@ class MovieDetailEntity with _$MovieDetailEntity {
     String? releaseDate,
     String? status,
     @Default(false) bool isInWatchList,
+    List<MovieEntity>? similarMovies,
+    List<MovieEntity>? recommendations,
   }) = _MovieDetailEntity;
 }

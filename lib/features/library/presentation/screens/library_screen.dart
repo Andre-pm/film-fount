@@ -111,11 +111,6 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                                   width: 100,
                                   height: 150,
                                   fit: BoxFit.cover,
-                                  errorBuilder: (_, __, ___) => const Icon(
-                                    Icons.broken_image,
-                                    size: 100,
-                                    color: Colors.grey,
-                                  ),
                                 ),
                               )
                             else

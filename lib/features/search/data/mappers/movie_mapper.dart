@@ -8,7 +8,9 @@ extension MovieMapper on MovieModel {
       originalLanguage: originalLanguage,
       originalTitle: originalTitle,
       overview: overview,
-      posterPath: 'https://image.tmdb.org/t/p/w500$posterPath',
+      posterPath: posterPath != null
+          ? 'https://image.tmdb.org/t/p/w500$posterPath'
+          : null,
       title: title,
     );
   }
