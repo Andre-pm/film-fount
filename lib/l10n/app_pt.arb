@@ -17,7 +17,7 @@
     "libraryEmptySubtitle":"Pesquise um filme e adicione a sua biblioteca para ele aparecer aqui.",
     "movieDetailRemoveLibrary":"Remover da lista",
     "movieDetailAddLibrary":"Adicionar a lista",
-    "seachTitle":"Pesquisa",
+    "searchTitle":"Pesquisa",
     "searchSubtitle":"Encontre informações sobre seus filmes que você deseja assistir",
     "searchMovieTitle":"Nome do filme",
     "searchMovieButton":"Pesquisar filme",
@@ -39,5 +39,18 @@
             }
         }
     },
-    "underDevelopmentSubtitle":"Assim que ela estiver pronta, você será avisado!"
+    "underDevelopmentSubtitle":"Assim que ela estiver pronta, você será avisado!",
+    "movieDetailSimilarMovieTitle":"Filmes similares",
+    "movieDetailSimilarMovieDescription":"que possuem caracteristicas similares ao filme, seja gênero, palavras-chave...",
+    "movieDetailRecommendationsTitle":"Filmes Recomendados",
+    "movieDetailRecommendationsDescription":"que são populares com usuários que assistiram esse filme",
+    "movieDetailDescriptionNotFoundTitle":"Não encontramos informações sobre esse filme",
+    "movieDetailDescriptionNotFoundDescription":"Mas não se preocupe, clique aqui para pesquisar sobre {movieTitle} no Google",
+    "@movieDetailDescriptionNotFoundDescription":{
+        "placeholders":{
+            "movieTitle":{
+                "type":"String"
+            }
+        }
+    }
 }

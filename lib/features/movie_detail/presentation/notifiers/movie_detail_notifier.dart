@@ -3,6 +3,7 @@ import 'package:film_fount/core/state/state_notifier.dart';
 import 'package:film_fount/features/movie_detail/domain/entities/movie_detail_entity.dart';
 import 'package:film_fount/features/movie_detail/domain/repositories/the_movie_detail_repository.dart';
 import 'package:film_fount/features/movie_detail/presentation/events/watchlist_updated_event.dart';
+import 'package:film_fount/features/search/domain/entities/movie_entity.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
 final class MovieDetailNotifier
@@ -15,12 +16,28 @@ final class MovieDetailNotifier
     : super(const AppState.initial()) {
     fetchMovieDetail(movieId);
   }
+  int currentMovieId = 0;
+  int similarMoviesPage = 1;
+  bool isMoreSimilarMovies = true;
+  int recommendationsPage = 1;
+  bool isMoreRecommendations = true;
 
   Future<void> fetchMovieDetail(int? movieId) async {
     state = const AppState.loading();
+    currentMovieId = movieId ?? 0;
     try {
-      final movieResponse = await _repository.getMovieDetails(movieId ?? 0);
-      final isInWatchList = await _repository.isOnWatchList(movieId ?? 0);
+      final id = movieId ?? 0;
+      final results = await Future.wait([
+        _repository.getMovieDetails(id),
+        _repository.isOnWatchList(id),
+        _repository.getSimilarMovies(id, similarMoviesPage),
+        _repository.getRecommendations(id, recommendationsPage),
+      ]);
+      final movieResponse = results[0] as MovieDetailEntity;
+      final isInWatchList = results[1] as bool;
+      final similarMovies = results[2] as List<MovieEntity>;
+      final recommendations = results[3] as List<MovieEntity>;
+
       final movieDetail = MovieDetailEntity(
         id: movieResponse.id,
         originalLanguage: movieResponse.originalLanguage,
@@ -34,12 +51,63 @@ final class MovieDetailNotifier
         releaseDate: movieResponse.releaseDate,
         status: movieResponse.status,
         isInWatchList: isInWatchList,
+        similarMovies: similarMovies,
+        recommendations: recommendations,
       );
 
       state = AppState.data(movieDetail);
     } catch (e) {
       state = AppState.error(e);
     }
+  }
+
+  Future<bool> loadMoreSimilarMovies() async {
+    similarMoviesPage++;
+    final newMovies = await _repository.getSimilarMovies(
+      currentMovieId,
+      similarMoviesPage,
+    );
+    if (newMovies.isEmpty) {
+      isMoreSimilarMovies = false;
+    } else {
+      state.maybeWhen(
+        data: (movieDetail) {
+          final updatedList = [...?movieDetail.similarMovies, ...newMovies];
+
+          state = AppState.data(
+            movieDetail.copyWith(similarMovies: updatedList),
+          );
+        },
+        orElse: () {},
+      );
+    }
+    return isMoreSimilarMovies;
+  }
+
+  Future<bool> loadMoreRecommendations() async {
+    recommendationsPage++;
+    final newRecommendations = await _repository.getRecommendations(
+      currentMovieId,
+      recommendationsPage,
+    );
+    if (newRecommendations.isEmpty) {
+      isMoreRecommendations = false;
+    } else {
+      state.maybeWhen(
+        data: (movieDetail) {
+          final updatedList = [
+            ...?movieDetail.recommendations,
+            ...newRecommendations,
+          ];
+
+          state = AppState.data(
+            movieDetail.copyWith(recommendations: updatedList),
+          );
+        },
+        orElse: () {},
+      );
+    }
+    return isMoreRecommendations;
   }
 
   Future<void> addToWatchList(MovieDetailEntity movie) async {

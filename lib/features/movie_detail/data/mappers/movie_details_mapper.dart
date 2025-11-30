@@ -7,10 +7,14 @@ extension MovieDetailsMapper on MovieDetailModel {
       id: id,
       originalLanguage: originalLanguage,
       originalTitle: originalTitle,
-      overview: overview,
-      posterPath: 'https://image.tmdb.org/t/p/original$posterPath',
+      overview: overview == '' ? null : overview,
+      posterPath: posterPath != null
+          ? 'https://image.tmdb.org/t/p/original$posterPath'
+          : null,
       title: title,
-      backdropPath: 'https://image.tmdb.org/t/p/original$backdropPath',
+      backdropPath: backdropPath != null
+          ? 'https://image.tmdb.org/t/p/original$backdropPath'
+          : null,
       genres: genres?.map((genre) => genre).toList(),
       homepage: homepage,
       releaseDate: releaseDate,
