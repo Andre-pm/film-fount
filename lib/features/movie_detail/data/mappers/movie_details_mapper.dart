@@ -7,7 +7,7 @@ extension MovieDetailsMapper on MovieDetailModel {
       id: id,
       originalLanguage: originalLanguage,
       originalTitle: originalTitle,
-      overview: overview,
+      overview: overview == '' ? null : overview,
       posterPath: posterPath != null
           ? 'https://image.tmdb.org/t/p/original$posterPath'
           : null,
