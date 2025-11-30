@@ -65,7 +65,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get movieDetailAddLibrary => 'Adicionar a lista';
 
   @override
-  String get seachTitle => 'Pesquisa';
+  String get searchTitle => 'Pesquisa';
 
   @override
   String get searchSubtitle =>
@@ -129,4 +129,13 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get movieDetailRecommendationsDescription =>
       'que são populares com usuários que assistiram esse filme';
+
+  @override
+  String get movieDetailDescriptionNotFoundTitle =>
+      'Não encontramos informações sobre esse filme';
+
+  @override
+  String movieDetailDescriptionNotFoundDescription(String movieTitle) {
+    return 'Mas não se preocupe, clique aqui para pesquisar sobre $movieTitle no Google';
+  }
 }

@@ -202,11 +202,11 @@ abstract class AppLocalizations {
   /// **'Adicionar a lista'**
   String get movieDetailAddLibrary;
 
-  /// No description provided for @seachTitle.
+  /// No description provided for @searchTitle.
   ///
   /// In pt, this message translates to:
   /// **'Pesquisa'**
-  String get seachTitle;
+  String get searchTitle;
 
   /// No description provided for @searchSubtitle.
   ///
@@ -321,6 +321,18 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'que são populares com usuários que assistiram esse filme'**
   String get movieDetailRecommendationsDescription;
+
+  /// No description provided for @movieDetailDescriptionNotFoundTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não encontramos informações sobre esse filme'**
+  String get movieDetailDescriptionNotFoundTitle;
+
+  /// No description provided for @movieDetailDescriptionNotFoundDescription.
+  ///
+  /// In pt, this message translates to:
+  /// **'Mas não se preocupe, clique aqui para pesquisar sobre {movieTitle} no Google'**
+  String movieDetailDescriptionNotFoundDescription(String movieTitle);
 }
 
 class _AppLocalizationsDelegate
