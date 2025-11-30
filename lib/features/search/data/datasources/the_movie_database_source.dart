@@ -9,14 +9,14 @@ class TheMovieDatabaseSource {
 
   TheMovieDatabaseSource({required this.client});
 
-  Future<List<MovieModel>> searchMovie(String query) async {
+  Future<List<MovieModel>> searchMovie(String query, int? page) async {
     try {
       final response = await client.get(
         '$baseUrl/search/movie',
         queryParameters: {
           'query': query,
           'language': 'pt-BR',
-          'page': 1,
+          'page': page ?? 1,
           'include_adult': 'false',
         },
         options: Options(headers: {'Authorization': 'Bearer $apiKey'}),

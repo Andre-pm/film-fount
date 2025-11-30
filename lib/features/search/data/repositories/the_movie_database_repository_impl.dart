@@ -9,8 +9,8 @@ class TheMovieDatabaseRepositoryImpl implements TheMovieDatabaseRepository {
   TheMovieDatabaseRepositoryImpl(this._datasource);
 
   @override
-  Future<List<MovieEntity>> searchMovie(String query) async {
-    final movieModels = await _datasource.searchMovie(query);
+  Future<List<MovieEntity>> searchMovie(String query, int? page) async {
+    final movieModels = await _datasource.searchMovie(query, page);
     return movieModels.map((model) => model.toEntity()).toList();
   }
 }

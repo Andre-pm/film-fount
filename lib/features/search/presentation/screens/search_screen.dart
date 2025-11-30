@@ -13,10 +13,45 @@ class SearchScreen extends ConsumerStatefulWidget {
 }
 
 class _SearchScreenState extends ConsumerState<SearchScreen> {
+  final ScrollController _scrollController = ScrollController();
+  bool isLoadingMore = false;
+  final TextEditingController _movieController = TextEditingController();
+  bool hasMoreMovies = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      final max = _scrollController.position.maxScrollExtent;
+      final current = _scrollController.position.pixels;
+
+      if (!isLoadingMore && current > max - 200) {
+        setState(() {
+          isLoadingMore = true;
+        });
+        ref
+            .read(movieSearchNotifierProvider.notifier)
+            .loadSearchNextPage()
+            .then((hasMore) {
+              setState(() {
+                hasMoreMovies = hasMore;
+                isLoadingMore = false;
+              });
+            });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    _movieController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final strings = AppLocalizations.of(context)!;
-    final movieController = TextEditingController();
     final state = ref.watch(movieSearchNotifierProvider);
     final notifier = ref.read(movieSearchNotifierProvider.notifier);
 
@@ -26,6 +61,8 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           final bool isLargeVersion = constraints.maxWidth > 1200;
 
           return CustomScrollView(
+            shrinkWrap: true,
+            controller: _scrollController,
             slivers: <Widget>[
               MenuBarWidget(
                 isLargeVersion: isLargeVersion,
@@ -42,7 +79,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        strings.seachTitle,
+                        strings.searchTitle,
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -59,7 +96,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   ),
                 ),
               ),
-
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
@@ -67,7 +103,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                     vertical: 40,
                   ),
                   child: TextFormField(
-                    controller: movieController,
+                    controller: _movieController,
                     style: TextStyle(color: Color.fromRGBO(30, 30, 30, 1)),
                     decoration: InputDecoration(
                       labelText: strings.searchMovieTitle,
@@ -79,7 +115,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
               ),
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 25,
+                  ).copyWith(bottom: 50),
                   child: TextButton(
                     style: ButtonStyle(
                       textStyle: WidgetStateProperty.all<TextStyle>(
@@ -92,7 +130,8 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                         Color.fromRGBO(31, 31, 31, 1),
                       ),
                     ),
-                    onPressed: () => notifier.searchMovie(movieController.text),
+                    onPressed: () =>
+                        notifier.searchMovie(_movieController.text),
                     child: Text(
                       strings.searchMovieButton,
                       style: TextStyle(
@@ -102,7 +141,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   ),
                 ),
               ),
-
               state.when(
                 initial: () =>
                     const SliverToBoxAdapter(child: SizedBox.shrink()),
@@ -127,87 +165,98 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   }
                   return SliverList(
                     delegate: SliverChildBuilderDelegate((context, index) {
-                      final movie = data[index];
-
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 25),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.of(
-                              context,
-                            ).pushNamed('/movie_details', arguments: movie.id);
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 25,
-                              vertical: 8,
+                      if (index == data.length) {
+                        if (!hasMoreMovies) return SizedBox.shrink();
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 50),
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              color: Theme.of(context).colorScheme.secondary,
                             ),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: const Color.fromRGBO(31, 31, 31, 1),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  if (movie.posterPath != null)
-                                    ClipRRect(
-                                      borderRadius: const BorderRadius.only(
-                                        topLeft: Radius.circular(8),
-                                        bottomLeft: Radius.circular(8),
-                                      ),
-                                      child: Image.network(
-                                        movie.posterPath!,
-                                        width: 100,
-                                        height: 150,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    )
-                                  else
-                                    const SizedBox(
+                          ),
+                        );
+                      }
+                      final movie = data[index];
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.of(
+                            context,
+                          ).pushNamed('/movie_details', arguments: movie.id);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 25,
+                            vertical: 8,
+                          ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Color.fromRGBO(22, 22, 22, 1),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                if (movie.posterPath != null)
+                                  ClipRRect(
+                                    borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(8),
+                                      bottomLeft: Radius.circular(8),
+                                    ),
+                                    child: Image.network(
+                                      movie.posterPath!,
                                       width: 100,
                                       height: 150,
-                                      child: Icon(
-                                        Icons.image_not_supported,
-                                        color: Colors.grey,
-                                      ),
+                                      fit: BoxFit.cover,
                                     ),
-
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(12),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            movie.title ??
-                                                strings
-                                                    .searchMovieTitleNotFound,
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 8),
-                                          Text(
-                                            movie.overview?.isNotEmpty == true
-                                                ? movie.overview!
-                                                : strings
-                                                      .searchMovieDescriptionNotFound,
-                                            maxLines: 3,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ],
-                                      ),
+                                  )
+                                else
+                                  const SizedBox(
+                                    width: 100,
+                                    height: 150,
+                                    child: Icon(
+                                      Icons.image_not_supported,
+                                      color: Colors.grey,
                                     ),
                                   ),
-                                ],
-                              ),
+
+                                Flexible(
+                                  fit: FlexFit.loose,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          movie.title ??
+                                              strings.searchMovieTitleNotFound,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20,
+                                            color: Theme.of(
+                                              context,
+                                            ).colorScheme.secondary,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Text(
+                                          movie.overview?.isNotEmpty == true
+                                              ? movie.overview!
+                                              : strings
+                                                    .searchMovieDescriptionNotFound,
+                                          maxLines: 3,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
                       );
-                    }, childCount: data.length),
+                    }, childCount: data.length + 1),
                   );
                 },
                 error: (_) => SliverToBoxAdapter(
