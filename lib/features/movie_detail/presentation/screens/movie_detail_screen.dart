@@ -1,11 +1,9 @@
-import 'dart:ui';
-
-import 'package:film_fount/app/theme/app_theme.dart';
 import 'package:film_fount/features/movie_detail/presentation/providers/movie_detail_providers.dart';
 import 'package:film_fount/features/movie_detail/presentation/widgets/related_movies_widget.dart';
 import 'package:film_fount/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MovieDetailScreen extends ConsumerStatefulWidget {
   final int movieId;
@@ -184,13 +182,60 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
                 ),
               ),
               SizedBox(height: 25),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: Text(
-                  data.overview ?? '',
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                ),
-              ),
+              data.overview != null
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25),
+                      child: Text(
+                        data.overview!,
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )
+                  : InkWell(
+                      onTap: () async {
+                        final movieFormatted = data.title?.replaceAll(' ', '+');
+                        if (!await launchUrl(
+                          Uri.parse(
+                            "https://www.google.com/search?q=$movieFormatted",
+                          ),
+                          webOnlyWindowName: '_blank',
+                        )) {
+                          throw Exception(strings.footerException);
+                        }
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 100,
+                          vertical: 20,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Color.fromRGBO(22, 22, 22, 1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              strings.movieDetailDescriptionNotFoundTitle,
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.secondary,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            if (data.title != null)
+                              Text(
+                                strings
+                                    .movieDetailDescriptionNotFoundDescription(
+                                      data.title!,
+                                    ),
+                              ),
+                          ],
+                        ),
+                      ),
+                    ),
               SizedBox(height: 25),
               InkWell(
                 onTap: () {
