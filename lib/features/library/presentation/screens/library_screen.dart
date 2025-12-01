@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:film_fount/core/domain/enums/menu_option.dart';
 import 'package:film_fount/core/presentation/providers/core_providers.dart';
 import 'package:film_fount/core/presentation/widgets/menu_bar_widget.dart';
@@ -29,10 +30,8 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
         .read(eventBusProvider)
         .on<WatchListUpdatedEvent>()
         .listen((event) {
-          setState(() {
-            ref.read(libraryNotifierProvider.notifier).fetchWatchList();
-            selectedOption = 0;
-          });
+          ref.read(libraryNotifierProvider.notifier).fetchWatchList();
+          selectedOption = 0;
         });
   }
 
@@ -227,25 +226,25 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                                   '/movie_details',
                                   arguments: watchListItem.id,
                                 ),
-                                child: watchListItem.posterPath != null
-                                    ? Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(
-                                            8,
-                                          ),
-                                          color: Color.fromRGBO(22, 22, 22, 1),
-                                        ),
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(
-                                            8,
-                                          ),
-                                          child: Image.network(
-                                            watchListItem.posterPath!,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      )
-                                    : const Icon(Icons.image_not_supported),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    color: Color.fromRGBO(22, 22, 22, 1),
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: CachedNetworkImage(
+                                      imageUrl: watchListItem.posterPath!,
+                                      fit: BoxFit.cover,
+                                      memCacheHeight: 400,
+                                      placeholder: (context, url) => Container(
+                                        color: Color.fromRGBO(22, 22, 22, 1),
+                                      ),
+                                      errorWidget: (context, url, error) =>
+                                          const Icon(Icons.image_not_supported),
+                                    ),
+                                  ),
+                                ),
                               );
                             }, childCount: data.watchList!.length),
                             gridDelegate:
