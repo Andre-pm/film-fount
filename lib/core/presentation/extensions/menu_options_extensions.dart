@@ -1,6 +1,6 @@
 import 'package:film_fount/core/domain/enums/menu_option.dart';
 
-extension MenuOptionsExt on MenuOptions {
+extension MenuOptionsExtensions on MenuOptions {
   String get route {
     switch (this) {
       case MenuOptions.search:

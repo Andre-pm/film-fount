@@ -1,3 +1,4 @@
+import 'package:film_fount/core/presentation/extensions/string_extensions.dart';
 import 'package:film_fount/features/library/data/models/library_movie_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -24,8 +25,8 @@ class LibraryDatasource {
 
         return LibraryMovieModel(
           id: int.tryParse(data['id'].toString()) ?? 0,
-          title: data['title']?.toString() ?? '',
-          posterPath: data['posterPath']?.toString() ?? '',
+          title: data['title']?.toString().orEmpty,
+          posterPath: data['posterPath']?.toString().orEmpty,
           watched: data['watched'] == true,
         );
       }).toList();

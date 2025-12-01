@@ -1,5 +1,5 @@
 import 'package:film_fount/core/domain/enums/menu_option.dart';
-import 'package:film_fount/core/presentation/extensions/menu_options_ext.dart';
+import 'package:film_fount/core/presentation/extensions/menu_options_extensions.dart';
 import 'package:film_fount/features/auth/presentation/providers/auth_provider.dart';
 import 'package:film_fount/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
