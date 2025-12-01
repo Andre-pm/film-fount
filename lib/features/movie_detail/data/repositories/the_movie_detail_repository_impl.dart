@@ -24,8 +24,9 @@ class TheMovieDetailRepositoryImpl implements TheMovieDetailRepository {
   }
 
   @override
-  Future<bool> isOnWatchList(int movieId) {
-    return _datasource.isOnWatchList(movieId);
+  Future<MovieDetailEntity> firebaseWatchListContent(int movieId) async {
+    final movieModel = await _datasource.loadFirebaseWatchList(movieId);
+    return movieModel.toEntity();
   }
 
   @override
@@ -43,5 +44,10 @@ class TheMovieDetailRepositoryImpl implements TheMovieDetailRepository {
   Future<List<MovieEntity>> getRecommendations(int movieId, int? page) async {
     final movieModel = await _datasource.getRecommendations(movieId, page);
     return movieModel.map((model) => model.toEntity()).toList();
+  }
+
+  @override
+  Future<bool> updateWatched(int movieId, bool isWatched) {
+    return _datasource.changeWatched(movieId, isWatched);
   }
 }

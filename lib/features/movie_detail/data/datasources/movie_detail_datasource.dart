@@ -50,24 +50,6 @@ class MovieDetailDatasource {
     }
   }
 
-  Future<bool> isOnWatchList(int movieId) async {
-    final user = auth.currentUser;
-    final DatabaseReference watchListRef = database.ref(
-      '${user!.uid}/watchlist',
-    );
-    final DataSnapshot snapshot = await watchListRef.get();
-    if (snapshot.exists) {
-      final watchList = snapshot.value as Map<dynamic, dynamic>;
-      for (final entry in watchList.entries) {
-        final movie = entry.value as Map<dynamic, dynamic>;
-        if (movie['id'] == movieId) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-
   Future<bool> removeFromWatchList(int id) async {
     final user = auth.currentUser;
     final DatabaseReference watchListRef = database.ref(
@@ -80,6 +62,53 @@ class MovieDetailDatasource {
         final movie = entry.value as Map<dynamic, dynamic>;
         if (movie['id'] == id) {
           await watchListRef.child(entry.key).remove();
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  Future<MovieDetailModel> loadFirebaseWatchList(int movieId) async {
+    final user = auth.currentUser;
+    final DatabaseReference watchListRef = database.ref(
+      '${user!.uid}/watchlist',
+    );
+    bool? isOnWatchList;
+    bool? isWatched;
+
+    final DataSnapshot snapshot = await watchListRef.get();
+    if (snapshot.exists) {
+      final watchList = snapshot.value as Map<dynamic, dynamic>;
+      for (final entry in watchList.entries) {
+        final movie = entry.value as Map<dynamic, dynamic>;
+        if (movie['id'] == movieId) {
+          isOnWatchList = true;
+          if (movie['watched'] == true) {
+            isWatched = true;
+          }
+        }
+      }
+    }
+    return MovieDetailModel(
+      id: 0,
+      isOnWatchList: isOnWatchList,
+      isWatched: isWatched,
+    );
+  }
+
+  Future<bool> changeWatched(int movieId, bool isWatched) async {
+    final user = auth.currentUser;
+    final DatabaseReference watchListRef = database.ref(
+      '${user!.uid}/watchlist',
+    );
+    final DataSnapshot snapshot = await watchListRef.get();
+    if (snapshot.exists) {
+      final watchList = snapshot.value as Map<dynamic, dynamic>;
+      for (final entry in watchList.entries) {
+        final movie = entry.value as Map<dynamic, dynamic>;
+        if (movie['id'] == movieId) {
+          await watchListRef.child(entry.key).update({'watched': isWatched});
           return true;
         }
       }

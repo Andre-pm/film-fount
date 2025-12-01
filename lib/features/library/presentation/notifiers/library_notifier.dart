@@ -9,14 +9,32 @@ class LibraryNotifier extends StateNotifier<AppState<WatchListEntity>> {
   LibraryNotifier(this._repository) : super(AppState.initial()) {
     fetchWatchList();
   }
+  WatchListEntity? currentWatchList;
 
   Future<void> fetchWatchList() async {
     state = AppState.loading();
     try {
       final watchList = await _repository.getLibraryMovies();
+      currentWatchList = watchList;
       state = AppState.data(watchList);
     } catch (e) {
       state = AppState.error(e);
+    }
+  }
+
+  Future<void> changeWatchListView(bool? watched) async {
+    state = AppState.loading();
+
+    if (watched == null) {
+      state = AppState.data(
+        WatchListEntity(watchList: currentWatchList?.watchList),
+      );
+    } else {
+      final filteredWatchList = currentWatchList?.watchList
+          ?.where((movie) => movie.watched == watched)
+          .toList();
+
+      state = AppState.data(WatchListEntity(watchList: filteredWatchList));
     }
   }
 }

@@ -2,7 +2,7 @@ import 'package:event_bus/event_bus.dart';
 import 'package:film_fount/core/state/state_notifier.dart';
 import 'package:film_fount/features/movie_detail/domain/entities/movie_detail_entity.dart';
 import 'package:film_fount/features/movie_detail/domain/repositories/the_movie_detail_repository.dart';
-import 'package:film_fount/features/movie_detail/presentation/events/watchlist_updated_event.dart';
+import 'package:film_fount/features/movie_detail/presentation/events/watch_list_updated_event.dart';
 import 'package:film_fount/features/search/domain/entities/movie_entity.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
@@ -29,12 +29,12 @@ final class MovieDetailNotifier
       final id = movieId ?? 0;
       final results = await Future.wait([
         _repository.getMovieDetails(id),
-        _repository.isOnWatchList(id),
+        _repository.firebaseWatchListContent(id),
         _repository.getSimilarMovies(id, similarMoviesPage),
         _repository.getRecommendations(id, recommendationsPage),
       ]);
       final movieResponse = results[0] as MovieDetailEntity;
-      final isInWatchList = results[1] as bool;
+      final firebaseWatchListContent = results[1] as MovieDetailEntity;
       final similarMovies = results[2] as List<MovieEntity>;
       final recommendations = results[3] as List<MovieEntity>;
 
@@ -50,7 +50,9 @@ final class MovieDetailNotifier
         homepage: movieResponse.homepage,
         releaseDate: movieResponse.releaseDate,
         status: movieResponse.status,
-        isInWatchList: isInWatchList,
+        runtime: movieResponse.runtime,
+        isInWatchList: firebaseWatchListContent.isInWatchList,
+        isWatched: firebaseWatchListContent.isWatched,
         similarMovies: similarMovies,
         recommendations: recommendations,
       );
@@ -114,7 +116,7 @@ final class MovieDetailNotifier
     try {
       final success = await _repository.addToWatchList(movie);
       if (success) {
-        refreshWatchListStatus(true);
+        refreshWatchListStatus(isInWatchList: true);
       }
     } catch (e) {
       rethrow;
@@ -125,19 +127,33 @@ final class MovieDetailNotifier
     try {
       final success = await _repository.removeFromWatchList(movie);
       if (success) {
-        refreshWatchListStatus(false);
+        refreshWatchListStatus(isInWatchList: false);
       }
     } catch (e) {
       rethrow;
     }
   }
 
-  void refreshWatchListStatus(bool isInWatchList) {
+  Future<void> isWatched(int movieId, bool isWatched) async {
+    try {
+      final success = await _repository.updateWatched(movieId, isWatched);
+      if (success) {
+        refreshWatchListStatus(isWatched: isWatched);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  void refreshWatchListStatus({bool? isInWatchList, bool? isWatched}) {
     state.maybeWhen(
       data: (movieDetail) {
         eventBus.fire(WatchListUpdatedEvent(updateWatchList: true));
         state = AppState.data(
-          movieDetail.copyWith(isInWatchList: isInWatchList),
+          movieDetail.copyWith(
+            isInWatchList: isInWatchList ?? movieDetail.isInWatchList,
+            isWatched: isWatched ?? movieDetail.isWatched,
+          ),
         );
       },
       orElse: () {},
