@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:film_fount/features/search/domain/entities/movie_entity.dart';
 import 'package:flutter/material.dart';
 
@@ -64,31 +65,47 @@ Widget relatedMoviesWidget(
                                 arguments: movie.id,
                               );
                             },
-                            child: ClipRRect(
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(8),
-                              ),
-                              child: movie.posterPath != null
-                                  ? Image.network(
-                                      movie.posterPath!,
-                                      width: 100,
-                                      height: 150,
-                                      fit: BoxFit.cover,
-                                    )
-                                  : Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: const BorderRadius.all(
-                                          Radius.circular(8),
+                            child: SizedBox(
+                              height: 200,
+                              width: 130,
+                              child: ClipRRect(
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(8),
+                                ),
+                                child: movie.posterPath != null
+                                    ? CachedNetworkImage(
+                                        imageUrl: movie.posterPath!,
+                                        fit: BoxFit.cover,
+                                        memCacheHeight: 400,
+                                        placeholder: (context, url) =>
+                                            Container(
+                                              color: Color.fromRGBO(
+                                                22,
+                                                22,
+                                                22,
+                                                1,
+                                              ),
+                                            ),
+                                        errorWidget: (context, url, error) =>
+                                            const Icon(
+                                              Icons.image_not_supported,
+                                            ),
+                                      )
+                                    : Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: const BorderRadius.all(
+                                            Radius.circular(8),
+                                          ),
+                                          color: Color.fromRGBO(22, 22, 22, 1),
                                         ),
-                                        color: Color.fromRGBO(22, 22, 22, 1),
+                                        width: 100,
+                                        height: 150,
+                                        child: Icon(
+                                          Icons.image_not_supported,
+                                          color: Colors.grey,
+                                        ),
                                       ),
-                                      width: 100,
-                                      height: 150,
-                                      child: Icon(
-                                        Icons.image_not_supported,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
+                              ),
                             ),
                           ),
                         );
