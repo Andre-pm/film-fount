@@ -7,16 +7,35 @@ class LibraryNotifier extends StateNotifier<AppState<WatchListEntity>> {
   final LibraryRepository _repository;
 
   LibraryNotifier(this._repository) : super(AppState.initial()) {
-    fetchWatchList();
+    fetchWatchList(true);
   }
+  WatchListEntity? currentWatchList;
 
-  Future<void> fetchWatchList() async {
+  Future<void> fetchWatchList(bool forceUpdate) async {
     state = AppState.loading();
     try {
-      final watchList = await _repository.getLibraryMovies();
-      state = AppState.data(watchList);
+      currentWatchList != null && !forceUpdate
+          ? null
+          : currentWatchList = await _repository.getLibraryMovies();
+      state = AppState.data(currentWatchList!);
     } catch (e) {
       state = AppState.error(e);
+    }
+  }
+
+  Future<void> changeWatchListView(bool? watched) async {
+    state = AppState.loading();
+
+    if (watched == null) {
+      state = AppState.data(
+        WatchListEntity(watchList: currentWatchList?.watchList),
+      );
+    } else {
+      final filteredWatchList = currentWatchList?.watchList
+          ?.where((movie) => movie.watched == watched)
+          .toList();
+
+      state = AppState.data(WatchListEntity(watchList: filteredWatchList));
     }
   }
 }

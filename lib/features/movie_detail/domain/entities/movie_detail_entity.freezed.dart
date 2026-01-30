@@ -27,8 +27,10 @@ mixin _$MovieDetailEntity {
   List<String>? get genres => throw _privateConstructorUsedError;
   String? get homepage => throw _privateConstructorUsedError;
   String? get releaseDate => throw _privateConstructorUsedError;
-  String? get status => throw _privateConstructorUsedError;
+  MovieStatus? get status => throw _privateConstructorUsedError;
+  String? get runtime => throw _privateConstructorUsedError;
   bool get isInWatchList => throw _privateConstructorUsedError;
+  bool get isWatched => throw _privateConstructorUsedError;
   List<MovieEntity>? get similarMovies => throw _privateConstructorUsedError;
   List<MovieEntity>? get recommendations => throw _privateConstructorUsedError;
 
@@ -57,8 +59,10 @@ abstract class $MovieDetailEntityCopyWith<$Res> {
     List<String>? genres,
     String? homepage,
     String? releaseDate,
-    String? status,
+    MovieStatus? status,
+    String? runtime,
     bool isInWatchList,
+    bool isWatched,
     List<MovieEntity>? similarMovies,
     List<MovieEntity>? recommendations,
   });
@@ -90,7 +94,9 @@ class _$MovieDetailEntityCopyWithImpl<$Res, $Val extends MovieDetailEntity>
     Object? homepage = freezed,
     Object? releaseDate = freezed,
     Object? status = freezed,
+    Object? runtime = freezed,
     Object? isInWatchList = null,
+    Object? isWatched = null,
     Object? similarMovies = freezed,
     Object? recommendations = freezed,
   }) {
@@ -139,10 +145,18 @@ class _$MovieDetailEntityCopyWithImpl<$Res, $Val extends MovieDetailEntity>
             status: freezed == status
                 ? _value.status
                 : status // ignore: cast_nullable_to_non_nullable
+                      as MovieStatus?,
+            runtime: freezed == runtime
+                ? _value.runtime
+                : runtime // ignore: cast_nullable_to_non_nullable
                       as String?,
             isInWatchList: null == isInWatchList
                 ? _value.isInWatchList
                 : isInWatchList // ignore: cast_nullable_to_non_nullable
+                      as bool,
+            isWatched: null == isWatched
+                ? _value.isWatched
+                : isWatched // ignore: cast_nullable_to_non_nullable
                       as bool,
             similarMovies: freezed == similarMovies
                 ? _value.similarMovies
@@ -178,8 +192,10 @@ abstract class _$$MovieDetailEntityImplCopyWith<$Res>
     List<String>? genres,
     String? homepage,
     String? releaseDate,
-    String? status,
+    MovieStatus? status,
+    String? runtime,
     bool isInWatchList,
+    bool isWatched,
     List<MovieEntity>? similarMovies,
     List<MovieEntity>? recommendations,
   });
@@ -210,7 +226,9 @@ class __$$MovieDetailEntityImplCopyWithImpl<$Res>
     Object? homepage = freezed,
     Object? releaseDate = freezed,
     Object? status = freezed,
+    Object? runtime = freezed,
     Object? isInWatchList = null,
+    Object? isWatched = null,
     Object? similarMovies = freezed,
     Object? recommendations = freezed,
   }) {
@@ -259,10 +277,18 @@ class __$$MovieDetailEntityImplCopyWithImpl<$Res>
         status: freezed == status
             ? _value.status
             : status // ignore: cast_nullable_to_non_nullable
+                  as MovieStatus?,
+        runtime: freezed == runtime
+            ? _value.runtime
+            : runtime // ignore: cast_nullable_to_non_nullable
                   as String?,
         isInWatchList: null == isInWatchList
             ? _value.isInWatchList
             : isInWatchList // ignore: cast_nullable_to_non_nullable
+                  as bool,
+        isWatched: null == isWatched
+            ? _value.isWatched
+            : isWatched // ignore: cast_nullable_to_non_nullable
                   as bool,
         similarMovies: freezed == similarMovies
             ? _value._similarMovies
@@ -292,7 +318,9 @@ class _$MovieDetailEntityImpl implements _MovieDetailEntity {
     this.homepage,
     this.releaseDate,
     this.status,
+    this.runtime,
     this.isInWatchList = false,
+    this.isWatched = false,
     final List<MovieEntity>? similarMovies,
     final List<MovieEntity>? recommendations,
   }) : _genres = genres,
@@ -328,10 +356,15 @@ class _$MovieDetailEntityImpl implements _MovieDetailEntity {
   @override
   final String? releaseDate;
   @override
-  final String? status;
+  final MovieStatus? status;
+  @override
+  final String? runtime;
   @override
   @JsonKey()
   final bool isInWatchList;
+  @override
+  @JsonKey()
+  final bool isWatched;
   final List<MovieEntity>? _similarMovies;
   @override
   List<MovieEntity>? get similarMovies {
@@ -354,7 +387,7 @@ class _$MovieDetailEntityImpl implements _MovieDetailEntity {
 
   @override
   String toString() {
-    return 'MovieDetailEntity(id: $id, originalLanguage: $originalLanguage, originalTitle: $originalTitle, overview: $overview, posterPath: $posterPath, title: $title, backdropPath: $backdropPath, genres: $genres, homepage: $homepage, releaseDate: $releaseDate, status: $status, isInWatchList: $isInWatchList, similarMovies: $similarMovies, recommendations: $recommendations)';
+    return 'MovieDetailEntity(id: $id, originalLanguage: $originalLanguage, originalTitle: $originalTitle, overview: $overview, posterPath: $posterPath, title: $title, backdropPath: $backdropPath, genres: $genres, homepage: $homepage, releaseDate: $releaseDate, status: $status, runtime: $runtime, isInWatchList: $isInWatchList, isWatched: $isWatched, similarMovies: $similarMovies, recommendations: $recommendations)';
   }
 
   @override
@@ -380,8 +413,11 @@ class _$MovieDetailEntityImpl implements _MovieDetailEntity {
             (identical(other.releaseDate, releaseDate) ||
                 other.releaseDate == releaseDate) &&
             (identical(other.status, status) || other.status == status) &&
+            (identical(other.runtime, runtime) || other.runtime == runtime) &&
             (identical(other.isInWatchList, isInWatchList) ||
                 other.isInWatchList == isInWatchList) &&
+            (identical(other.isWatched, isWatched) ||
+                other.isWatched == isWatched) &&
             const DeepCollectionEquality().equals(
               other._similarMovies,
               _similarMovies,
@@ -406,7 +442,9 @@ class _$MovieDetailEntityImpl implements _MovieDetailEntity {
     homepage,
     releaseDate,
     status,
+    runtime,
     isInWatchList,
+    isWatched,
     const DeepCollectionEquality().hash(_similarMovies),
     const DeepCollectionEquality().hash(_recommendations),
   );
@@ -435,8 +473,10 @@ abstract class _MovieDetailEntity implements MovieDetailEntity {
     final List<String>? genres,
     final String? homepage,
     final String? releaseDate,
-    final String? status,
+    final MovieStatus? status,
+    final String? runtime,
     final bool isInWatchList,
+    final bool isWatched,
     final List<MovieEntity>? similarMovies,
     final List<MovieEntity>? recommendations,
   }) = _$MovieDetailEntityImpl;
@@ -462,9 +502,13 @@ abstract class _MovieDetailEntity implements MovieDetailEntity {
   @override
   String? get releaseDate;
   @override
-  String? get status;
+  MovieStatus? get status;
+  @override
+  String? get runtime;
   @override
   bool get isInWatchList;
+  @override
+  bool get isWatched;
   @override
   List<MovieEntity>? get similarMovies;
   @override

@@ -12,6 +12,9 @@ class MovieDetailModel {
   final String? homepage;
   final String? releaseDate;
   final String? status;
+  final int? runtime;
+  final bool? isWatched;
+  final bool? isOnWatchList;
 
   MovieDetailModel({
     required this.id,
@@ -25,6 +28,9 @@ class MovieDetailModel {
     this.homepage,
     this.releaseDate,
     this.status,
+    this.runtime,
+    this.isWatched,
+    this.isOnWatchList,
   });
 
   factory MovieDetailModel.fromJson(Map<String, dynamic> json) {
@@ -42,6 +48,7 @@ class MovieDetailModel {
       homepage: json['homepage'],
       releaseDate: json['release_date'],
       status: json['status'],
+      runtime: json['runtime'],
     );
   }
 
@@ -57,7 +64,8 @@ class MovieDetailModel {
       genres: movie.genres,
       homepage: movie.homepage,
       releaseDate: movie.releaseDate,
-      status: movie.status,
+      status: movie.status?.name,
+      runtime: 0,
     );
   }
 }

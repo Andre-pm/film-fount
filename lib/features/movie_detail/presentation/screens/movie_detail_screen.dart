@@ -1,4 +1,8 @@
+import 'package:film_fount/core/presentation/extensions/movie_status_extensions.dart';
+import 'package:film_fount/core/presentation/extensions/string_extensions.dart';
+import 'package:film_fount/features/movie_detail/domain/entities/movie_detail_entity.dart';
 import 'package:film_fount/features/movie_detail/presentation/providers/movie_detail_providers.dart';
+import 'package:film_fount/features/movie_detail/presentation/widgets/action_button_widget.dart';
 import 'package:film_fount/features/movie_detail/presentation/widgets/related_movies_widget.dart';
 import 'package:film_fount/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -71,6 +75,7 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final strings = AppLocalizations.of(context)!;
+    final widthSizeScreen = MediaQuery.of(context).size.width;
     final movieDetailState = ref.watch(
       movieDetailNotifierProvider(widget.movieId),
     );
@@ -90,216 +95,422 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
             },
           ),
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 300,
-                child: Stack(
-                  children: [
-                    Positioned(
-                      top: 0,
-                      child: data.backdropPath != null
-                          ? SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              height: 300,
-                              child: Image.network(
-                                data.backdropPath!,
-                                fit: BoxFit.cover,
-                              ),
-                            )
-                          : SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              height: 300,
-                              child: Image.asset(
-                                'assets/images/default_banner.png',
+        body: LayoutBuilder(
+          builder: (context, constraints) {
+            final isLargeScreen = constraints.maxWidth > 1200;
+            return SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 300,
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          top: 0,
+                          child: data.backdropPath != null
+                              ? SizedBox(
+                                  width: widthSizeScreen,
+                                  height: 300,
+                                  child: Image.network(
+                                    data.backdropPath!,
+                                    fit: BoxFit.cover,
+                                  ),
+                                )
+                              : SizedBox(
+                                  width: widthSizeScreen,
+                                  height: 300,
+                                  child: Image.asset(
+                                    'assets/images/default_banner.png',
+                                  ),
+                                ),
+                        ),
+                        Positioned(
+                          top: 110,
+                          left: 0,
+                          right: 0,
+                          child: Container(
+                            height: 250,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Colors.transparent,
+                                  Color.fromRGBO(30, 30, 30, 1),
+                                ],
                               ),
                             ),
-                    ),
-                    Positioned(
-                      top: 200,
-                      left: 0,
-                      right: 0,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Colors.transparent,
-                              Color.fromRGBO(30, 30, 30, 1),
+                          ),
+                        ),
+                        Positioned(
+                          top: 140,
+                          left: 25,
+                          child: data.posterPath != null
+                              ? SizedBox(
+                                  height: 150,
+                                  width: 100,
+                                  child: ClipRRect(
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(8),
+                                    ),
+                                    child: Image.network(
+                                      data.posterPath!,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                )
+                              : Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(8),
+                                    ),
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.primary,
+                                  ),
+                                  height: 150,
+                                  width: 100,
+                                  child: Icon(
+                                    Icons.image_not_supported,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                        ),
+                        Positioned(
+                          top: 190,
+                          left: 140,
+                          right: 0,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                data.title.orEmpty,
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                data.originalTitle.orEmpty,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ],
                           ),
                         ),
-                        height: 100,
-                      ),
+                      ],
                     ),
-                    Positioned(
-                      top: 140,
-                      left: 25,
-                      child: data.posterPath != null
-                          ? SizedBox(
-                              height: 150,
-                              width: 100,
-                              child: ClipRRect(
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(8),
-                                ),
-                                child: Image.network(
-                                  data.posterPath!,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            )
-                          : Container(
-                              decoration: BoxDecoration(
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(8),
-                                ),
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                              height: 150,
-                              width: 100,
-                              child: Icon(
-                                Icons.image_not_supported,
-                                color: Colors.grey,
-                              ),
+                  ),
+                  SizedBox(height: 25),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Container(
+                            padding: EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: Color.fromRGBO(38, 38, 38, 1),
                             ),
-                    ),
-                    Positioned(
-                      top: 220,
-                      left: 130,
-                      right: 0,
-                      child: Text(
-                        data.title ?? '',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 25),
-              data.overview != null
-                  ? Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25),
-                      child: Text(
-                        data.overview!,
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    )
-                  : InkWell(
-                      onTap: () async {
-                        final movieFormatted = data.title?.replaceAll(' ', '+');
-                        if (!await launchUrl(
-                          Uri.parse(
-                            "https://www.google.com/search?q=$movieFormatted",
+                            child: Text(
+                              data.runtime != null
+                                  ? strings.movieDetailRuntime(data.runtime!)
+                                  : strings.movieDetailRuntimeNotFound,
+                              softWrap: true,
+                            ),
                           ),
-                          webOnlyWindowName: '_blank',
-                        )) {
-                          throw Exception(strings.footerException);
-                        }
-                      },
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 100,
-                          vertical: 20,
                         ),
-                        decoration: BoxDecoration(
-                          color: Color.fromRGBO(22, 22, 22, 1),
-                          borderRadius: BorderRadius.circular(8),
+                        SizedBox(width: 15),
+                        Flexible(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: switch (data.status) {
+                                    MovieStatus.released => Color.fromRGBO(
+                                      108,
+                                      255,
+                                      120,
+                                      1,
+                                    ),
+                                    MovieStatus.production => Color.fromRGBO(
+                                      255,
+                                      221,
+                                      108,
+                                      1,
+                                    ),
+
+                                    MovieStatus.unknown => Color.fromRGBO(
+                                      226,
+                                      226,
+                                      226,
+                                      1,
+                                    ),
+                                    null => Color.fromRGBO(226, 226, 226, 1),
+                                  },
+                                ),
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        (data.status?.getName(context)).orEmpty,
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.primary,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      Text(
+                                        (data.releaseDate?.toDayMonthInWords(
+                                          context,
+                                        )).orEmpty,
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w500,
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.primary,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              strings.movieDetailDescriptionNotFoundTitle,
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.secondary,
-                                fontWeight: FontWeight.w700,
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 25),
+                  data.overview != null
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 25),
+                          child: Text(
+                            data.overview!,
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: SizedBox(
+                            width: widthSizeScreen,
+                            child: Center(
+                              child: InkWell(
+                                onTap: () async {
+                                  final movieFormatted = data.title?.replaceAll(
+                                    ' ',
+                                    '+',
+                                  );
+                                  if (!await launchUrl(
+                                    Uri.parse(
+                                      "https://www.google.com/search?q=$movieFormatted+movie+${data.releaseDate?.toYear()}",
+                                    ),
+                                    webOnlyWindowName: '_blank',
+                                  )) {
+                                    throw Exception(strings.footerException);
+                                  }
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                    vertical: 20,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Color.fromRGBO(22, 22, 22, 1),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        strings
+                                            .movieDetailDescriptionNotFoundTitle,
+                                        style: TextStyle(
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.secondary,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 20,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      SizedBox(height: 25),
+                                      if (data.title != null)
+                                        Text(
+                                          strings
+                                              .movieDetailDescriptionNotFoundDescription(
+                                                data.title!,
+                                              ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                    ],
+                                  ),
+                                ),
                               ),
                             ),
-                            if (data.title != null)
-                              Text(
-                                strings
-                                    .movieDetailDescriptionNotFoundDescription(
-                                      data.title!,
-                                    ),
-                              ),
+                          ),
+                        ),
+                  SizedBox(height: 25),
+                  isLargeScreen
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            actionButtonWidget(
+                              onTap: () {
+                                if (data.isInWatchList) {
+                                  movieDetailNotifier.removeFromWatchList(data);
+                                  if (data.isWatched) {
+                                    movieDetailNotifier.isWatched(
+                                      data.id,
+                                      false,
+                                    );
+                                  }
+                                } else {
+                                  movieDetailNotifier.addToWatchList(data);
+                                }
+                              },
+                              buttonColor: data.isInWatchList
+                                  ? Color.fromRGBO(255, 116, 108, 1)
+                                  : Color.fromRGBO(108, 255, 120, 1),
+                              title: data.isInWatchList
+                                  ? strings.movieDetailRemoveLibrary
+                                  : strings.movieDetailAddLibrary,
+                              icon: data.isInWatchList
+                                  ? Icons.remove_circle_outline
+                                  : Icons.add,
+                            ),
+
+                            actionButtonWidget(
+                              onTap: () {
+                                data.isInWatchList
+                                    ? movieDetailNotifier.isWatched(
+                                        data.id,
+                                        !data.isWatched,
+                                      )
+                                    : movieDetailNotifier
+                                          .addToWatchList(data)
+                                          .then(
+                                            (_) =>
+                                                movieDetailNotifier.isWatched(
+                                                  data.id,
+                                                  !data.isWatched,
+                                                ),
+                                          );
+                              },
+                              buttonColor: data.isWatched
+                                  ? Color.fromRGBO(247, 169, 100, 1)
+                                  : Color.fromRGBO(145, 145, 145, 1),
+                              title: data.isWatched
+                                  ? strings.movieDetailWatchedButton
+                                  : strings.movieDetailNotWatchedButton,
+                              icon: data.isWatched
+                                  ? Icons.remove_red_eye_rounded
+                                  : Icons.remove_red_eye_outlined,
+                            ),
+                          ],
+                        )
+                      : Column(
+                          children: [
+                            actionButtonWidget(
+                              onTap: () {
+                                if (data.isInWatchList) {
+                                  movieDetailNotifier.removeFromWatchList(data);
+                                  if (data.isWatched) {
+                                    movieDetailNotifier.isWatched(
+                                      data.id,
+                                      false,
+                                    );
+                                  }
+                                } else {
+                                  movieDetailNotifier.addToWatchList(data);
+                                }
+                              },
+                              buttonColor: data.isInWatchList
+                                  ? Color.fromRGBO(255, 116, 108, 1)
+                                  : Color.fromRGBO(108, 255, 120, 1),
+                              title: data.isInWatchList
+                                  ? strings.movieDetailRemoveLibrary
+                                  : strings.movieDetailAddLibrary,
+                              icon: data.isInWatchList
+                                  ? Icons.remove_circle_outline
+                                  : Icons.add,
+                            ),
+
+                            actionButtonWidget(
+                              onTap: () {
+                                data.isInWatchList
+                                    ? movieDetailNotifier.isWatched(
+                                        data.id,
+                                        !data.isWatched,
+                                      )
+                                    : movieDetailNotifier
+                                          .addToWatchList(data)
+                                          .then(
+                                            (_) =>
+                                                movieDetailNotifier.isWatched(
+                                                  data.id,
+                                                  !data.isWatched,
+                                                ),
+                                          );
+                              },
+                              buttonColor: data.isWatched
+                                  ? Color.fromRGBO(247, 169, 100, 1)
+                                  : Color.fromRGBO(145, 145, 145, 1),
+                              title: data.isWatched
+                                  ? strings.movieDetailWatchedButton
+                                  : strings.movieDetailNotWatchedButton,
+                              icon: data.isWatched
+                                  ? Icons.remove_red_eye_rounded
+                                  : Icons.remove_red_eye_outlined,
+                            ),
                           ],
                         ),
-                      ),
-                    ),
-              SizedBox(height: 25),
-              InkWell(
-                onTap: () {
-                  if (data.isInWatchList == false) {
-                    movieDetailNotifier.addToWatchList(data);
-                  } else {
-                    movieDetailNotifier.removeFromWatchList(data);
-                  }
-                },
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 10,
-                  ),
-                  child: Container(
-                    width: 552,
-                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: data.isInWatchList == true
-                            ? Color.fromRGBO(255, 116, 108, 1)
-                            : Color.fromRGBO(108, 255, 120, 1),
-                        width: 1.5,
-                      ),
-                      color: Color.fromRGBO(31, 31, 31, 1),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      data.isInWatchList == true
-                          ? strings.movieDetailRemoveLibrary
-                          : strings.movieDetailAddLibrary,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: data.isInWatchList == true
-                            ? Color.fromRGBO(255, 116, 108, 1)
-                            : Color.fromRGBO(108, 255, 120, 1),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 50),
 
-              relatedMoviesWidget(
-                context,
-                scrollController: _similarMoviesScrollController,
-                isLoadingMore: isLoadingMoreSimilarMovies,
-                title: strings.movieDetailSimilarMovieTitle,
-                description: strings.movieDetailSimilarMovieDescription,
-                movieList: data.similarMovies ?? [],
-                hasMore: isMoreSimilarMovies,
+                  SizedBox(height: 50),
+
+                  relatedMoviesWidget(
+                    context,
+                    scrollController: _similarMoviesScrollController,
+                    isLoadingMore: isLoadingMoreSimilarMovies,
+                    title: strings.movieDetailSimilarMovieTitle,
+                    description: strings.movieDetailSimilarMovieDescription,
+                    movieList: data.similarMovies ?? [],
+                    hasMore: isMoreSimilarMovies,
+                  ),
+                  relatedMoviesWidget(
+                    context,
+                    scrollController: _recommendationScrollController,
+                    isLoadingMore: isLoadingMoreRecommendations,
+                    title: strings.movieDetailRecommendationsTitle,
+                    description: strings.movieDetailRecommendationsDescription,
+                    movieList: data.recommendations ?? [],
+                    hasMore: isMoreRecommendations,
+                  ),
+                  SizedBox(height: 35),
+                ],
               ),
-              relatedMoviesWidget(
-                context,
-                scrollController: _recommendationScrollController,
-                isLoadingMore: isLoadingMoreRecommendations,
-                title: strings.movieDetailRecommendationsTitle,
-                description: strings.movieDetailRecommendationsDescription,
-                movieList: data.recommendations ?? [],
-                hasMore: isMoreRecommendations,
-              ),
-              SizedBox(height: 35),
-            ],
-          ),
+            );
+          },
         ),
       ),
       error: (error) => Scaffold(body: Container()),

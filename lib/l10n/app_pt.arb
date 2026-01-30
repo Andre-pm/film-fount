@@ -15,8 +15,17 @@
     "libraryMovieIsNotWatched":"Não assistido",
     "libraryEmptyTitle":"Parece que a sua lista está vazia!",
     "libraryEmptySubtitle":"Pesquise um filme e adicione a sua biblioteca para ele aparecer aqui.",
+    "libraryAllSection":"Todos os filmes",
+    "libraryWatchedSection":"Assistidos",
+    "libraryNotWatchedSection":"Não assistidos",
+    "libraryWatchedSectionEmptyTitle":"Parece que você ainda não assistiu nenhum filme da sua biblioteca pessoal",
+    "libraryWatchedSectionEmptyDescription":"basta clicar em adicionar a lista de Assistido na página de detalhes do filme",
+    "libraryNotWatchedSectionEmptyTitle":"Parece que você já assistiu todos os filmes da sua biblioteca pessoal",
+    "libraryNotWatchedSectionEmptyDescription":"aproveite para encontrar filmes relacionados aos que mais gostou na página de detalhes do filme",
     "movieDetailRemoveLibrary":"Remover da lista",
     "movieDetailAddLibrary":"Adicionar a lista",
+    "movieDetailWatchedButton":"Assistido",
+    "movieDetailNotWatchedButton":"Não assistido",
     "searchTitle":"Pesquisa",
     "searchSubtitle":"Encontre informações sobre seus filmes que você deseja assistir",
     "searchMovieTitle":"Nome do filme",
@@ -24,7 +33,7 @@
     "searchMovieEmptyTitle":"Nenhum filme encontrado.",
     "searchMovieTitleNotFound":"Título não disponível",
     "searchMovieDescriptionNotFound":"Sem descrição disponível.",
-    "searchMovieError":"Houve um erro ao carregar essa página!",
+    "screenLoadError":"Houve um erro ao carregar essa página!",
     "menuOptionSearch":"Pesquisar",
     "menuOptionProfile":"Perfil",
     "menuOptionAccessProfile":"Acessar perfil",
@@ -52,5 +61,36 @@
                 "type":"String"
             }
         }
-    }
+    },
+    "monthJanuary": "janeiro",
+    "monthFebruary": "fevereiro",
+    "monthMarch": "março",
+    "monthApril": "abril",
+    "monthMay": "maio",
+    "monthJune": "junho",
+    "monthJuly": "julho",
+    "monthAugust": "agosto",
+    "monthSeptember": "setembro",
+    "monthOctober": "outubro",
+    "monthNovember": "novembro",
+    "monthDecember": "dezembro",
+    "movieStatusProduction": "Em produção",
+    "movieStatusReleased": "Lançado",
+    "movieStatusUnknown": "Lançamento não confirmado",
+    "movieDetailRuntime":"Duração {runtime}",
+    "@movieDetailRuntime":{
+        "placeholders":{
+            "runtime":{
+                "type":"String"
+            }
+        }
+    },
+    "movieDetailRuntimeNotFound":"Duração não definida",
+    "profileDeleteAccountButton":"Excluir Conta",
+    "profileDeleteDialogTitle":"Confirmar Exclusão",
+    "profileDeleteDialogSubtitle":"Sua biblioteca e preferências serão perdidas.",
+    "profileDeleteDialogDescription":"Essa ação é irreversível. Tem certeza que deseja excluir sua conta?",
+    "profileDeleteDialogCancel":"Cancelar",
+    "profileDeleteDialogConfirm":"Confirmar",
+    "accountDeletedAlert":"Conta excluída com sucesso."
 }

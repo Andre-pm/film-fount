@@ -35,4 +35,9 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<bool> signOut() {
     return _datasource.signOut().then((_) => true).catchError((_) => false);
   }
+
+  @override
+  Future<void> deleteAccount() {
+    return _datasource.deleteAccount();
+  }
 }

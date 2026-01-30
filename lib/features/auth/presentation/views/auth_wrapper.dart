@@ -1,6 +1,6 @@
 import 'package:film_fount/features/auth/presentation/providers/auth_provider.dart';
 import 'package:film_fount/features/auth/presentation/views/login_screen.dart';
-import 'package:film_fount/features/search/presentation/screens/search_screen.dart';
+import 'package:film_fount/features/library/presentation/screens/library_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -15,14 +15,10 @@ class AuthWrapper extends ConsumerWidget {
         if (user == null) {
           return LoginScreen();
         }
-        return SearchScreen();
+        return LibraryScreen();
       },
       error: (_, _) {
-        return const Scaffold(
-          body: Center(
-            child: Text('Erro ao verificar autenticação'),
-          ),
-        );
+        return Scaffold(body: SizedBox.shrink());
       },
       loading: () {
         return const Scaffold(body: Center(child: CircularProgressIndicator()));

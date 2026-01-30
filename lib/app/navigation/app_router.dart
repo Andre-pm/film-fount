@@ -3,6 +3,7 @@ import 'package:film_fount/core/presentation/screens/under_development_screen.da
 import 'package:film_fount/features/auth/presentation/views/auth_wrapper.dart';
 import 'package:film_fount/features/auth/presentation/views/login_screen.dart';
 import 'package:film_fount/features/library/presentation/screens/library_screen.dart';
+import 'package:film_fount/features/profile/presentation/screens/profile_screen.dart';
 import 'package:film_fount/features/search/presentation/screens/search_screen.dart';
 import 'package:film_fount/features/movie_detail/presentation/screens/movie_detail_screen.dart';
 import 'package:flutter/material.dart';
@@ -28,12 +29,7 @@ class AppRouter {
         final movieId = settings.arguments as int?;
         return FadeRoute(widget: MovieDetailScreen(movieId: movieId ?? 0));
       case profile:
-        return FadeRoute(
-          widget: UnderDevelopmentScreen(
-            selectedOption: MenuOptions.profile,
-            icon: Icons.person,
-          ),
-        );
+        return FadeRoute(widget: ProfileScreen());
 
       case goals:
         return FadeRoute(

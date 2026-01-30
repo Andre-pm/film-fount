@@ -190,6 +190,48 @@ abstract class AppLocalizations {
   /// **'Pesquise um filme e adicione a sua biblioteca para ele aparecer aqui.'**
   String get libraryEmptySubtitle;
 
+  /// No description provided for @libraryAllSection.
+  ///
+  /// In pt, this message translates to:
+  /// **'Todos os filmes'**
+  String get libraryAllSection;
+
+  /// No description provided for @libraryWatchedSection.
+  ///
+  /// In pt, this message translates to:
+  /// **'Assistidos'**
+  String get libraryWatchedSection;
+
+  /// No description provided for @libraryNotWatchedSection.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não assistidos'**
+  String get libraryNotWatchedSection;
+
+  /// No description provided for @libraryWatchedSectionEmptyTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Parece que você ainda não assistiu nenhum filme da sua biblioteca pessoal'**
+  String get libraryWatchedSectionEmptyTitle;
+
+  /// No description provided for @libraryWatchedSectionEmptyDescription.
+  ///
+  /// In pt, this message translates to:
+  /// **'basta clicar em adicionar a lista de Assistido na página de detalhes do filme'**
+  String get libraryWatchedSectionEmptyDescription;
+
+  /// No description provided for @libraryNotWatchedSectionEmptyTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Parece que você já assistiu todos os filmes da sua biblioteca pessoal'**
+  String get libraryNotWatchedSectionEmptyTitle;
+
+  /// No description provided for @libraryNotWatchedSectionEmptyDescription.
+  ///
+  /// In pt, this message translates to:
+  /// **'aproveite para encontrar filmes relacionados aos que mais gostou na página de detalhes do filme'**
+  String get libraryNotWatchedSectionEmptyDescription;
+
   /// No description provided for @movieDetailRemoveLibrary.
   ///
   /// In pt, this message translates to:
@@ -201,6 +243,18 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Adicionar a lista'**
   String get movieDetailAddLibrary;
+
+  /// No description provided for @movieDetailWatchedButton.
+  ///
+  /// In pt, this message translates to:
+  /// **'Assistido'**
+  String get movieDetailWatchedButton;
+
+  /// No description provided for @movieDetailNotWatchedButton.
+  ///
+  /// In pt, this message translates to:
+  /// **'Não assistido'**
+  String get movieDetailNotWatchedButton;
 
   /// No description provided for @searchTitle.
   ///
@@ -244,11 +298,11 @@ abstract class AppLocalizations {
   /// **'Sem descrição disponível.'**
   String get searchMovieDescriptionNotFound;
 
-  /// No description provided for @searchMovieError.
+  /// No description provided for @screenLoadError.
   ///
   /// In pt, this message translates to:
   /// **'Houve um erro ao carregar essa página!'**
-  String get searchMovieError;
+  String get screenLoadError;
 
   /// No description provided for @menuOptionSearch.
   ///
@@ -333,6 +387,150 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Mas não se preocupe, clique aqui para pesquisar sobre {movieTitle} no Google'**
   String movieDetailDescriptionNotFoundDescription(String movieTitle);
+
+  /// No description provided for @monthJanuary.
+  ///
+  /// In pt, this message translates to:
+  /// **'janeiro'**
+  String get monthJanuary;
+
+  /// No description provided for @monthFebruary.
+  ///
+  /// In pt, this message translates to:
+  /// **'fevereiro'**
+  String get monthFebruary;
+
+  /// No description provided for @monthMarch.
+  ///
+  /// In pt, this message translates to:
+  /// **'março'**
+  String get monthMarch;
+
+  /// No description provided for @monthApril.
+  ///
+  /// In pt, this message translates to:
+  /// **'abril'**
+  String get monthApril;
+
+  /// No description provided for @monthMay.
+  ///
+  /// In pt, this message translates to:
+  /// **'maio'**
+  String get monthMay;
+
+  /// No description provided for @monthJune.
+  ///
+  /// In pt, this message translates to:
+  /// **'junho'**
+  String get monthJune;
+
+  /// No description provided for @monthJuly.
+  ///
+  /// In pt, this message translates to:
+  /// **'julho'**
+  String get monthJuly;
+
+  /// No description provided for @monthAugust.
+  ///
+  /// In pt, this message translates to:
+  /// **'agosto'**
+  String get monthAugust;
+
+  /// No description provided for @monthSeptember.
+  ///
+  /// In pt, this message translates to:
+  /// **'setembro'**
+  String get monthSeptember;
+
+  /// No description provided for @monthOctober.
+  ///
+  /// In pt, this message translates to:
+  /// **'outubro'**
+  String get monthOctober;
+
+  /// No description provided for @monthNovember.
+  ///
+  /// In pt, this message translates to:
+  /// **'novembro'**
+  String get monthNovember;
+
+  /// No description provided for @monthDecember.
+  ///
+  /// In pt, this message translates to:
+  /// **'dezembro'**
+  String get monthDecember;
+
+  /// No description provided for @movieStatusProduction.
+  ///
+  /// In pt, this message translates to:
+  /// **'Em produção'**
+  String get movieStatusProduction;
+
+  /// No description provided for @movieStatusReleased.
+  ///
+  /// In pt, this message translates to:
+  /// **'Lançado'**
+  String get movieStatusReleased;
+
+  /// No description provided for @movieStatusUnknown.
+  ///
+  /// In pt, this message translates to:
+  /// **'Lançamento não confirmado'**
+  String get movieStatusUnknown;
+
+  /// No description provided for @movieDetailRuntime.
+  ///
+  /// In pt, this message translates to:
+  /// **'Duração {runtime}'**
+  String movieDetailRuntime(String runtime);
+
+  /// No description provided for @movieDetailRuntimeNotFound.
+  ///
+  /// In pt, this message translates to:
+  /// **'Duração não definida'**
+  String get movieDetailRuntimeNotFound;
+
+  /// No description provided for @profileDeleteAccountButton.
+  ///
+  /// In pt, this message translates to:
+  /// **'Excluir Conta'**
+  String get profileDeleteAccountButton;
+
+  /// No description provided for @profileDeleteDialogTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Confirmar Exclusão'**
+  String get profileDeleteDialogTitle;
+
+  /// No description provided for @profileDeleteDialogSubtitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sua biblioteca e preferências serão perdidas.'**
+  String get profileDeleteDialogSubtitle;
+
+  /// No description provided for @profileDeleteDialogDescription.
+  ///
+  /// In pt, this message translates to:
+  /// **'Essa ação é irreversível. Tem certeza que deseja excluir sua conta?'**
+  String get profileDeleteDialogDescription;
+
+  /// No description provided for @profileDeleteDialogCancel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cancelar'**
+  String get profileDeleteDialogCancel;
+
+  /// No description provided for @profileDeleteDialogConfirm.
+  ///
+  /// In pt, this message translates to:
+  /// **'Confirmar'**
+  String get profileDeleteDialogConfirm;
+
+  /// No description provided for @accountDeletedAlert.
+  ///
+  /// In pt, this message translates to:
+  /// **'Conta excluída com sucesso.'**
+  String get accountDeletedAlert;
 }
 
 class _AppLocalizationsDelegate

@@ -16,9 +16,13 @@ class MovieDetailEntity with _$MovieDetailEntity {
     List<String>? genres,
     String? homepage,
     String? releaseDate,
-    String? status,
+    MovieStatus? status,
+    String? runtime,
     @Default(false) bool isInWatchList,
+    @Default(false) bool isWatched,
     List<MovieEntity>? similarMovies,
     List<MovieEntity>? recommendations,
   }) = _MovieDetailEntity;
 }
+
+enum MovieStatus { released, production, unknown }

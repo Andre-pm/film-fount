@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:film_fount/core/domain/enums/menu_option.dart';
 import 'package:film_fount/core/presentation/providers/core_providers.dart';
 import 'package:film_fount/core/presentation/widgets/menu_bar_widget.dart';
 import 'package:film_fount/features/library/presentation/providers/library_providers.dart';
-import 'package:film_fount/features/movie_detail/presentation/events/watchlist_updated_event.dart';
+import 'package:film_fount/features/movie_detail/presentation/events/watch_list_updated_event.dart';
 import 'package:film_fount/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,17 +20,19 @@ class LibraryScreen extends ConsumerStatefulWidget {
 
 class _LibraryScreenState extends ConsumerState<LibraryScreen> {
   late StreamSubscription _watchListSub;
+  late int selectedOption;
 
   @override
   void initState() {
     super.initState();
+    selectedOption = 0;
     _watchListSub = ref
         .read(eventBusProvider)
         .on<WatchListUpdatedEvent>()
-        .listen(
-          (event) =>
-              ref.read(libraryNotifierProvider.notifier).fetchWatchList(),
-        );
+        .listen((event) {
+          ref.read(libraryNotifierProvider.notifier).fetchWatchList(true);
+          selectedOption = 0;
+        });
   }
 
   @override
@@ -41,15 +45,17 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
   Widget build(BuildContext context) {
     final strings = AppLocalizations.of(context)!;
     final libraryState = ref.watch(libraryNotifierProvider);
+    final libraryNotifier = ref.read(libraryNotifierProvider.notifier);
+    final double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       body: LayoutBuilder(
         builder: (context, constraints) {
-          final bool isLargeVersion = constraints.maxWidth > 1200;
+          final bool isLargeScreen = constraints.maxWidth > 1200;
           return CustomScrollView(
             slivers: [
               MenuBarWidget(
-                isLargeVersion: isLargeVersion,
+                isLargeVersion: isLargeScreen,
                 option: MenuOptions.library,
               ),
               SliverToBoxAdapter(
@@ -57,7 +63,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                   padding: const EdgeInsets.symmetric(
                     vertical: 25,
                     horizontal: 25,
-                  ),
+                  ).copyWith(bottom: isLargeScreen ? 45 : 15),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,79 +86,221 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                   ),
                 ),
               ),
+              SliverToBoxAdapter(
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: SizedBox(
+                    width: screenWidth,
+                    child: ScrollConfiguration(
+                      behavior: ScrollConfiguration.of(context).copyWith(
+                        dragDevices: {
+                          PointerDeviceKind.touch,
+                          PointerDeviceKind.mouse,
+                          PointerDeviceKind.trackpad,
+                        },
+                      ),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        physics: const BouncingScrollPhysics(),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 25),
+                          child: Row(
+                            spacing: 15,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              InkWell(
+                                splashColor: Colors.transparent,
+                                onTap: () {
+                                  setState(() {
+                                    selectedOption = 0;
+                                    libraryNotifier.changeWatchListView(null);
+                                  });
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 20,
+                                    vertical: 15,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: selectedOption == 0
+                                        ? Theme.of(
+                                            context,
+                                          ).colorScheme.secondary
+                                        : const Color.fromARGB(
+                                            255,
+                                            159,
+                                            159,
+                                            159,
+                                          ),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Text(strings.libraryAllSection),
+                                ),
+                              ),
+                              InkWell(
+                                splashColor: Colors.transparent,
+                                onTap: () {
+                                  setState(() {
+                                    selectedOption = 1;
+                                    libraryNotifier.changeWatchListView(true);
+                                  });
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 20,
+                                    vertical: 15,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: selectedOption == 1
+                                        ? Theme.of(
+                                            context,
+                                          ).colorScheme.secondary
+                                        : const Color.fromARGB(
+                                            255,
+                                            159,
+                                            159,
+                                            159,
+                                          ),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Text(strings.libraryWatchedSection),
+                                ),
+                              ),
+                              InkWell(
+                                splashColor: Colors.transparent,
+                                onTap: () {
+                                  setState(() {
+                                    selectedOption = 2;
+                                    libraryNotifier.changeWatchListView(false);
+                                  });
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 20,
+                                    vertical: 15,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: selectedOption == 2
+                                        ? Theme.of(
+                                            context,
+                                          ).colorScheme.secondary
+                                        : const Color.fromARGB(
+                                            255,
+                                            159,
+                                            159,
+                                            159,
+                                          ),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Text(strings.libraryNotWatchedSection),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
               libraryState.when(
                 initial: () => SliverToBoxAdapter(child: SizedBox.shrink()),
                 loading: () => SliverToBoxAdapter(
                   child: Center(child: CircularProgressIndicator()),
                 ),
-                data: (data) => SliverList(
-                  delegate: SliverChildBuilderDelegate((context, index) {
-                    final watchListItem = data.watchList?[index];
-                    return InkWell(
-                      onTap: () => Navigator.of(context).pushNamed(
-                        '/movie_details',
-                        arguments: watchListItem?.id,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 25,
-                          vertical: 15,
-                        ),
-                        child: Row(
-                          children: [
-                            if (watchListItem?.posterPath != null)
-                              ClipRRect(
-                                borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(8),
-                                  bottomLeft: Radius.circular(8),
+                data: (data) {
+                  return SliverPadding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 25,
+                      vertical: 15,
+                    ),
+                    sliver: data.watchList!.isNotEmpty
+                        ? SliverGrid(
+                            delegate: SliverChildBuilderDelegate((
+                              context,
+                              index,
+                            ) {
+                              final watchListItem = data.watchList![index];
+                              return InkWell(
+                                onTap: () => Navigator.of(context).pushNamed(
+                                  '/movie_details',
+                                  arguments: watchListItem.id,
                                 ),
-                                child: Image.network(
-                                  watchListItem!.posterPath!,
-                                  width: 100,
-                                  height: 150,
-                                  fit: BoxFit.cover,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    color: Color.fromRGBO(22, 22, 22, 1),
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: CachedNetworkImage(
+                                      imageUrl: watchListItem.posterPath!,
+                                      fit: BoxFit.cover,
+                                      memCacheHeight: 400,
+                                      placeholder: (context, url) => Container(
+                                        color: Color.fromRGBO(22, 22, 22, 1),
+                                      ),
+                                      errorWidget: (context, url, error) =>
+                                          const Icon(Icons.image_not_supported),
+                                    ),
+                                  ),
                                 ),
-                              )
-                            else
-                              const SizedBox(
-                                width: 100,
-                                height: 150,
-                                child: Icon(
-                                  Icons.image_not_supported,
-                                  color: Colors.grey,
+                              );
+                            }, childCount: data.watchList!.length),
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: isLargeScreen ? 8 : 3,
+                                  crossAxisSpacing: 5,
+                                  mainAxisSpacing: 10,
+                                  childAspectRatio: isLargeScreen
+                                      ? 165 / 245.5
+                                      : 100 / 150,
                                 ),
-                              ),
-                            SizedBox(width: 15),
-                            Expanded(
+                          )
+                        : SliverFillRemaining(
+                            child: Container(
+                              color: Color.fromRGBO(38, 38, 38, 1),
+                              padding: EdgeInsets.all(10),
                               child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text(
-                                    watchListItem?.title ?? '',
-                                    softWrap: true,
-                                  ),
-                                  SizedBox(width: 15),
-                                  Text(
-                                    watchListItem?.watched == true
-                                        ? strings.libraryMovieIsWatched
-                                        : strings.libraryMovieIsNotWatched,
+                                    selectedOption == 1
+                                        ? strings
+                                              .libraryWatchedSectionEmptyTitle
+                                        : strings
+                                              .libraryNotWatchedSectionEmptyTitle,
                                     style: TextStyle(
-                                      color: watchListItem?.watched == true
-                                          ? Color.fromRGBO(108, 255, 120, 1)
-                                          : Color.fromRGBO(255, 116, 108, 1),
-                                      fontWeight: FontWeight.w700,
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onSurface,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15,
                                     ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  SizedBox(height: 10),
+                                  Text(
+                                    selectedOption == 1
+                                        ? strings
+                                              .libraryWatchedSectionEmptyDescription
+                                        : strings
+                                              .libraryNotWatchedSectionEmptyDescription,
+                                    style: TextStyle(
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onSurface,
+                                      fontSize: 10,
+                                    ),
+                                    textAlign: TextAlign.center,
                                   ),
                                 ],
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                    );
-                  }, childCount: data.watchList?.length),
-                ),
+                          ),
+                  );
+                },
                 error: (e) => SliverFillRemaining(
                   child: Container(
                     color: Color.fromRGBO(38, 38, 38, 1),

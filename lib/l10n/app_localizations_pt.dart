@@ -59,10 +59,41 @@ class AppLocalizationsPt extends AppLocalizations {
       'Pesquise um filme e adicione a sua biblioteca para ele aparecer aqui.';
 
   @override
+  String get libraryAllSection => 'Todos os filmes';
+
+  @override
+  String get libraryWatchedSection => 'Assistidos';
+
+  @override
+  String get libraryNotWatchedSection => 'Não assistidos';
+
+  @override
+  String get libraryWatchedSectionEmptyTitle =>
+      'Parece que você ainda não assistiu nenhum filme da sua biblioteca pessoal';
+
+  @override
+  String get libraryWatchedSectionEmptyDescription =>
+      'basta clicar em adicionar a lista de Assistido na página de detalhes do filme';
+
+  @override
+  String get libraryNotWatchedSectionEmptyTitle =>
+      'Parece que você já assistiu todos os filmes da sua biblioteca pessoal';
+
+  @override
+  String get libraryNotWatchedSectionEmptyDescription =>
+      'aproveite para encontrar filmes relacionados aos que mais gostou na página de detalhes do filme';
+
+  @override
   String get movieDetailRemoveLibrary => 'Remover da lista';
 
   @override
   String get movieDetailAddLibrary => 'Adicionar a lista';
+
+  @override
+  String get movieDetailWatchedButton => 'Assistido';
+
+  @override
+  String get movieDetailNotWatchedButton => 'Não assistido';
 
   @override
   String get searchTitle => 'Pesquisa';
@@ -87,7 +118,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get searchMovieDescriptionNotFound => 'Sem descrição disponível.';
 
   @override
-  String get searchMovieError => 'Houve um erro ao carregar essa página!';
+  String get screenLoadError => 'Houve um erro ao carregar essa página!';
 
   @override
   String get menuOptionSearch => 'Pesquisar';
@@ -138,4 +169,80 @@ class AppLocalizationsPt extends AppLocalizations {
   String movieDetailDescriptionNotFoundDescription(String movieTitle) {
     return 'Mas não se preocupe, clique aqui para pesquisar sobre $movieTitle no Google';
   }
+
+  @override
+  String get monthJanuary => 'janeiro';
+
+  @override
+  String get monthFebruary => 'fevereiro';
+
+  @override
+  String get monthMarch => 'março';
+
+  @override
+  String get monthApril => 'abril';
+
+  @override
+  String get monthMay => 'maio';
+
+  @override
+  String get monthJune => 'junho';
+
+  @override
+  String get monthJuly => 'julho';
+
+  @override
+  String get monthAugust => 'agosto';
+
+  @override
+  String get monthSeptember => 'setembro';
+
+  @override
+  String get monthOctober => 'outubro';
+
+  @override
+  String get monthNovember => 'novembro';
+
+  @override
+  String get monthDecember => 'dezembro';
+
+  @override
+  String get movieStatusProduction => 'Em produção';
+
+  @override
+  String get movieStatusReleased => 'Lançado';
+
+  @override
+  String get movieStatusUnknown => 'Lançamento não confirmado';
+
+  @override
+  String movieDetailRuntime(String runtime) {
+    return 'Duração $runtime';
+  }
+
+  @override
+  String get movieDetailRuntimeNotFound => 'Duração não definida';
+
+  @override
+  String get profileDeleteAccountButton => 'Excluir Conta';
+
+  @override
+  String get profileDeleteDialogTitle => 'Confirmar Exclusão';
+
+  @override
+  String get profileDeleteDialogSubtitle =>
+      'Sua biblioteca e preferências serão perdidas.';
+
+  @override
+  String get profileDeleteDialogDescription =>
+      'Essa ação é irreversível. Tem certeza que deseja excluir sua conta?';
+
+  @override
+  String get profileDeleteDialogCancel => 'Cancelar';
+
+  @override
+  String get profileDeleteDialogConfirm => 'Confirmar';
+
+  @override
+  String get accountDeletedAlert => 'Conta excluída com sucesso.';
 }

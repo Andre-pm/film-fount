@@ -15,8 +15,8 @@ class SearchScreen extends ConsumerStatefulWidget {
 class _SearchScreenState extends ConsumerState<SearchScreen> {
   final ScrollController _scrollController = ScrollController();
   bool isLoadingMore = false;
+  bool hasMoreMovies = false;
   final TextEditingController _movieController = TextEditingController();
-  bool hasMoreMovies = true;
 
   @override
   void initState() {
@@ -260,7 +260,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   );
                 },
                 error: (_) => SliverToBoxAdapter(
-                  child: Center(child: Text(strings.searchMovieError)),
+                  child: Center(child: Text(strings.screenLoadError)),
                 ),
               ),
             ],

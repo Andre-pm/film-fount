@@ -32,60 +32,7 @@ class MovieDetailDatasource {
     }
   }
 
-  Future<bool> addToWatchList(MovieDetailModel movie) async {
-    final user = auth.currentUser;
-    final DatabaseReference watchListRef = database.ref(
-      '${user!.uid}/watchlist',
-    );
-    try {
-      watchListRef.push().set({
-        'id': movie.id,
-        'title': movie.title,
-        'posterPath': movie.posterPath,
-        'watched': false,
-      });
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  Future<bool> isOnWatchList(int movieId) async {
-    final user = auth.currentUser;
-    final DatabaseReference watchListRef = database.ref(
-      '${user!.uid}/watchlist',
-    );
-    final DataSnapshot snapshot = await watchListRef.get();
-    if (snapshot.exists) {
-      final watchList = snapshot.value as Map<dynamic, dynamic>;
-      for (final entry in watchList.entries) {
-        final movie = entry.value as Map<dynamic, dynamic>;
-        if (movie['id'] == movieId) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-
-  Future<bool> removeFromWatchList(int id) async {
-    final user = auth.currentUser;
-    final DatabaseReference watchListRef = database.ref(
-      '${user!.uid}/watchlist',
-    );
-    final DataSnapshot snapshot = await watchListRef.get();
-    if (snapshot.exists) {
-      final watchList = snapshot.value as Map<dynamic, dynamic>;
-      for (final entry in watchList.entries) {
-        final movie = entry.value as Map<dynamic, dynamic>;
-        if (movie['id'] == id) {
-          await watchListRef.child(entry.key).remove();
-          return true;
-        }
-      }
-    }
-    return false;
-  }
+  
 
   Future<List<MovieModel>> getSuggestion(int movieId, int? page) async {
     try {
