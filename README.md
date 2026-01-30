@@ -6,6 +6,17 @@ Um projeto de biblioteca de filmes online construído em Flutter usando o padrã
 Você pode acessar a plataforma em: https://film-fount.vercel.app.
 <br><br>
 
+<table>
+  <tr>
+    <td>
+      <img width="1000" height="719" alt="desktop" src="https://github.com/user-attachments/assets/d3c0265d-487c-4212-943f-9a67567893bb" />
+    </td>
+    <td>
+      <img width="285" height="630" alt="mobile" src="https://github.com/user-attachments/assets/34653f9a-23e8-4ea8-963d-b65c5b17bb0d" />
+    </td>
+  </tr>
+</table>
+
 ### Detalhes técnicos:
 **Autenticação e Banco de dados:** Gerenciado via Firebase para lidar com contas de usuário e armazenamento de dados de forma segura.
 
