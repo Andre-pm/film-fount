@@ -4,5 +4,6 @@ abstract class AuthRepository {
   Future<bool> loginWithGoogle();
   UserEntity? getCurrentUser();
   Stream<UserEntity?> get isUserLogged;
+  Future<void> deleteAccount();
   Future<bool> signOut();
 }
