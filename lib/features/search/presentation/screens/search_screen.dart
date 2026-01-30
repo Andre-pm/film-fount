@@ -260,7 +260,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   );
                 },
                 error: (_) => SliverToBoxAdapter(
-                  child: Center(child: Text(strings.searchMovieError)),
+                  child: Center(child: Text(strings.screenLoadError)),
                 ),
               ),
             ],

@@ -118,7 +118,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get searchMovieDescriptionNotFound => 'Sem descrição disponível.';
 
   @override
-  String get searchMovieError => 'Houve um erro ao carregar essa página!';
+  String get screenLoadError => 'Houve um erro ao carregar essa página!';
 
   @override
   String get menuOptionSearch => 'Pesquisar';
@@ -222,4 +222,27 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get movieDetailRuntimeNotFound => 'Duração não definida';
+
+  @override
+  String get profileDeleteAccountButton => 'Excluir Conta';
+
+  @override
+  String get profileDeleteDialogTitle => 'Confirmar Exclusão';
+
+  @override
+  String get profileDeleteDialogSubtitle =>
+      'Sua biblioteca e preferências serão perdidas.';
+
+  @override
+  String get profileDeleteDialogDescription =>
+      'Essa ação é irreversível. Tem certeza que deseja excluir sua conta?';
+
+  @override
+  String get profileDeleteDialogCancel => 'Cancelar';
+
+  @override
+  String get profileDeleteDialogConfirm => 'Confirmar';
+
+  @override
+  String get accountDeletedAlert => 'Conta excluída com sucesso.';
 }

@@ -298,11 +298,11 @@ abstract class AppLocalizations {
   /// **'Sem descrição disponível.'**
   String get searchMovieDescriptionNotFound;
 
-  /// No description provided for @searchMovieError.
+  /// No description provided for @screenLoadError.
   ///
   /// In pt, this message translates to:
   /// **'Houve um erro ao carregar essa página!'**
-  String get searchMovieError;
+  String get screenLoadError;
 
   /// No description provided for @menuOptionSearch.
   ///
@@ -489,6 +489,48 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Duração não definida'**
   String get movieDetailRuntimeNotFound;
+
+  /// No description provided for @profileDeleteAccountButton.
+  ///
+  /// In pt, this message translates to:
+  /// **'Excluir Conta'**
+  String get profileDeleteAccountButton;
+
+  /// No description provided for @profileDeleteDialogTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Confirmar Exclusão'**
+  String get profileDeleteDialogTitle;
+
+  /// No description provided for @profileDeleteDialogSubtitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Sua biblioteca e preferências serão perdidas.'**
+  String get profileDeleteDialogSubtitle;
+
+  /// No description provided for @profileDeleteDialogDescription.
+  ///
+  /// In pt, this message translates to:
+  /// **'Essa ação é irreversível. Tem certeza que deseja excluir sua conta?'**
+  String get profileDeleteDialogDescription;
+
+  /// No description provided for @profileDeleteDialogCancel.
+  ///
+  /// In pt, this message translates to:
+  /// **'Cancelar'**
+  String get profileDeleteDialogCancel;
+
+  /// No description provided for @profileDeleteDialogConfirm.
+  ///
+  /// In pt, this message translates to:
+  /// **'Confirmar'**
+  String get profileDeleteDialogConfirm;
+
+  /// No description provided for @accountDeletedAlert.
+  ///
+  /// In pt, this message translates to:
+  /// **'Conta excluída com sucesso.'**
+  String get accountDeletedAlert;
 }
 
 class _AppLocalizationsDelegate
