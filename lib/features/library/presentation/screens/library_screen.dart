@@ -30,7 +30,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
         .read(eventBusProvider)
         .on<WatchListUpdatedEvent>()
         .listen((event) {
-          ref.read(libraryNotifierProvider.notifier).fetchWatchList();
+          ref.read(libraryNotifierProvider.notifier).fetchWatchList(true);
           selectedOption = 0;
         });
   }

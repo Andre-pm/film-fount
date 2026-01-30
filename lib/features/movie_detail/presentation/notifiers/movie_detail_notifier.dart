@@ -1,5 +1,6 @@
 import 'package:event_bus/event_bus.dart';
 import 'package:film_fount/core/state/state_notifier.dart';
+import 'package:film_fount/features/library/domain/repositories/library_repository.dart';
 import 'package:film_fount/features/movie_detail/domain/entities/movie_detail_entity.dart';
 import 'package:film_fount/features/movie_detail/domain/repositories/the_movie_detail_repository.dart';
 import 'package:film_fount/features/movie_detail/presentation/events/watch_list_updated_event.dart';
@@ -8,12 +9,17 @@ import 'package:flutter_riverpod/legacy.dart';
 
 final class MovieDetailNotifier
     extends StateNotifier<AppState<MovieDetailEntity>> {
-  final TheMovieDetailRepository _repository;
+  final TheMovieDetailRepository _movieDetailRepository;
+  final LibraryRepository _libraryRepository;
   final int movieId;
   final EventBus eventBus;
 
-  MovieDetailNotifier(this._repository, this.movieId, this.eventBus)
-    : super(const AppState.initial()) {
+  MovieDetailNotifier(
+    this._movieDetailRepository,
+    this._libraryRepository,
+    this.movieId,
+    this.eventBus,
+  ) : super(const AppState.initial()) {
     fetchMovieDetail(movieId);
   }
   int currentMovieId = 0;
@@ -28,10 +34,10 @@ final class MovieDetailNotifier
     try {
       final id = movieId ?? 0;
       final results = await Future.wait([
-        _repository.getMovieDetails(id),
-        _repository.firebaseWatchListContent(id),
-        _repository.getSimilarMovies(id, similarMoviesPage),
-        _repository.getRecommendations(id, recommendationsPage),
+        _movieDetailRepository.getMovieDetails(id),
+        _libraryRepository.firebaseWatchListContent(id),
+        _movieDetailRepository.getSimilarMovies(id, similarMoviesPage),
+        _movieDetailRepository.getRecommendations(id, recommendationsPage),
       ]);
       final movieResponse = results[0] as MovieDetailEntity;
       final firebaseWatchListContent = results[1] as MovieDetailEntity;
@@ -65,7 +71,7 @@ final class MovieDetailNotifier
 
   Future<bool> loadMoreSimilarMovies() async {
     similarMoviesPage++;
-    final newMovies = await _repository.getSimilarMovies(
+    final newMovies = await _movieDetailRepository.getSimilarMovies(
       currentMovieId,
       similarMoviesPage,
     );
@@ -88,7 +94,7 @@ final class MovieDetailNotifier
 
   Future<bool> loadMoreRecommendations() async {
     recommendationsPage++;
-    final newRecommendations = await _repository.getRecommendations(
+    final newRecommendations = await _movieDetailRepository.getRecommendations(
       currentMovieId,
       recommendationsPage,
     );
@@ -114,7 +120,7 @@ final class MovieDetailNotifier
 
   Future<void> addToWatchList(MovieDetailEntity movie) async {
     try {
-      final success = await _repository.addToWatchList(movie);
+      final success = await _libraryRepository.addToWatchList(movie);
       if (success) {
         refreshWatchListStatus(isInWatchList: true);
       }
@@ -125,10 +131,12 @@ final class MovieDetailNotifier
 
   Future<void> removeFromWatchList(MovieDetailEntity movie) async {
     try {
-      final success = await _repository.removeFromWatchList(movie);
-      if (success) {
-        refreshWatchListStatus(isInWatchList: false);
-      }
+      await isWatched(movie.id, false).then((_) async {
+        final success = await _libraryRepository.removeFromWatchList(movie);
+        if (success) {
+          refreshWatchListStatus(isInWatchList: false);
+        }
+      });
     } catch (e) {
       rethrow;
     }
@@ -136,7 +144,10 @@ final class MovieDetailNotifier
 
   Future<void> isWatched(int movieId, bool isWatched) async {
     try {
-      final success = await _repository.updateWatched(movieId, isWatched);
+      final success = await _libraryRepository.updateWatched(
+        movieId,
+        isWatched,
+      );
       if (success) {
         refreshWatchListStatus(isWatched: isWatched);
       }
