@@ -1,16 +1,16 @@
-# film_fount
+<div align="center">
+  <img width="299" height="153" alt="Group 1" src="https://github.com/user-attachments/assets/12c70589-d087-494b-8b43-a84316ccfa27" />
+</div>
+<br><br>
+An online movie library project built in Flutter using the Model-View-ViewModel (MVVM) pattern and Clean Architecture principles.
+You can access the platform at: https://film-fount.vercel.app.
+<br><br>
 
-A new Flutter project.
+### Technical Details:
 
-## Getting Started
+**Authentication & Database:** Managed via Firebase to handle user accounts and data storage.
 
-This project is a starting point for a Flutter application.
+**Design:** All images and logos were created by me, and the UI was designed in Figma.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+**Data Source:** Movie information is fetched using the TMDB API.<br>
+For more details, visit https://developer.themoviedb.org/docs/getting-started.
