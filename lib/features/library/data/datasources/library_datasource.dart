@@ -34,7 +34,7 @@ class LibraryDatasource {
       }).toList();
       return watchList;
     } else {
-      throw Exception('libraryEmptyTitle');
+      return [];
     }
   }
 
