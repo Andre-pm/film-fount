@@ -245,4 +245,34 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get accountDeletedAlert => 'Conta excluída com sucesso.';
+
+  @override
+  String get warningPWABottomSheetTitle =>
+      'Acesse a versão da plataforma como um app nativo';
+
+  @override
+  String get warningPWABottomSheetFirstStep =>
+      '1 - No seu navegador, toque em Compartilhar';
+
+  @override
+  String get warningPWABottomSheetSecondStep =>
+      '2 - Selecione Adicionar à Tela de Início';
+
+  @override
+  String get warningPWABottomSheetFinalStep =>
+      'Pronto, agora você pode acessar o app rapidamente pela tela inicial do seu celular!';
+
+  @override
+  String get warningPWAWebTitle => '📲 Acesse também pelo celular';
+
+  @override
+  String get warningPWAMobileTitle => '📲 Adicione este app à sua tela inicial';
+
+  @override
+  String get warningPWAMobileSubtitle =>
+      'Você pode adicionar este app à tela inicial para acessar mais rápido e ter uma experiência ainda melhor';
+
+  @override
+  String get warningPWAWebSubtitle =>
+      'Acesse o site pelo seu celular e adicione este app à tela inicial para uma experiência ainda melhor';
 }

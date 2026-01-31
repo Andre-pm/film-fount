@@ -1,6 +1,6 @@
 {
     "name": "film_fount",
-    "short_name": "film_fount",
+    "short_name": "Film Fount",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
