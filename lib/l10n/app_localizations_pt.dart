@@ -25,7 +25,8 @@ class AppLocalizationsPt extends AppLocalizations {
   String get setGoals => 'Crie metas para assistir filmes';
 
   @override
-  String get goalTitleExample => 'Você assistiu 3 filmes surrealistas esse mês';
+  String get goalTitleExample =>
+      'Você assistiu 3 filmes surrealistas da meta definida';
 
   @override
   String get goalSubtitleExample => '3 semanas seguidas';

@@ -1,9 +1,11 @@
-import 'package:film_fount/core/domain/enums/menu_option.dart';
-import 'package:film_fount/core/presentation/screens/under_development_screen.dart';
-import 'package:film_fount/features/auth/presentation/views/auth_wrapper.dart';
-import 'package:film_fount/features/auth/presentation/views/login_screen.dart';
+import 'package:film_fount/features/auth/presentation/auth_wrapper.dart';
+import 'package:film_fount/features/auth/presentation/screens/login_screen.dart';
+import 'package:film_fount/features/goals/presentation/screens/goal_deadline.dart';
+import 'package:film_fount/features/goals/presentation/screens/goal_movie_selection.dart';
+import 'package:film_fount/features/goals/presentation/screens/goal_screen.dart';
 import 'package:film_fount/features/library/presentation/screens/library_screen.dart';
 import 'package:film_fount/features/profile/presentation/screens/profile_screen.dart';
+import 'package:film_fount/features/search/domain/entities/movie_entity.dart';
 import 'package:film_fount/features/search/presentation/screens/search_screen.dart';
 import 'package:film_fount/features/movie_detail/presentation/screens/movie_detail_screen.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +18,8 @@ class AppRouter {
   static const profile = '/profile';
   static const goals = '/goals';
   static const library = '/library';
+  static const createNewGoal = '/create_goal';
+  static const goalDeadline = '/goal_deadline';
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -32,12 +36,15 @@ class AppRouter {
         return FadeRoute(widget: ProfileScreen());
 
       case goals:
+        return FadeRoute(widget: GoalScreen());
+      case goalDeadline:
         return FadeRoute(
-          widget: UnderDevelopmentScreen(
-            selectedOption: MenuOptions.goals,
-            icon: Icons.check,
+          widget: GoalDeadline(
+            selectedMovies: settings.arguments as List<MovieEntity>,
           ),
         );
+      case createNewGoal:
+        return FadeRoute(widget: GoalMovieSelection());
       case library:
         return FadeRoute(widget: LibraryScreen());
       default:

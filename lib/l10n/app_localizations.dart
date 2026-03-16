@@ -127,7 +127,7 @@ abstract class AppLocalizations {
   /// No description provided for @goalTitleExample.
   ///
   /// In pt, this message translates to:
-  /// **'Você assistiu 3 filmes surrealistas esse mês'**
+  /// **'Você assistiu 3 filmes surrealistas da meta definida'**
   String get goalTitleExample;
 
   /// No description provided for @goalSubtitleExample.
