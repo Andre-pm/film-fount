@@ -1,7 +1,6 @@
 import 'package:film_fount/core/presentation/extensions/string_extensions.dart';
 import 'package:film_fount/features/library/data/models/library_movie_model.dart';
 import 'package:film_fount/features/movie_detail/data/models/movie_detail_model.dart';
-import 'package:film_fount/l10n/app_localizations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 

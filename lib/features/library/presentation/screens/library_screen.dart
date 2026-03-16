@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:ui';
-import 'dart:js_interop';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:film_fount/core/domain/enums/menu_option.dart';
 import 'package:film_fount/core/presentation/providers/core_providers.dart';
@@ -86,10 +85,13 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                           horizontal: 24,
                         ),
                         child: InkWell(
-                          splashColor: Colors.transparent,
                           onTap: () {
                             isMobileDevice
                                 ? showModalBottomSheet(
+                                    constraints: BoxConstraints(
+                                      maxWidth: constraints.maxWidth,
+                                      maxHeight: constraints.maxHeight,
+                                    ),
                                     context: context,
                                     builder: (_) {
                                       return Container(
@@ -100,57 +102,62 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                                             topRight: Radius.circular(15),
                                           ),
                                         ),
-                                        height: 290,
+                                        height: constraints.maxHeight * 0.35,
+                                        width: constraints.maxWidth * 0.9,
                                         child: Padding(
                                           padding: const EdgeInsets.symmetric(
                                             horizontal: 15.0,
                                             vertical: 24.0,
                                           ),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Align(
-                                                alignment: Alignment.center,
-                                                child: Image.asset(
-                                                  'assets/images/favicon.png',
-                                                  width: 50,
-                                                  height: 50,
+                                          child: SingleChildScrollView(
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Align(
+                                                  alignment: Alignment.center,
+                                                  child: Image.asset(
+                                                    'assets/images/favicon.png',
+                                                    width: 50,
+                                                    height: 50,
+                                                  ),
                                                 ),
-                                              ),
-                                              SizedBox(height: 25),
-                                              Text(
-                                                strings
-                                                    .warningPWABottomSheetTitle,
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 16,
+                                                SizedBox(height: 25),
+                                                Text(
+                                                  strings
+                                                      .warningPWABottomSheetTitle,
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16,
+                                                  ),
                                                 ),
-                                              ),
-                                              SizedBox(height: 25),
-                                              Text(
-                                                strings
-                                                    .warningPWABottomSheetFirstStep,
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w500,
+                                                SizedBox(height: 25),
+                                                Text(
+                                                  strings
+                                                      .warningPWABottomSheetFirstStep,
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
                                                 ),
-                                              ),
-                                              Text(
-                                                strings
-                                                    .warningPWABottomSheetSecondStep,
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w500,
+                                                Text(
+                                                  strings
+                                                      .warningPWABottomSheetSecondStep,
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
                                                 ),
-                                              ),
-                                              SizedBox(height: 25),
-                                              Text(
-                                                strings
-                                                    .warningPWABottomSheetFinalStep,
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w500,
+                                                SizedBox(height: 25),
+                                                Text(
+                                                  strings
+                                                      .warningPWABottomSheetFinalStep,
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       );
@@ -282,7 +289,6 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               InkWell(
-                                splashColor: Colors.transparent,
                                 onTap: () {
                                   setState(() {
                                     selectedOption = 0;
@@ -311,7 +317,6 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                                 ),
                               ),
                               InkWell(
-                                splashColor: Colors.transparent,
                                 onTap: () {
                                   setState(() {
                                     selectedOption = 1;
@@ -340,7 +345,6 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                                 ),
                               ),
                               InkWell(
-                                splashColor: Colors.transparent,
                                 onTap: () {
                                   setState(() {
                                     selectedOption = 2;
@@ -395,6 +399,8 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                             ) {
                               final watchListItem = data.watchList![index];
                               return InkWell(
+                                splashColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
                                 onTap: () => Navigator.of(context).pushNamed(
                                   '/movie_details',
                                   arguments: watchListItem.id,
