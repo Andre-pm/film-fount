@@ -82,7 +82,7 @@ An online movie library project built in Flutter using the Model-View-ViewModel 
 
 🔗 **Access the platform at:** [https://film-fount.vercel.app](https://film-fount.vercel.app)
 
-### 📸 Screenshots
+### Screenshots
 
 #### Web Version
 <table>
