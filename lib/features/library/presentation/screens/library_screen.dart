@@ -4,7 +4,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:film_fount/core/domain/enums/menu_option.dart';
 import 'package:film_fount/core/presentation/providers/core_providers.dart';
 import 'package:film_fount/core/presentation/widgets/menu_bar_widget.dart';
+import 'package:film_fount/core/utils/platform_utils.dart';
 import 'package:film_fount/features/library/presentation/providers/library_providers.dart';
+import 'package:film_fount/features/library/presentation/widgets/empty_library_state.dart';
+import 'package:film_fount/features/library/presentation/widgets/library_category_selector.dart';
+import 'package:film_fount/features/library/presentation/widgets/pwa_warning_widget.dart';
 import 'package:film_fount/features/movie_detail/presentation/events/watch_list_updated_event.dart';
 import 'package:film_fount/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -48,16 +52,6 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
     super.dispose();
   }
 
-  bool isPwa() {
-    return web.window.matchMedia('(display-mode: standalone)').matches ||
-        IOSNavigator(web.window.navigator).standalone == true;
-  }
-
-  bool isMobile() {
-    return web.window.matchMedia('(pointer: coarse)').matches ||
-        web.window.innerWidth <= 768;
-  }
-
   @override
   Widget build(BuildContext context) {
     final strings = AppLocalizations.of(context)!;
@@ -79,155 +73,9 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
               SliverToBoxAdapter(
                 child: isPwa() || closeWarningDisplayed
                     ? SizedBox.shrink()
-                    : Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 15,
-                          horizontal: 24,
-                        ),
-                        child: InkWell(
-                          splashColor: Colors.transparent,
-                          onTap: () {
-                            isMobileDevice
-                                ? showModalBottomSheet(
-                                    context: context,
-                                    builder: (_) {
-                                      return Container(
-                                        decoration: BoxDecoration(
-                                          color: theme.colorScheme.surface,
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(15),
-                                            topRight: Radius.circular(15),
-                                          ),
-                                        ),
-                                        height: 310,
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 15.0,
-                                            vertical: 24.0,
-                                          ),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Align(
-                                                alignment: Alignment.center,
-                                                child: Image.asset(
-                                                  'assets/images/favicon.png',
-                                                  width: 50,
-                                                  height: 50,
-                                                ),
-                                              ),
-                                              SizedBox(height: 25),
-                                              Text(
-                                                strings
-                                                    .warningPWABottomSheetTitle,
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 16,
-                                                ),
-                                              ),
-                                              SizedBox(height: 25),
-                                              Text(
-                                                strings
-                                                    .warningPWABottomSheetFirstStep,
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                              Text(
-                                                strings
-                                                    .warningPWABottomSheetSecondStep,
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                              SizedBox(height: 25),
-                                              Text(
-                                                strings
-                                                    .warningPWABottomSheetFinalStep,
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  )
-                                : null;
-                          },
-                          child: ConstrainedBox(
-                            constraints: BoxConstraints(maxWidth: 150),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: theme.colorScheme.secondary,
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Stack(
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.topRight,
-                                      child: IconButton(
-                                        onPressed: () => setState(() {
-                                          closeWarningDisplayed = true;
-                                          web.window.localStorage.setItem(
-                                            'closeWarningDisplayed',
-                                            'true',
-                                          );
-                                        }),
-                                        icon: Icon(
-                                          Icons.close,
-                                          color: Theme.of(
-                                            context,
-                                          ).colorScheme.primary,
-                                        ),
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          SizedBox(height: 15),
-                                          Text(
-                                            isMobileDevice
-                                                ? strings.warningPWAMobileTitle
-                                                : strings.warningPWAWebTitle,
-                                            style: TextStyle(
-                                              color: Theme.of(
-                                                context,
-                                              ).colorScheme.primary,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          SizedBox(height: 10),
-                                          Text(
-                                            isMobileDevice
-                                                ? strings
-                                                      .warningPWAMobileSubtitle
-                                                : strings.warningPWAWebSubtitle,
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              color: Theme.of(
-                                                context,
-                                              ).colorScheme.primary,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+                    : PwaWarningWidget(
+                        isMobileDevice: isMobileDevice,
+                        onClose: () => setState(() => closeWarningDisplayed = true),
                       ),
               ),
               SliverToBoxAdapter(
@@ -274,101 +122,16 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         physics: const BouncingScrollPhysics(),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 25),
-                          child: Row(
-                            spacing: 15,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              InkWell(
-                                splashColor: Colors.transparent,
-                                onTap: () {
-                                  setState(() {
-                                    selectedOption = 0;
-                                    libraryNotifier.changeWatchListView(null);
-                                  });
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 20,
-                                    vertical: 15,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: selectedOption == 0
-                                        ? Theme.of(
-                                            context,
-                                          ).colorScheme.secondary
-                                        : const Color.fromARGB(
-                                            255,
-                                            159,
-                                            159,
-                                            159,
-                                          ),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Text(strings.libraryAllSection),
-                                ),
-                              ),
-                              InkWell(
-                                splashColor: Colors.transparent,
-                                onTap: () {
-                                  setState(() {
-                                    selectedOption = 1;
-                                    libraryNotifier.changeWatchListView(true);
-                                  });
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 20,
-                                    vertical: 15,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: selectedOption == 1
-                                        ? Theme.of(
-                                            context,
-                                          ).colorScheme.secondary
-                                        : const Color.fromARGB(
-                                            255,
-                                            159,
-                                            159,
-                                            159,
-                                          ),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Text(strings.libraryWatchedSection),
-                                ),
-                              ),
-                              InkWell(
-                                splashColor: Colors.transparent,
-                                onTap: () {
-                                  setState(() {
-                                    selectedOption = 2;
-                                    libraryNotifier.changeWatchListView(false);
-                                  });
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 20,
-                                    vertical: 15,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: selectedOption == 2
-                                        ? Theme.of(
-                                            context,
-                                          ).colorScheme.secondary
-                                        : const Color.fromARGB(
-                                            255,
-                                            159,
-                                            159,
-                                            159,
-                                          ),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Text(strings.libraryNotWatchedSection),
-                                ),
-                              ),
-                            ],
-                          ),
+                        child: LibraryCategorySelector(
+                          selectedOption: selectedOption,
+                          onOptionSelected: (index) {
+                            setState(() {
+                              selectedOption = index;
+                              if (index == 0) libraryNotifier.changeWatchListView(null);
+                              if (index == 1) libraryNotifier.changeWatchListView(true);
+                              if (index == 2) libraryNotifier.changeWatchListView(false);
+                            });
+                          },
                         ),
                       ),
                     ),
@@ -430,46 +193,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                                 ),
                           )
                         : SliverFillRemaining(
-                            child: Container(
-                              color: Color.fromRGBO(38, 38, 38, 1),
-                              padding: EdgeInsets.all(10),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    selectedOption == 1
-                                        ? strings
-                                              .libraryWatchedSectionEmptyTitle
-                                        : strings
-                                              .libraryNotWatchedSectionEmptyTitle,
-                                    style: TextStyle(
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.onSurface,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  SizedBox(height: 10),
-                                  Text(
-                                    selectedOption == 1
-                                        ? strings
-                                              .libraryWatchedSectionEmptyDescription
-                                        : strings
-                                              .libraryNotWatchedSectionEmptyDescription,
-                                    style: TextStyle(
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.onSurface,
-                                      fontSize: 10,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
-                              ),
-                            ),
+                            child: EmptyLibraryState(selectedOption: selectedOption),
                           ),
                   );
                 },
@@ -503,8 +227,4 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
       ),
     );
   }
-}
-
-extension type IOSNavigator(web.Navigator navigator) implements web.Navigator {
-  external bool? get standalone;
 }
