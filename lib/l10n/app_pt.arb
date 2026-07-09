@@ -92,5 +92,14 @@
     "profileDeleteDialogDescription":"Essa ação é irreversível. Tem certeza que deseja excluir sua conta?",
     "profileDeleteDialogCancel":"Cancelar",
     "profileDeleteDialogConfirm":"Confirmar",
-    "accountDeletedAlert":"Conta excluída com sucesso."
+    "accountDeletedAlert":"Conta excluída com sucesso.",
+    "warningPWABottomSheetTitle":"Acesse a versão da plataforma como um app nativo",
+    "warningPWABottomSheetFirstStep":"1 - No seu navegador, toque em Compartilhar",
+    "warningPWABottomSheetSecondStep":"2 - Selecione Adicionar à Tela de Início",
+    "warningPWABottomSheetFinalStep":"Pronto, agora você pode acessar o app rapidamente pela tela inicial do seu celular!",
+    "warningPWAWebTitle":"📲 Acesse também pelo celular",
+    "warningPWAMobileTitle":"📲 Adicione este app à sua tela inicial",
+    "warningPWAMobileSubtitle":"Você pode adicionar este app à tela inicial para acessar mais rápido e ter uma experiência ainda melhor",
+    "warningPWAWebSubtitle":"Acesse o site pelo seu celular e adicione este app à tela inicial para uma experiência ainda melhor"
+
 }

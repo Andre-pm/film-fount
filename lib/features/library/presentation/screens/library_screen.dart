@@ -1,15 +1,20 @@
 import 'dart:async';
 import 'dart:ui';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:film_fount/core/domain/enums/menu_option.dart';
 import 'package:film_fount/core/presentation/providers/core_providers.dart';
 import 'package:film_fount/core/presentation/widgets/menu_bar_widget.dart';
+import 'package:film_fount/core/presentation/widgets/navbar_app_version_widget.dart';
+import 'package:film_fount/core/utils/platform_utils.dart';
 import 'package:film_fount/features/library/presentation/providers/library_providers.dart';
+import 'package:film_fount/features/library/presentation/widgets/empty_library_state.dart';
+import 'package:film_fount/features/library/presentation/widgets/library_category_selector.dart';
+import 'package:film_fount/features/library/presentation/widgets/pwa_warning_widget.dart';
 import 'package:film_fount/features/movie_detail/presentation/events/watch_list_updated_event.dart';
 import 'package:film_fount/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:web/web.dart' as web;
 
 class LibraryScreen extends ConsumerStatefulWidget {
   const LibraryScreen({super.key});
@@ -21,11 +26,17 @@ class LibraryScreen extends ConsumerStatefulWidget {
 class _LibraryScreenState extends ConsumerState<LibraryScreen> {
   late StreamSubscription _watchListSub;
   late int selectedOption;
+  late bool closeWarningDisplayed;
+  late bool isAppVersion;
 
   @override
   void initState() {
     super.initState();
     selectedOption = 0;
+    final storedValue = web.window.localStorage.getItem(
+      'closeWarningDisplayed',
+    );
+    closeWarningDisplayed = storedValue == 'true';
     _watchListSub = ref
         .read(eventBusProvider)
         .on<WatchListUpdatedEvent>()
@@ -33,6 +44,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
           ref.read(libraryNotifierProvider.notifier).fetchWatchList(true);
           selectedOption = 0;
         });
+    isAppVersion = isPwa();
   }
 
   @override
@@ -44,19 +56,38 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
   @override
   Widget build(BuildContext context) {
     final strings = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
     final libraryState = ref.watch(libraryNotifierProvider);
     final libraryNotifier = ref.read(libraryNotifierProvider.notifier);
     final double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      bottomNavigationBar: isAppVersion
+          ? NavBarAppVersionWidget(
+              theme: theme,
+              strings: strings,
+              selectedIndex: 2,
+            )
+          : null,
       body: LayoutBuilder(
         builder: (context, constraints) {
           final bool isLargeScreen = constraints.maxWidth > 1200;
           return CustomScrollView(
             slivers: [
-              MenuBarWidget(
-                isLargeVersion: isLargeScreen,
-                option: MenuOptions.library,
+              isAppVersion
+                  ? SliverToBoxAdapter(child: SizedBox.shrink())
+                  : MenuBarWidget(
+                      isLargeVersion: isLargeScreen,
+                      option: MenuOptions.library,
+                    ),
+              SliverToBoxAdapter(
+                child: isAppVersion || closeWarningDisplayed
+                    ? SizedBox.shrink()
+                    : PwaWarningWidget(
+                        isMobileDevice: isMobile(),
+                        onClose: () =>
+                            setState(() => closeWarningDisplayed = true),
+                      ),
               ),
               SliverToBoxAdapter(
                 child: Padding(
@@ -102,101 +133,22 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         physics: const BouncingScrollPhysics(),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 25),
-                          child: Row(
-                            spacing: 15,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              InkWell(
-                                splashColor: Colors.transparent,
-                                onTap: () {
-                                  setState(() {
-                                    selectedOption = 0;
-                                    libraryNotifier.changeWatchListView(null);
-                                  });
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 20,
-                                    vertical: 15,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: selectedOption == 0
-                                        ? Theme.of(
-                                            context,
-                                          ).colorScheme.secondary
-                                        : const Color.fromARGB(
-                                            255,
-                                            159,
-                                            159,
-                                            159,
-                                          ),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Text(strings.libraryAllSection),
-                                ),
-                              ),
-                              InkWell(
-                                splashColor: Colors.transparent,
-                                onTap: () {
-                                  setState(() {
-                                    selectedOption = 1;
-                                    libraryNotifier.changeWatchListView(true);
-                                  });
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 20,
-                                    vertical: 15,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: selectedOption == 1
-                                        ? Theme.of(
-                                            context,
-                                          ).colorScheme.secondary
-                                        : const Color.fromARGB(
-                                            255,
-                                            159,
-                                            159,
-                                            159,
-                                          ),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Text(strings.libraryWatchedSection),
-                                ),
-                              ),
-                              InkWell(
-                                splashColor: Colors.transparent,
-                                onTap: () {
-                                  setState(() {
-                                    selectedOption = 2;
-                                    libraryNotifier.changeWatchListView(false);
-                                  });
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 20,
-                                    vertical: 15,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: selectedOption == 2
-                                        ? Theme.of(
-                                            context,
-                                          ).colorScheme.secondary
-                                        : const Color.fromARGB(
-                                            255,
-                                            159,
-                                            159,
-                                            159,
-                                          ),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Text(strings.libraryNotWatchedSection),
-                                ),
-                              ),
-                            ],
-                          ),
+                        child: LibraryCategorySelector(
+                          selectedOption: selectedOption,
+                          onOptionSelected: (index) {
+                            setState(() {
+                              selectedOption = index;
+                              if (index == 0) {
+                                libraryNotifier.changeWatchListView(null);
+                              }
+                              if (index == 1) {
+                                libraryNotifier.changeWatchListView(true);
+                              }
+                              if (index == 2) {
+                                libraryNotifier.changeWatchListView(false);
+                              }
+                            });
+                          },
                         ),
                       ),
                     ),
@@ -258,45 +210,8 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                                 ),
                           )
                         : SliverFillRemaining(
-                            child: Container(
-                              color: Color.fromRGBO(38, 38, 38, 1),
-                              padding: EdgeInsets.all(10),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    selectedOption == 1
-                                        ? strings
-                                              .libraryWatchedSectionEmptyTitle
-                                        : strings
-                                              .libraryNotWatchedSectionEmptyTitle,
-                                    style: TextStyle(
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.onSurface,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  SizedBox(height: 10),
-                                  Text(
-                                    selectedOption == 1
-                                        ? strings
-                                              .libraryWatchedSectionEmptyDescription
-                                        : strings
-                                              .libraryNotWatchedSectionEmptyDescription,
-                                    style: TextStyle(
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.onSurface,
-                                      fontSize: 10,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
-                              ),
+                            child: EmptyLibraryState(
+                              selectedOption: selectedOption,
                             ),
                           ),
                   );
@@ -312,15 +227,13 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                         Text(
                           strings.libraryEmptyTitle,
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface,
+                            color: theme.colorScheme.onSurface,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         Text(
                           strings.libraryEmptySubtitle,
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface,
-                          ),
+                          style: TextStyle(color: theme.colorScheme.onSurface),
                         ),
                       ],
                     ),

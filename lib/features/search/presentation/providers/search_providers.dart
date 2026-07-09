@@ -4,9 +4,9 @@ import 'package:film_fount/features/search/data/datasources/the_movie_database_s
 import 'package:film_fount/features/search/data/repositories/the_movie_database_repository_impl.dart';
 import 'package:film_fount/features/search/domain/entities/movie_entity.dart';
 import 'package:film_fount/features/search/domain/repositories/the_movie_database_repository.dart';
+import 'package:film_fount/features/search/domain/usecases/search_movie_usecase.dart';
 import 'package:film_fount/features/search/presentation/notifiers/movie_search_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_riverpod/legacy.dart';
 
 final dioProvider = Provider<Dio>((ref) => Dio());
 
@@ -19,10 +19,12 @@ final theMovieDatabaseRepositoryProvider = Provider<TheMovieDatabaseRepository>(
       TheMovieDatabaseRepositoryImpl(ref.watch(theMovieDatabaseSourceProvider)),
 );
 
+final searchMovieUseCaseProvider = Provider<SearchMovieUseCase>((ref) => SearchMovieUseCase(ref.watch(theMovieDatabaseRepositoryProvider)));
+
 final movieSearchNotifierProvider =
     StateNotifierProvider.autoDispose<
       MovieSearchNotifier,
       AppState<List<MovieEntity>>
     >((ref) {
-      return MovieSearchNotifier(ref.watch(theMovieDatabaseRepositoryProvider));
+      return MovieSearchNotifier(ref.watch(searchMovieUseCaseProvider));
     });

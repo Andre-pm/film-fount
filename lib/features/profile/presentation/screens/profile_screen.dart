@@ -1,6 +1,9 @@
 import 'package:film_fount/core/domain/enums/menu_option.dart';
 import 'package:film_fount/core/presentation/extensions/string_extensions.dart';
 import 'package:film_fount/core/presentation/widgets/menu_bar_widget.dart';
+import 'package:film_fount/core/presentation/widgets/navbar_app_version_widget.dart';
+import 'package:film_fount/core/utils/platform_utils.dart';
+import 'package:film_fount/features/auth/presentation/providers/auth_provider.dart';
 import 'package:film_fount/features/movie_detail/presentation/widgets/action_button_widget.dart';
 import 'package:film_fount/features/profile/presentation/providers/profile_providers.dart';
 import 'package:film_fount/l10n/app_localizations.dart';
@@ -17,8 +20,24 @@ class ProfileScreen extends ConsumerWidget {
     final notifier = ref.read(profileNotifierProvider.notifier);
     final strings = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
+    final bool isAppVersion = isPwa();
+
+    Future<void> handleLogout(BuildContext context) async {
+      final authControllerNotifier = ref.read(authNotifierProvider.notifier);
+      final success = await authControllerNotifier.signOut();
+      if (success && context.mounted) {
+        Navigator.of(context).pushReplacementNamed('/');
+      }
+    }
 
     return Scaffold(
+      bottomNavigationBar: isAppVersion
+          ? NavBarAppVersionWidget(
+              theme: theme,
+              strings: strings,
+              selectedIndex: 1,
+            )
+          : null,
       body: LayoutBuilder(
         builder: (context, constraints) {
           final bool isLargeVersion = constraints.maxWidth > 1200;
@@ -26,10 +45,12 @@ class ProfileScreen extends ConsumerWidget {
           return LayoutBuilder(
             builder: (context, constraints) => CustomScrollView(
               slivers: <Widget>[
-                MenuBarWidget(
-                  isLargeVersion: isLargeVersion,
-                  option: MenuOptions.profile,
-                ),
+                isAppVersion
+                    ? SliverToBoxAdapter(child: SizedBox.shrink())
+                    : MenuBarWidget(
+                        isLargeVersion: isLargeVersion,
+                        option: MenuOptions.profile,
+                      ),
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: const EdgeInsets.only(top: 50),
@@ -158,6 +179,14 @@ class ProfileScreen extends ConsumerWidget {
                             buttonColor: Color.fromRGBO(255, 116, 108, 1),
                             title: strings.profileDeleteAccountButton,
                             icon: Icons.delete,
+                          ),
+                          actionButtonWidget(
+                            onTap: () {
+                              handleLogout(context);
+                            },
+                            buttonColor: theme.colorScheme.tertiary,
+                            title: strings.menuOptionLogout,
+                            icon: Icons.exit_to_app,
                           ),
                         ],
                       ),

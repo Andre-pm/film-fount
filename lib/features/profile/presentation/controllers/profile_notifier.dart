@@ -3,16 +3,21 @@ import 'dart:ui';
 import 'package:film_fount/core/presentation/extensions/string_extensions.dart';
 import 'package:film_fount/core/state/state_notifier.dart';
 import 'package:film_fount/features/auth/domain/entities/user_entity.dart';
-import 'package:film_fount/features/library/domain/repositories/library_repository.dart';
-import 'package:film_fount/features/profile/domain/repositories/profile_repository.dart';
-import 'package:flutter_riverpod/legacy.dart';
+import 'package:film_fount/features/auth/domain/usecases/delete_account_usecase.dart';
+import 'package:film_fount/features/library/domain/usecases/delete_library_usecase.dart';
+import 'package:film_fount/features/profile/domain/usecases/get_user_entity_usecase.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProfileNotifier extends StateNotifier<AppState<UserEntity>> {
-  final ProfileRepository _profileRepository;
-  final LibraryRepository _libraryRepository;
+  final GetUserEntityUseCase _getUserEntityUseCase;
+  final DeleteLibraryUseCase _deleteLibraryUseCase;
+  final DeleteAccountUseCase _deleteAccountUseCase;
 
-  ProfileNotifier(this._profileRepository, this._libraryRepository)
-    : super(const AppState.initial()) {
+  ProfileNotifier(
+    this._getUserEntityUseCase,
+    this._deleteLibraryUseCase,
+    this._deleteAccountUseCase,
+  ) : super(const AppState.initial()) {
     fetchUser();
   }
 
@@ -23,7 +28,7 @@ class ProfileNotifier extends StateNotifier<AppState<UserEntity>> {
     try {
       _localUser != null
           ? state = AppState.data(_localUser!)
-          : _localUser = await _profileRepository.getUserEntity();
+          : _localUser = await _getUserEntityUseCase();
       state = AppState.data(_localUser!);
     } catch (e) {
       state = AppState.error(e);
@@ -34,8 +39,8 @@ class ProfileNotifier extends StateNotifier<AppState<UserEntity>> {
     state = AppState.loading();
 
     try {
-      await _libraryRepository.deleteLibrary((_localUser?.uid).orEmpty);
-      await _profileRepository.deleteAccount();
+      await _deleteLibraryUseCase((_localUser?.uid).orEmpty);
+      await _deleteAccountUseCase();
 
       state = const AppState.initial();
       onSuccess();

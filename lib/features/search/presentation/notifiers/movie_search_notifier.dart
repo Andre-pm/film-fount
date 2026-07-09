@@ -1,12 +1,12 @@
 import 'package:film_fount/features/search/domain/entities/movie_entity.dart';
-import 'package:film_fount/features/search/domain/repositories/the_movie_database_repository.dart';
+import 'package:film_fount/features/search/domain/usecases/search_movie_usecase.dart';
 import 'package:film_fount/core/state/state_notifier.dart';
-import 'package:flutter_riverpod/legacy.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class MovieSearchNotifier extends StateNotifier<AppState<List<MovieEntity>>> {
-  final TheMovieDatabaseRepository _tmdbRepository;
+  final SearchMovieUseCase _searchMovieUseCase;
 
-  MovieSearchNotifier(this._tmdbRepository) : super(AppState.initial());
+  MovieSearchNotifier(this._searchMovieUseCase) : super(AppState.initial());
 
   String currentQuery = '';
   int queryPage = 1;
@@ -18,7 +18,7 @@ class MovieSearchNotifier extends StateNotifier<AppState<List<MovieEntity>>> {
     currentQuery = query;
     state = AppState.loading();
     try {
-      final movies = await _tmdbRepository.searchMovie(query, queryPage);
+      final movies = await _searchMovieUseCase(query, queryPage);
       isMoreMovies = movies.isNotEmpty;
       state = AppState.data(movies);
     } catch (e) {
@@ -28,7 +28,7 @@ class MovieSearchNotifier extends StateNotifier<AppState<List<MovieEntity>>> {
 
   Future<bool> loadSearchNextPage() async {
     queryPage++;
-    final newMovies = await _tmdbRepository.searchMovie(
+    final newMovies = await _searchMovieUseCase(
       currentQuery,
       queryPage,
     );

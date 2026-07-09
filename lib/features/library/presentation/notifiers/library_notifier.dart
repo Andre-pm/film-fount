@@ -1,12 +1,12 @@
 import 'package:film_fount/core/state/state_notifier.dart';
 import 'package:film_fount/features/library/domain/entities/watch_list_entity.dart';
-import 'package:film_fount/features/library/domain/repositories/library_repository.dart';
-import 'package:flutter_riverpod/legacy.dart';
+import 'package:film_fount/features/library/domain/usecases/get_library_movies_usecase.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class LibraryNotifier extends StateNotifier<AppState<WatchListEntity>> {
-  final LibraryRepository _repository;
+  final GetLibraryMoviesUseCase _getLibraryMoviesUseCase;
 
-  LibraryNotifier(this._repository) : super(AppState.initial()) {
+  LibraryNotifier(this._getLibraryMoviesUseCase) : super(AppState.initial()) {
     fetchWatchList(true);
   }
   WatchListEntity? currentWatchList;
@@ -16,7 +16,7 @@ class LibraryNotifier extends StateNotifier<AppState<WatchListEntity>> {
     try {
       currentWatchList != null && !forceUpdate
           ? null
-          : currentWatchList = await _repository.getLibraryMovies();
+          : currentWatchList = await _getLibraryMoviesUseCase();
       state = AppState.data(currentWatchList!);
     } catch (e) {
       state = AppState.error(e);

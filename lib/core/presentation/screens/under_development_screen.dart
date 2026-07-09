@@ -1,5 +1,7 @@
 import 'package:film_fount/core/domain/enums/menu_option.dart';
 import 'package:film_fount/core/presentation/widgets/menu_bar_widget.dart';
+import 'package:film_fount/core/presentation/widgets/navbar_app_version_widget.dart';
+import 'package:film_fount/core/utils/platform_utils.dart';
 import 'package:film_fount/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
@@ -15,18 +17,29 @@ class UnderDevelopmentScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final strings = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final bool isAppVersion = isPwa();
 
     return Scaffold(
+      bottomNavigationBar: isAppVersion
+          ? NavBarAppVersionWidget(
+              theme: theme,
+              strings: strings,
+              selectedIndex: 3,
+            )
+          : null,
       body: LayoutBuilder(
         builder: (context, constraints) {
           final bool isLargeVersion = constraints.maxWidth > 1200;
 
           return CustomScrollView(
             slivers: [
-              MenuBarWidget(
-                isLargeVersion: isLargeVersion,
-                option: selectedOption,
-              ),
+              isAppVersion
+                  ? SliverToBoxAdapter(child: SizedBox.shrink())
+                  : MenuBarWidget(
+                      isLargeVersion: isLargeVersion,
+                      option: selectedOption,
+                    ),
               SliverFillRemaining(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),

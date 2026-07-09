@@ -531,6 +531,54 @@ abstract class AppLocalizations {
   /// In pt, this message translates to:
   /// **'Conta excluída com sucesso.'**
   String get accountDeletedAlert;
+
+  /// No description provided for @warningPWABottomSheetTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Acesse a versão da plataforma como um app nativo'**
+  String get warningPWABottomSheetTitle;
+
+  /// No description provided for @warningPWABottomSheetFirstStep.
+  ///
+  /// In pt, this message translates to:
+  /// **'1 - No seu navegador, toque em Compartilhar'**
+  String get warningPWABottomSheetFirstStep;
+
+  /// No description provided for @warningPWABottomSheetSecondStep.
+  ///
+  /// In pt, this message translates to:
+  /// **'2 - Selecione Adicionar à Tela de Início'**
+  String get warningPWABottomSheetSecondStep;
+
+  /// No description provided for @warningPWABottomSheetFinalStep.
+  ///
+  /// In pt, this message translates to:
+  /// **'Pronto, agora você pode acessar o app rapidamente pela tela inicial do seu celular!'**
+  String get warningPWABottomSheetFinalStep;
+
+  /// No description provided for @warningPWAWebTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'📲 Acesse também pelo celular'**
+  String get warningPWAWebTitle;
+
+  /// No description provided for @warningPWAMobileTitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'📲 Adicione este app à sua tela inicial'**
+  String get warningPWAMobileTitle;
+
+  /// No description provided for @warningPWAMobileSubtitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Você pode adicionar este app à tela inicial para acessar mais rápido e ter uma experiência ainda melhor'**
+  String get warningPWAMobileSubtitle;
+
+  /// No description provided for @warningPWAWebSubtitle.
+  ///
+  /// In pt, this message translates to:
+  /// **'Acesse o site pelo seu celular e adicione este app à tela inicial para uma experiência ainda melhor'**
+  String get warningPWAWebSubtitle;
 }
 
 class _AppLocalizationsDelegate
