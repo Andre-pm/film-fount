@@ -81,7 +81,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                       option: MenuOptions.library,
                     ),
               SliverToBoxAdapter(
-                child: isMobile() || closeWarningDisplayed
+                child: isAppVersion || closeWarningDisplayed
                     ? SizedBox.shrink()
                     : PwaWarningWidget(
                         isMobileDevice: isMobile(),
