@@ -1,7 +1,6 @@
 import 'package:film_fount/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:web/web.dart' as web;
-import 'package:film_fount/core/utils/platform_utils.dart';
 
 class PwaWarningWidget extends StatelessWidget {
   final bool isMobileDevice;
@@ -19,10 +18,7 @@ class PwaWarningWidget extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 15,
-        horizontal: 24,
-      ),
+      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 24),
       child: InkWell(
         splashColor: Colors.transparent,
         onTap: () {
@@ -66,22 +62,16 @@ class PwaWarningWidget extends StatelessWidget {
                         SizedBox(height: 25),
                         Text(
                           strings.warningPWABottomSheetFirstStep,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                          ),
+                          style: TextStyle(fontWeight: FontWeight.w500),
                         ),
                         Text(
                           strings.warningPWABottomSheetSecondStep,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                          ),
+                          style: TextStyle(fontWeight: FontWeight.w500),
                         ),
                         SizedBox(height: 25),
                         Text(
                           strings.warningPWABottomSheetFinalStep,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                          ),
+                          style: TextStyle(fontWeight: FontWeight.w500),
                         ),
                       ],
                     ),
@@ -106,13 +96,13 @@ class PwaWarningWidget extends StatelessWidget {
                     alignment: Alignment.topRight,
                     child: IconButton(
                       onPressed: () {
-                        web.window.localStorage.setItem('closeWarningDisplayed', 'true');
+                        web.window.localStorage.setItem(
+                          'closeWarningDisplayed',
+                          'true',
+                        );
                         onClose();
                       },
-                      icon: Icon(
-                        Icons.close,
-                        color: theme.colorScheme.primary,
-                      ),
+                      icon: Icon(Icons.close, color: theme.colorScheme.primary),
                     ),
                   ),
                   Align(
@@ -137,9 +127,7 @@ class PwaWarningWidget extends StatelessWidget {
                               ? strings.warningPWAMobileSubtitle
                               : strings.warningPWAWebSubtitle,
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: theme.colorScheme.primary,
-                          ),
+                          style: TextStyle(color: theme.colorScheme.primary),
                         ),
                       ],
                     ),
