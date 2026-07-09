@@ -4,6 +4,7 @@ import 'package:film_fount/features/library/data/datasources/library_datasource.
 import 'package:film_fount/features/library/data/respositories/library_repository_impl.dart';
 import 'package:film_fount/features/library/domain/entities/watch_list_entity.dart';
 import 'package:film_fount/features/library/domain/repositories/library_repository.dart';
+import 'package:film_fount/features/library/domain/usecases/get_library_movies_usecase.dart';
 import 'package:film_fount/features/library/presentation/notifiers/library_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -18,8 +19,12 @@ final libraryRepositoryProvider = Provider<LibraryRepository>(
   (ref) => LibraryRepositoryImpl(ref.watch(libraryDatasourceProvider)),
 );
 
+final getLibraryMoviesUseCaseProvider = Provider<GetLibraryMoviesUseCase>(
+  (ref) => GetLibraryMoviesUseCase(ref.watch(libraryRepositoryProvider)),
+);
+
 final libraryNotifierProvider =
     StateNotifierProvider.autoDispose<
       LibraryNotifier,
       AppState<WatchListEntity>
-    >((ref) => LibraryNotifier(ref.watch(libraryRepositoryProvider)));
+    >((ref) => LibraryNotifier(ref.watch(getLibraryMoviesUseCaseProvider)));

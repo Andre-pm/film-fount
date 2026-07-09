@@ -1,22 +1,25 @@
 import 'dart:async';
 
 import 'package:film_fount/features/auth/presentation/providers/auth_provider.dart';
+import 'package:film_fount/features/auth/domain/usecases/login_with_google_usecase.dart';
+import 'package:film_fount/features/auth/domain/usecases/sign_out_usecase.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:film_fount/features/auth/domain/repositories/auth_repository.dart';
 
 class AuthNotifier extends AsyncNotifier<bool> {
-  late final AuthRepository _repository;
+  late final LoginWithGoogleUseCase _loginWithGoogleUseCase;
+  late final SignOutUseCase _signOutUseCase;
 
   @override
   FutureOr<bool> build() {
-    _repository = ref.watch(authRepositoryProvider);
+    _loginWithGoogleUseCase = ref.watch(loginWithGoogleUseCaseProvider);
+    _signOutUseCase = ref.watch(signOutUseCaseProvider);
     return false;
   }
 
   Future<bool> signInWithGoogle() async {
     state = const AsyncValue.loading();
     try {
-      return await _repository.loginWithGoogle();
+      return await _loginWithGoogleUseCase();
     } catch (e, st) {
       state = AsyncValue.error(e, st);
       return false;
@@ -26,7 +29,7 @@ class AuthNotifier extends AsyncNotifier<bool> {
   Future<bool> signOut() async {
     state = const AsyncValue.loading();
     try {
-      return await _repository.signOut();
+      return await _signOutUseCase();
     } catch (e, st) {
       state = AsyncValue.error(e, st);
       return false;

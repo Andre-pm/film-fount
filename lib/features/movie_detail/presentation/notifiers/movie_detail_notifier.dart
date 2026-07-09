@@ -1,22 +1,38 @@
 import 'package:event_bus/event_bus.dart';
 import 'package:film_fount/core/state/state_notifier.dart';
-import 'package:film_fount/features/library/domain/repositories/library_repository.dart';
+import 'package:film_fount/features/library/domain/usecases/add_to_watch_list_usecase.dart';
+import 'package:film_fount/features/library/domain/usecases/firebase_watch_list_content_usecase.dart';
+import 'package:film_fount/features/library/domain/usecases/remove_from_watch_list_usecase.dart';
+import 'package:film_fount/features/library/domain/usecases/update_watched_usecase.dart';
 import 'package:film_fount/features/movie_detail/domain/entities/movie_detail_entity.dart';
-import 'package:film_fount/features/movie_detail/domain/repositories/the_movie_detail_repository.dart';
+import 'package:film_fount/features/movie_detail/domain/usecases/get_movie_details_usecase.dart';
+import 'package:film_fount/features/movie_detail/domain/usecases/get_recommendations_usecase.dart';
+import 'package:film_fount/features/movie_detail/domain/usecases/get_similar_movies_usecase.dart';
 import 'package:film_fount/features/movie_detail/presentation/events/watch_list_updated_event.dart';
 import 'package:film_fount/features/search/domain/entities/movie_entity.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final class MovieDetailNotifier
     extends StateNotifier<AppState<MovieDetailEntity>> {
-  final TheMovieDetailRepository _movieDetailRepository;
-  final LibraryRepository _libraryRepository;
+  final GetMovieDetailsUseCase _getMovieDetailsUseCase;
+  final GetSimilarMoviesUseCase _getSimilarMoviesUseCase;
+  final GetRecommendationsUseCase _getRecommendationsUseCase;
+  final FirebaseWatchListContentUseCase _firebaseWatchListContentUseCase;
+  final AddToWatchListUseCase _addToWatchListUseCase;
+  final RemoveFromWatchListUseCase _removeFromWatchListUseCase;
+  final UpdateWatchedUseCase _updateWatchedUseCase;
+
   final int movieId;
   final EventBus eventBus;
 
   MovieDetailNotifier(
-    this._movieDetailRepository,
-    this._libraryRepository,
+    this._getMovieDetailsUseCase,
+    this._getSimilarMoviesUseCase,
+    this._getRecommendationsUseCase,
+    this._firebaseWatchListContentUseCase,
+    this._addToWatchListUseCase,
+    this._removeFromWatchListUseCase,
+    this._updateWatchedUseCase,
     this.movieId,
     this.eventBus,
   ) : super(const AppState.initial()) {
@@ -34,10 +50,10 @@ final class MovieDetailNotifier
     try {
       final id = movieId ?? 0;
       final results = await Future.wait([
-        _movieDetailRepository.getMovieDetails(id),
-        _libraryRepository.firebaseWatchListContent(id),
-        _movieDetailRepository.getSimilarMovies(id, similarMoviesPage),
-        _movieDetailRepository.getRecommendations(id, recommendationsPage),
+        _getMovieDetailsUseCase(id),
+        _firebaseWatchListContentUseCase(id),
+        _getSimilarMoviesUseCase(id, similarMoviesPage),
+        _getRecommendationsUseCase(id, recommendationsPage),
       ]);
       final movieResponse = results[0] as MovieDetailEntity;
       final firebaseWatchListContent = results[1] as MovieDetailEntity;
@@ -71,7 +87,7 @@ final class MovieDetailNotifier
 
   Future<bool> loadMoreSimilarMovies() async {
     similarMoviesPage++;
-    final newMovies = await _movieDetailRepository.getSimilarMovies(
+    final newMovies = await _getSimilarMoviesUseCase(
       currentMovieId,
       similarMoviesPage,
     );
@@ -94,7 +110,7 @@ final class MovieDetailNotifier
 
   Future<bool> loadMoreRecommendations() async {
     recommendationsPage++;
-    final newRecommendations = await _movieDetailRepository.getRecommendations(
+    final newRecommendations = await _getRecommendationsUseCase(
       currentMovieId,
       recommendationsPage,
     );
@@ -120,7 +136,7 @@ final class MovieDetailNotifier
 
   Future<void> addToWatchList(MovieDetailEntity movie) async {
     try {
-      final success = await _libraryRepository.addToWatchList(movie);
+      final success = await _addToWatchListUseCase(movie);
       if (success) {
         refreshWatchListStatus(isInWatchList: true);
       }
@@ -132,7 +148,7 @@ final class MovieDetailNotifier
   Future<void> removeFromWatchList(MovieDetailEntity movie) async {
     try {
       await isWatched(movie.id, false).then((_) async {
-        final success = await _libraryRepository.removeFromWatchList(movie);
+        final success = await _removeFromWatchListUseCase(movie);
         if (success) {
           refreshWatchListStatus(isInWatchList: false);
         }
@@ -144,7 +160,7 @@ final class MovieDetailNotifier
 
   Future<void> isWatched(int movieId, bool isWatched) async {
     try {
-      final success = await _libraryRepository.updateWatched(
+      final success = await _updateWatchedUseCase(
         movieId,
         isWatched,
       );
