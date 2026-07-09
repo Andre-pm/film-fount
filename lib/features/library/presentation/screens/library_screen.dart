@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:film_fount/core/domain/enums/menu_option.dart';
 import 'package:film_fount/core/presentation/providers/core_providers.dart';
 import 'package:film_fount/core/presentation/widgets/menu_bar_widget.dart';
+import 'package:film_fount/core/presentation/widgets/navbar_app_version_widget.dart';
 import 'package:film_fount/core/utils/platform_utils.dart';
 import 'package:film_fount/features/library/presentation/providers/library_providers.dart';
 import 'package:film_fount/features/library/presentation/widgets/empty_library_state.dart';
@@ -26,7 +27,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
   late StreamSubscription _watchListSub;
   late int selectedOption;
   late bool closeWarningDisplayed;
-  late bool isMobileDevice;
+  late bool isAppVersion;
 
   @override
   void initState() {
@@ -43,7 +44,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
           ref.read(libraryNotifierProvider.notifier).fetchWatchList(true);
           selectedOption = 0;
         });
-    isMobileDevice = isMobile();
+    isAppVersion = isPwa();
   }
 
   @override
@@ -61,21 +62,31 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
     final double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      bottomNavigationBar: isAppVersion
+          ? NavBarAppVersionWidget(
+              theme: theme,
+              strings: strings,
+              selectedIndex: 2,
+            )
+          : null,
       body: LayoutBuilder(
         builder: (context, constraints) {
           final bool isLargeScreen = constraints.maxWidth > 1200;
           return CustomScrollView(
             slivers: [
-              MenuBarWidget(
-                isLargeVersion: isLargeScreen,
-                option: MenuOptions.library,
-              ),
+              isAppVersion
+                  ? SliverToBoxAdapter(child: SizedBox.shrink())
+                  : MenuBarWidget(
+                      isLargeVersion: isLargeScreen,
+                      option: MenuOptions.library,
+                    ),
               SliverToBoxAdapter(
-                child: isPwa() || closeWarningDisplayed
+                child: isAppVersion || closeWarningDisplayed
                     ? SizedBox.shrink()
                     : PwaWarningWidget(
-                        isMobileDevice: isMobileDevice,
-                        onClose: () => setState(() => closeWarningDisplayed = true),
+                        isMobileDevice: isAppVersion,
+                        onClose: () =>
+                            setState(() => closeWarningDisplayed = true),
                       ),
               ),
               SliverToBoxAdapter(
@@ -127,9 +138,15 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                           onOptionSelected: (index) {
                             setState(() {
                               selectedOption = index;
-                              if (index == 0) libraryNotifier.changeWatchListView(null);
-                              if (index == 1) libraryNotifier.changeWatchListView(true);
-                              if (index == 2) libraryNotifier.changeWatchListView(false);
+                              if (index == 0) {
+                                libraryNotifier.changeWatchListView(null);
+                              }
+                              if (index == 1) {
+                                libraryNotifier.changeWatchListView(true);
+                              }
+                              if (index == 2) {
+                                libraryNotifier.changeWatchListView(false);
+                              }
                             });
                           },
                         ),
@@ -193,7 +210,9 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                                 ),
                           )
                         : SliverFillRemaining(
-                            child: EmptyLibraryState(selectedOption: selectedOption),
+                            child: EmptyLibraryState(
+                              selectedOption: selectedOption,
+                            ),
                           ),
                   );
                 },

@@ -1,5 +1,7 @@
 import 'package:film_fount/core/domain/enums/menu_option.dart';
 import 'package:film_fount/core/presentation/widgets/menu_bar_widget.dart';
+import 'package:film_fount/core/presentation/widgets/navbar_app_version_widget.dart';
+import 'package:film_fount/core/utils/platform_utils.dart';
 import 'package:film_fount/features/search/presentation/providers/search_providers.dart';
 import 'package:film_fount/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -17,10 +19,12 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   bool isLoadingMore = false;
   bool hasMoreMovies = false;
   final TextEditingController _movieController = TextEditingController();
+  late bool isAppVersion;
 
   @override
   void initState() {
     super.initState();
+    isAppVersion = isPwa();
     _scrollController.addListener(() {
       final max = _scrollController.position.maxScrollExtent;
       final current = _scrollController.position.pixels;
@@ -52,10 +56,18 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     final strings = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
     final state = ref.watch(movieSearchNotifierProvider);
     final notifier = ref.read(movieSearchNotifierProvider.notifier);
 
     return Scaffold(
+      bottomNavigationBar: isAppVersion
+          ? NavBarAppVersionWidget(
+              theme: theme,
+              strings: strings,
+              selectedIndex: 0,
+            )
+          : null,
       body: LayoutBuilder(
         builder: (context, constraints) {
           final bool isLargeVersion = constraints.maxWidth > 1200;
@@ -64,10 +76,12 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             shrinkWrap: true,
             controller: _scrollController,
             slivers: <Widget>[
-              MenuBarWidget(
-                isLargeVersion: isLargeVersion,
-                option: MenuOptions.search,
-              ),
+              isAppVersion
+                  ? SliverToBoxAdapter(child: SizedBox.shrink())
+                  : MenuBarWidget(
+                      isLargeVersion: isLargeVersion,
+                      option: MenuOptions.search,
+                    ),
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
