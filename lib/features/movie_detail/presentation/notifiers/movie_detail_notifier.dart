@@ -5,7 +5,7 @@ import 'package:film_fount/features/movie_detail/domain/entities/movie_detail_en
 import 'package:film_fount/features/movie_detail/domain/repositories/the_movie_detail_repository.dart';
 import 'package:film_fount/features/movie_detail/presentation/events/watch_list_updated_event.dart';
 import 'package:film_fount/features/search/domain/entities/movie_entity.dart';
-import 'package:flutter_riverpod/legacy.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final class MovieDetailNotifier
     extends StateNotifier<AppState<MovieDetailEntity>> {

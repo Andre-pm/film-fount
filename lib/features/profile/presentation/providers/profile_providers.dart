@@ -11,7 +11,6 @@ import 'package:film_fount/features/profile/data/repositories/profile_repository
 import 'package:film_fount/features/profile/domain/repositories/profile_repository.dart';
 import 'package:film_fount/features/profile/presentation/controllers/profile_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_riverpod/legacy.dart';
 
 final authDatasourceProvider = Provider<AuthDatasource>((ref) {
   return AuthDatasource(ref.watch(firebaseAuthProvider));

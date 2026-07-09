@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:ui';
-import 'dart:js_interop';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:film_fount/core/domain/enums/menu_option.dart';
 import 'package:film_fount/core/presentation/providers/core_providers.dart';
@@ -100,7 +99,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                                             topRight: Radius.circular(15),
                                           ),
                                         ),
-                                        height: 290,
+                                        height: 310,
                                         child: Padding(
                                           padding: const EdgeInsets.symmetric(
                                             horizontal: 15.0,

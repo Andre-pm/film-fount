@@ -1,7 +1,7 @@
 import 'package:film_fount/features/search/domain/entities/movie_entity.dart';
 import 'package:film_fount/features/search/domain/repositories/the_movie_database_repository.dart';
 import 'package:film_fount/core/state/state_notifier.dart';
-import 'package:flutter_riverpod/legacy.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class MovieSearchNotifier extends StateNotifier<AppState<List<MovieEntity>>> {
   final TheMovieDatabaseRepository _tmdbRepository;

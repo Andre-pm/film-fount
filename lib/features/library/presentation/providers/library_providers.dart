@@ -6,7 +6,6 @@ import 'package:film_fount/features/library/domain/entities/watch_list_entity.da
 import 'package:film_fount/features/library/domain/repositories/library_repository.dart';
 import 'package:film_fount/features/library/presentation/notifiers/library_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_riverpod/legacy.dart';
 
 final libraryDatasourceProvider = Provider<LibraryDatasource>(
   (ref) => LibraryDatasource(

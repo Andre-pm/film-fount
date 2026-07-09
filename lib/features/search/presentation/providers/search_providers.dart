@@ -6,7 +6,6 @@ import 'package:film_fount/features/search/domain/entities/movie_entity.dart';
 import 'package:film_fount/features/search/domain/repositories/the_movie_database_repository.dart';
 import 'package:film_fount/features/search/presentation/notifiers/movie_search_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_riverpod/legacy.dart';
 
 final dioProvider = Provider<Dio>((ref) => Dio());
 

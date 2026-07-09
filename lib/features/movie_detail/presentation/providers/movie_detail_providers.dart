@@ -9,7 +9,6 @@ import 'package:film_fount/features/movie_detail/domain/entities/movie_detail_en
 import 'package:film_fount/features/movie_detail/domain/repositories/the_movie_detail_repository.dart';
 import 'package:film_fount/features/movie_detail/presentation/notifiers/movie_detail_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_riverpod/legacy.dart';
 
 final movieDetailDatasourceProvider = Provider<MovieDetailDatasource>(
   (ref) => MovieDetailDatasource(
