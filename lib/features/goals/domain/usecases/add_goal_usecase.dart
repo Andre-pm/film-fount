@@ -4,7 +4,7 @@ import 'package:film_fount/features/goals/domain/repositories/goal_repository.da
 class AddGoalUseCase {
   final GoalRepository repository;
 
-  AddGoalUseCase({required this.repository});
+  AddGoalUseCase(this.repository);
 
   Future<bool> call(GoalEntity goal) {
     return repository.addGoal(goal);
