@@ -158,11 +158,13 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
               state.when(
                 initial: () =>
                     const SliverToBoxAdapter(child: SizedBox.shrink()),
-                loading: () => const SliverToBoxAdapter(
+                loading: () => SliverToBoxAdapter(
                   child: Center(
                     child: Padding(
                       padding: EdgeInsets.only(top: 25),
-                      child: CircularProgressIndicator(),
+                      child: CircularProgressIndicator(
+                        color: theme.colorScheme.secondary,
+                      ),
                     ),
                   ),
                 ),

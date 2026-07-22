@@ -9,6 +9,7 @@ class AuthWrapper extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     final authState = ref.watch(authStateProvider);
     return authState.when(
       data: (user) {
@@ -21,7 +22,13 @@ class AuthWrapper extends ConsumerWidget {
         return Scaffold(body: SizedBox.shrink());
       },
       loading: () {
-        return const Scaffold(body: Center(child: CircularProgressIndicator()));
+        return Scaffold(
+          body: Center(
+            child: CircularProgressIndicator(
+              color: theme.colorScheme.secondary,
+            ),
+          ),
+        );
       },
     );
   }

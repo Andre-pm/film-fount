@@ -158,7 +158,11 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
               libraryState.when(
                 initial: () => SliverToBoxAdapter(child: SizedBox.shrink()),
                 loading: () => SliverToBoxAdapter(
-                  child: Center(child: CircularProgressIndicator()),
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: theme.colorScheme.secondary,
+                    ),
+                  ),
                 ),
                 data: (data) {
                   return SliverPadding(

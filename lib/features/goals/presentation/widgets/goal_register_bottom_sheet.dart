@@ -314,7 +314,11 @@ class _GoalRegisterBottomSheetState
                   sliver: SliverToBoxAdapter(
                     child: state.when(
                       initial: () => SizedBox.shrink(),
-                      loading: () => Center(child: CircularProgressIndicator()),
+                      loading: () => Center(
+                        child: CircularProgressIndicator(
+                          color: theme.colorScheme.secondary,
+                        ),
+                      ),
                       data: (data) {
                         return ListView.builder(
                           shrinkWrap: true,

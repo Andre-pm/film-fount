@@ -135,6 +135,8 @@ class _AutoScrollingColumnState extends State<AutoScrollingColumn>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return ListView.builder(
       controller: _scrollController,
       physics: const NeverScrollableScrollPhysics(),
@@ -156,7 +158,11 @@ class _AutoScrollingColumnState extends State<AutoScrollingColumn>
                 return Container(
                   height: height,
                   color: Colors.grey[800],
-                  child: const Center(child: CircularProgressIndicator()),
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: theme.colorScheme.secondary,
+                    ),
+                  ),
                 );
               },
               errorBuilder: (context, error, stackTrace) => Container(

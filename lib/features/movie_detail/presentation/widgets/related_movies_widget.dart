@@ -13,6 +13,8 @@ Widget relatedMoviesWidget(
   required List<MovieEntity> movieList,
   required bool hasMore,
 }) {
+  final theme = Theme.of(context);
+
   return movieList.isEmpty
       ? SizedBox.shrink()
       : Column(
@@ -115,7 +117,7 @@ Widget relatedMoviesWidget(
                               width: 25,
                               height: 25,
                               child: CircularProgressIndicator(
-                                color: Theme.of(context).colorScheme.secondary,
+                                color: theme.colorScheme.secondary,
                               ),
                             )
                           : SizedBox.shrink(),

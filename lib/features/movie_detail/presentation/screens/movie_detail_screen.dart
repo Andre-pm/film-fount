@@ -75,6 +75,7 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final strings = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
     final widthSizeScreen = MediaQuery.of(context).size.width;
     final movieDetailState = ref.watch(
       movieDetailNotifierProvider(widget.movieId),
@@ -85,7 +86,11 @@ class _MovieDetailScreenState extends ConsumerState<MovieDetailScreen> {
 
     return movieDetailState.when(
       initial: () => Scaffold(body: Container()),
-      loading: () => Scaffold(body: Center(child: CircularProgressIndicator())),
+      loading: () => Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(color: theme.colorScheme.secondary),
+        ),
+      ),
       data: (data) => Scaffold(
         appBar: AppBar(
           leading: IconButton(

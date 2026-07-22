@@ -55,10 +55,16 @@ class ProfileScreen extends ConsumerWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(top: 50),
                     child: state.when(
-                      initial: () =>
-                          const Center(child: CircularProgressIndicator()),
-                      loading: () =>
-                          const Center(child: CircularProgressIndicator()),
+                      initial: () => Center(
+                        child: CircularProgressIndicator(
+                          color: theme.colorScheme.secondary,
+                        ),
+                      ),
+                      loading: () => Center(
+                        child: CircularProgressIndicator(
+                          color: theme.colorScheme.secondary,
+                        ),
+                      ),
                       data: (user) => Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
