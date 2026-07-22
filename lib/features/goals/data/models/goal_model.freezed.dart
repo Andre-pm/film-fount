@@ -17,12 +17,13 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$GoalModel {
-  String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   DateTime get deadline => throw _privateConstructorUsedError;
   bool get isCompleted => throw _privateConstructorUsedError;
+  bool get isPublic => throw _privateConstructorUsedError;
+  String? get userName => throw _privateConstructorUsedError;
   List<MovieModel> get movies => throw _privateConstructorUsedError;
 
   /// Create a copy of GoalModel
@@ -38,12 +39,13 @@ abstract class $GoalModelCopyWith<$Res> {
       _$GoalModelCopyWithImpl<$Res, GoalModel>;
   @useResult
   $Res call({
-    String id,
     String title,
     String? description,
     DateTime createdAt,
     DateTime deadline,
     bool isCompleted,
+    bool isPublic,
+    String? userName,
     List<MovieModel> movies,
   });
 }
@@ -63,20 +65,17 @@ class _$GoalModelCopyWithImpl<$Res, $Val extends GoalModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
     Object? title = null,
     Object? description = freezed,
     Object? createdAt = null,
     Object? deadline = null,
     Object? isCompleted = null,
+    Object? isPublic = null,
+    Object? userName = freezed,
     Object? movies = null,
   }) {
     return _then(
       _value.copyWith(
-            id: null == id
-                ? _value.id
-                : id // ignore: cast_nullable_to_non_nullable
-                      as String,
             title: null == title
                 ? _value.title
                 : title // ignore: cast_nullable_to_non_nullable
@@ -97,6 +96,14 @@ class _$GoalModelCopyWithImpl<$Res, $Val extends GoalModel>
                 ? _value.isCompleted
                 : isCompleted // ignore: cast_nullable_to_non_nullable
                       as bool,
+            isPublic: null == isPublic
+                ? _value.isPublic
+                : isPublic // ignore: cast_nullable_to_non_nullable
+                      as bool,
+            userName: freezed == userName
+                ? _value.userName
+                : userName // ignore: cast_nullable_to_non_nullable
+                      as String?,
             movies: null == movies
                 ? _value.movies
                 : movies // ignore: cast_nullable_to_non_nullable
@@ -117,12 +124,13 @@ abstract class _$$GoalModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call({
-    String id,
     String title,
     String? description,
     DateTime createdAt,
     DateTime deadline,
     bool isCompleted,
+    bool isPublic,
+    String? userName,
     List<MovieModel> movies,
   });
 }
@@ -141,20 +149,17 @@ class __$$GoalModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
     Object? title = null,
     Object? description = freezed,
     Object? createdAt = null,
     Object? deadline = null,
     Object? isCompleted = null,
+    Object? isPublic = null,
+    Object? userName = freezed,
     Object? movies = null,
   }) {
     return _then(
       _$GoalModelImpl(
-        id: null == id
-            ? _value.id
-            : id // ignore: cast_nullable_to_non_nullable
-                  as String,
         title: null == title
             ? _value.title
             : title // ignore: cast_nullable_to_non_nullable
@@ -175,6 +180,14 @@ class __$$GoalModelImplCopyWithImpl<$Res>
             ? _value.isCompleted
             : isCompleted // ignore: cast_nullable_to_non_nullable
                   as bool,
+        isPublic: null == isPublic
+            ? _value.isPublic
+            : isPublic // ignore: cast_nullable_to_non_nullable
+                  as bool,
+        userName: freezed == userName
+            ? _value.userName
+            : userName // ignore: cast_nullable_to_non_nullable
+                  as String?,
         movies: null == movies
             ? _value._movies
             : movies // ignore: cast_nullable_to_non_nullable
@@ -188,17 +201,16 @@ class __$$GoalModelImplCopyWithImpl<$Res>
 
 class _$GoalModelImpl implements _GoalModel {
   const _$GoalModelImpl({
-    required this.id,
     required this.title,
     this.description,
     required this.createdAt,
     required this.deadline,
     this.isCompleted = false,
+    this.isPublic = false,
+    this.userName,
     final List<MovieModel> movies = const [],
   }) : _movies = movies;
 
-  @override
-  final String id;
   @override
   final String title;
   @override
@@ -210,6 +222,11 @@ class _$GoalModelImpl implements _GoalModel {
   @override
   @JsonKey()
   final bool isCompleted;
+  @override
+  @JsonKey()
+  final bool isPublic;
+  @override
+  final String? userName;
   final List<MovieModel> _movies;
   @override
   @JsonKey()
@@ -221,7 +238,7 @@ class _$GoalModelImpl implements _GoalModel {
 
   @override
   String toString() {
-    return 'GoalModel(id: $id, title: $title, description: $description, createdAt: $createdAt, deadline: $deadline, isCompleted: $isCompleted, movies: $movies)';
+    return 'GoalModel(title: $title, description: $description, createdAt: $createdAt, deadline: $deadline, isCompleted: $isCompleted, isPublic: $isPublic, userName: $userName, movies: $movies)';
   }
 
   @override
@@ -229,7 +246,6 @@ class _$GoalModelImpl implements _GoalModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GoalModelImpl &&
-            (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
                 other.description == description) &&
@@ -239,18 +255,23 @@ class _$GoalModelImpl implements _GoalModel {
                 other.deadline == deadline) &&
             (identical(other.isCompleted, isCompleted) ||
                 other.isCompleted == isCompleted) &&
+            (identical(other.isPublic, isPublic) ||
+                other.isPublic == isPublic) &&
+            (identical(other.userName, userName) ||
+                other.userName == userName) &&
             const DeepCollectionEquality().equals(other._movies, _movies));
   }
 
   @override
   int get hashCode => Object.hash(
     runtimeType,
-    id,
     title,
     description,
     createdAt,
     deadline,
     isCompleted,
+    isPublic,
+    userName,
     const DeepCollectionEquality().hash(_movies),
   );
 
@@ -265,17 +286,16 @@ class _$GoalModelImpl implements _GoalModel {
 
 abstract class _GoalModel implements GoalModel {
   const factory _GoalModel({
-    required final String id,
     required final String title,
     final String? description,
     required final DateTime createdAt,
     required final DateTime deadline,
     final bool isCompleted,
+    final bool isPublic,
+    final String? userName,
     final List<MovieModel> movies,
   }) = _$GoalModelImpl;
 
-  @override
-  String get id;
   @override
   String get title;
   @override
@@ -286,6 +306,10 @@ abstract class _GoalModel implements GoalModel {
   DateTime get deadline;
   @override
   bool get isCompleted;
+  @override
+  bool get isPublic;
+  @override
+  String? get userName;
   @override
   List<MovieModel> get movies;
 

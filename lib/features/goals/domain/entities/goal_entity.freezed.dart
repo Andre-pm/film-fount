@@ -161,13 +161,18 @@ abstract class _GoalListEntity implements GoalListEntity {
 
 /// @nodoc
 mixin _$GoalEntity {
-  String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   DateTime get deadline => throw _privateConstructorUsedError;
   bool get isCompleted => throw _privateConstructorUsedError;
+  bool get isPublic => throw _privateConstructorUsedError;
+  String? get userName => throw _privateConstructorUsedError;
   List<MovieEntity> get movies => throw _privateConstructorUsedError;
+  int get qtdMoviesWatchedInGoal => throw _privateConstructorUsedError;
+  double? get goalPercentage => throw _privateConstructorUsedError;
+  String? get goalMessage => throw _privateConstructorUsedError;
+  String? get deadLineMessage => throw _privateConstructorUsedError;
 
   /// Create a copy of GoalEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -184,13 +189,18 @@ abstract class $GoalEntityCopyWith<$Res> {
   ) = _$GoalEntityCopyWithImpl<$Res, GoalEntity>;
   @useResult
   $Res call({
-    String id,
     String title,
     String? description,
     DateTime createdAt,
     DateTime deadline,
     bool isCompleted,
+    bool isPublic,
+    String? userName,
     List<MovieEntity> movies,
+    int qtdMoviesWatchedInGoal,
+    double? goalPercentage,
+    String? goalMessage,
+    String? deadLineMessage,
   });
 }
 
@@ -209,20 +219,21 @@ class _$GoalEntityCopyWithImpl<$Res, $Val extends GoalEntity>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
     Object? title = null,
     Object? description = freezed,
     Object? createdAt = null,
     Object? deadline = null,
     Object? isCompleted = null,
+    Object? isPublic = null,
+    Object? userName = freezed,
     Object? movies = null,
+    Object? qtdMoviesWatchedInGoal = null,
+    Object? goalPercentage = freezed,
+    Object? goalMessage = freezed,
+    Object? deadLineMessage = freezed,
   }) {
     return _then(
       _value.copyWith(
-            id: null == id
-                ? _value.id
-                : id // ignore: cast_nullable_to_non_nullable
-                      as String,
             title: null == title
                 ? _value.title
                 : title // ignore: cast_nullable_to_non_nullable
@@ -243,10 +254,34 @@ class _$GoalEntityCopyWithImpl<$Res, $Val extends GoalEntity>
                 ? _value.isCompleted
                 : isCompleted // ignore: cast_nullable_to_non_nullable
                       as bool,
+            isPublic: null == isPublic
+                ? _value.isPublic
+                : isPublic // ignore: cast_nullable_to_non_nullable
+                      as bool,
+            userName: freezed == userName
+                ? _value.userName
+                : userName // ignore: cast_nullable_to_non_nullable
+                      as String?,
             movies: null == movies
                 ? _value.movies
                 : movies // ignore: cast_nullable_to_non_nullable
                       as List<MovieEntity>,
+            qtdMoviesWatchedInGoal: null == qtdMoviesWatchedInGoal
+                ? _value.qtdMoviesWatchedInGoal
+                : qtdMoviesWatchedInGoal // ignore: cast_nullable_to_non_nullable
+                      as int,
+            goalPercentage: freezed == goalPercentage
+                ? _value.goalPercentage
+                : goalPercentage // ignore: cast_nullable_to_non_nullable
+                      as double?,
+            goalMessage: freezed == goalMessage
+                ? _value.goalMessage
+                : goalMessage // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            deadLineMessage: freezed == deadLineMessage
+                ? _value.deadLineMessage
+                : deadLineMessage // ignore: cast_nullable_to_non_nullable
+                      as String?,
           )
           as $Val,
     );
@@ -263,13 +298,18 @@ abstract class _$$GoalEntityImplCopyWith<$Res>
   @override
   @useResult
   $Res call({
-    String id,
     String title,
     String? description,
     DateTime createdAt,
     DateTime deadline,
     bool isCompleted,
+    bool isPublic,
+    String? userName,
     List<MovieEntity> movies,
+    int qtdMoviesWatchedInGoal,
+    double? goalPercentage,
+    String? goalMessage,
+    String? deadLineMessage,
   });
 }
 
@@ -287,20 +327,21 @@ class __$$GoalEntityImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
     Object? title = null,
     Object? description = freezed,
     Object? createdAt = null,
     Object? deadline = null,
     Object? isCompleted = null,
+    Object? isPublic = null,
+    Object? userName = freezed,
     Object? movies = null,
+    Object? qtdMoviesWatchedInGoal = null,
+    Object? goalPercentage = freezed,
+    Object? goalMessage = freezed,
+    Object? deadLineMessage = freezed,
   }) {
     return _then(
       _$GoalEntityImpl(
-        id: null == id
-            ? _value.id
-            : id // ignore: cast_nullable_to_non_nullable
-                  as String,
         title: null == title
             ? _value.title
             : title // ignore: cast_nullable_to_non_nullable
@@ -321,10 +362,34 @@ class __$$GoalEntityImplCopyWithImpl<$Res>
             ? _value.isCompleted
             : isCompleted // ignore: cast_nullable_to_non_nullable
                   as bool,
+        isPublic: null == isPublic
+            ? _value.isPublic
+            : isPublic // ignore: cast_nullable_to_non_nullable
+                  as bool,
+        userName: freezed == userName
+            ? _value.userName
+            : userName // ignore: cast_nullable_to_non_nullable
+                  as String?,
         movies: null == movies
             ? _value._movies
             : movies // ignore: cast_nullable_to_non_nullable
                   as List<MovieEntity>,
+        qtdMoviesWatchedInGoal: null == qtdMoviesWatchedInGoal
+            ? _value.qtdMoviesWatchedInGoal
+            : qtdMoviesWatchedInGoal // ignore: cast_nullable_to_non_nullable
+                  as int,
+        goalPercentage: freezed == goalPercentage
+            ? _value.goalPercentage
+            : goalPercentage // ignore: cast_nullable_to_non_nullable
+                  as double?,
+        goalMessage: freezed == goalMessage
+            ? _value.goalMessage
+            : goalMessage // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        deadLineMessage: freezed == deadLineMessage
+            ? _value.deadLineMessage
+            : deadLineMessage // ignore: cast_nullable_to_non_nullable
+                  as String?,
       ),
     );
   }
@@ -334,17 +399,20 @@ class __$$GoalEntityImplCopyWithImpl<$Res>
 
 class _$GoalEntityImpl implements _GoalEntity {
   const _$GoalEntityImpl({
-    required this.id,
     required this.title,
     this.description,
     required this.createdAt,
     required this.deadline,
     this.isCompleted = false,
+    this.isPublic = false,
+    this.userName,
     final List<MovieEntity> movies = const [],
+    this.qtdMoviesWatchedInGoal = 0,
+    this.goalPercentage,
+    this.goalMessage,
+    this.deadLineMessage,
   }) : _movies = movies;
 
-  @override
-  final String id;
   @override
   final String title;
   @override
@@ -356,6 +424,11 @@ class _$GoalEntityImpl implements _GoalEntity {
   @override
   @JsonKey()
   final bool isCompleted;
+  @override
+  @JsonKey()
+  final bool isPublic;
+  @override
+  final String? userName;
   final List<MovieEntity> _movies;
   @override
   @JsonKey()
@@ -366,8 +439,18 @@ class _$GoalEntityImpl implements _GoalEntity {
   }
 
   @override
+  @JsonKey()
+  final int qtdMoviesWatchedInGoal;
+  @override
+  final double? goalPercentage;
+  @override
+  final String? goalMessage;
+  @override
+  final String? deadLineMessage;
+
+  @override
   String toString() {
-    return 'GoalEntity(id: $id, title: $title, description: $description, createdAt: $createdAt, deadline: $deadline, isCompleted: $isCompleted, movies: $movies)';
+    return 'GoalEntity(title: $title, description: $description, createdAt: $createdAt, deadline: $deadline, isCompleted: $isCompleted, isPublic: $isPublic, userName: $userName, movies: $movies, qtdMoviesWatchedInGoal: $qtdMoviesWatchedInGoal, goalPercentage: $goalPercentage, goalMessage: $goalMessage, deadLineMessage: $deadLineMessage)';
   }
 
   @override
@@ -375,7 +458,6 @@ class _$GoalEntityImpl implements _GoalEntity {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GoalEntityImpl &&
-            (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
                 other.description == description) &&
@@ -385,19 +467,36 @@ class _$GoalEntityImpl implements _GoalEntity {
                 other.deadline == deadline) &&
             (identical(other.isCompleted, isCompleted) ||
                 other.isCompleted == isCompleted) &&
-            const DeepCollectionEquality().equals(other._movies, _movies));
+            (identical(other.isPublic, isPublic) ||
+                other.isPublic == isPublic) &&
+            (identical(other.userName, userName) ||
+                other.userName == userName) &&
+            const DeepCollectionEquality().equals(other._movies, _movies) &&
+            (identical(other.qtdMoviesWatchedInGoal, qtdMoviesWatchedInGoal) ||
+                other.qtdMoviesWatchedInGoal == qtdMoviesWatchedInGoal) &&
+            (identical(other.goalPercentage, goalPercentage) ||
+                other.goalPercentage == goalPercentage) &&
+            (identical(other.goalMessage, goalMessage) ||
+                other.goalMessage == goalMessage) &&
+            (identical(other.deadLineMessage, deadLineMessage) ||
+                other.deadLineMessage == deadLineMessage));
   }
 
   @override
   int get hashCode => Object.hash(
     runtimeType,
-    id,
     title,
     description,
     createdAt,
     deadline,
     isCompleted,
+    isPublic,
+    userName,
     const DeepCollectionEquality().hash(_movies),
+    qtdMoviesWatchedInGoal,
+    goalPercentage,
+    goalMessage,
+    deadLineMessage,
   );
 
   /// Create a copy of GoalEntity
@@ -411,17 +510,20 @@ class _$GoalEntityImpl implements _GoalEntity {
 
 abstract class _GoalEntity implements GoalEntity {
   const factory _GoalEntity({
-    required final String id,
     required final String title,
     final String? description,
     required final DateTime createdAt,
     required final DateTime deadline,
     final bool isCompleted,
+    final bool isPublic,
+    final String? userName,
     final List<MovieEntity> movies,
+    final int qtdMoviesWatchedInGoal,
+    final double? goalPercentage,
+    final String? goalMessage,
+    final String? deadLineMessage,
   }) = _$GoalEntityImpl;
 
-  @override
-  String get id;
   @override
   String get title;
   @override
@@ -433,7 +535,19 @@ abstract class _GoalEntity implements GoalEntity {
   @override
   bool get isCompleted;
   @override
+  bool get isPublic;
+  @override
+  String? get userName;
+  @override
   List<MovieEntity> get movies;
+  @override
+  int get qtdMoviesWatchedInGoal;
+  @override
+  double? get goalPercentage;
+  @override
+  String? get goalMessage;
+  @override
+  String? get deadLineMessage;
 
   /// Create a copy of GoalEntity
   /// with the given fields replaced by the non-null parameter values.

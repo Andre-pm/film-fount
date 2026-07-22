@@ -6,12 +6,13 @@ part 'goal_model.freezed.dart';
 @freezed
 abstract class GoalModel with _$GoalModel {
   const factory GoalModel({
-    required String id,
     required String title,
     String? description,
     required DateTime createdAt,
     required DateTime deadline,
     @Default(false) bool isCompleted,
+    @Default(false) bool isPublic,
+    String? userName,
     @Default([]) List<MovieModel> movies,
   }) = _GoalModel;
 }
