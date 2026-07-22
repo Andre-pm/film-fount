@@ -6,6 +6,7 @@ class MovieEntity {
   final String? posterPath;
   final String? title;
   final String? releaseDate;
+  bool? isWatched;
   MovieEntity({
     required this.id,
     this.originalLanguage,
@@ -14,5 +15,6 @@ class MovieEntity {
     this.posterPath,
     this.title,
     this.releaseDate,
+    this.isWatched,
   });
 }
