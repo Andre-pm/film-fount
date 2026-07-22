@@ -1,5 +1,3 @@
-import 'package:film_fount/core/domain/enums/menu_option.dart';
-import 'package:film_fount/core/presentation/screens/under_development_screen.dart';
 import 'package:film_fount/features/auth/presentation/views/auth_wrapper.dart';
 import 'package:film_fount/features/auth/presentation/views/login_screen.dart';
 import 'package:film_fount/features/goals/presentation/screens/goal_screen.dart';
@@ -40,7 +38,8 @@ class AppRouter {
       case goalDetail:
         final args = settings.arguments as Map<String, dynamic>?;
         final goalName = args?['goalName'] as String? ?? '';
-        final selectedMovies = args?['selectedMovies'] as List<MovieEntity>? ?? [];
+        final selectedMovies =
+            args?['selectedMovies'] as List<MovieEntity>? ?? [];
         return FadeRoute(
           widget: GoalDetailPage(
             goalName: goalName,
