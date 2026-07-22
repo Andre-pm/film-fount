@@ -28,4 +28,16 @@ class MovieModel {
       releaseDate: json['release_date'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'original_language': originalLanguage,
+      'original_title': originalTitle,
+      'overview': overview,
+      'poster_path': posterPath,
+      'title': title,
+      'release_date': releaseDate,
+    };
+  }
 }
