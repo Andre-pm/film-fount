@@ -2,10 +2,13 @@ import 'package:film_fount/core/domain/enums/menu_option.dart';
 import 'package:film_fount/core/presentation/screens/under_development_screen.dart';
 import 'package:film_fount/features/auth/presentation/views/auth_wrapper.dart';
 import 'package:film_fount/features/auth/presentation/views/login_screen.dart';
+import 'package:film_fount/features/goals/presentation/screens/goal_screen.dart';
 import 'package:film_fount/features/library/presentation/screens/library_screen.dart';
 import 'package:film_fount/features/profile/presentation/screens/profile_screen.dart';
 import 'package:film_fount/features/search/presentation/screens/search_screen.dart';
 import 'package:film_fount/features/movie_detail/presentation/screens/movie_detail_screen.dart';
+import 'package:film_fount/features/goals/presentation/widgets/goal_detail_page.dart';
+import 'package:film_fount/features/search/domain/entities/movie_entity.dart';
 import 'package:flutter/material.dart';
 
 class AppRouter {
@@ -15,6 +18,7 @@ class AppRouter {
   static const movieDetails = '/movie_details';
   static const profile = '/profile';
   static const goals = '/goals';
+  static const goalDetail = '/goal_detail';
   static const library = '/library';
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
@@ -32,10 +36,15 @@ class AppRouter {
         return FadeRoute(widget: ProfileScreen());
 
       case goals:
+        return FadeRoute(widget: GoalScreen());
+      case goalDetail:
+        final args = settings.arguments as Map<String, dynamic>?;
+        final goalName = args?['goalName'] as String? ?? '';
+        final selectedMovies = args?['selectedMovies'] as List<MovieEntity>? ?? [];
         return FadeRoute(
-          widget: UnderDevelopmentScreen(
-            selectedOption: MenuOptions.goals,
-            icon: Icons.check,
+          widget: GoalDetailPage(
+            goalName: goalName,
+            selectedMovies: selectedMovies,
           ),
         );
       case library:
