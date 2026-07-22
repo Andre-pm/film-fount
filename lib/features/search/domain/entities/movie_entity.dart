@@ -5,6 +5,7 @@ class MovieEntity {
   final String? overview;
   final String? posterPath;
   final String? title;
+  final String? releaseDate;
   MovieEntity({
     required this.id,
     this.originalLanguage,
@@ -12,5 +13,6 @@ class MovieEntity {
     this.overview,
     this.posterPath,
     this.title,
+    this.releaseDate,
   });
 }

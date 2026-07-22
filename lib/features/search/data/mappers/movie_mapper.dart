@@ -12,6 +12,7 @@ extension MovieMapper on MovieModel {
           ? 'https://image.tmdb.org/t/p/w500$posterPath'
           : null,
       title: title,
+      releaseDate: releaseDate,
     );
   }
 }

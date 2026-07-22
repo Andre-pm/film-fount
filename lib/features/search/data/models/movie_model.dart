@@ -5,6 +5,7 @@ class MovieModel {
   final String? overview;
   final String? posterPath;
   final String? title;
+  final String? releaseDate;
 
   MovieModel({
     required this.id,
@@ -13,6 +14,7 @@ class MovieModel {
     this.overview,
     this.posterPath,
     this.title,
+    this.releaseDate,
   });
 
   factory MovieModel.fromJson(Map<String, dynamic> json) {
@@ -23,6 +25,7 @@ class MovieModel {
       overview: json['overview'],
       posterPath: json['poster_path'],
       title: json['title'],
+      releaseDate: json['release_date'],
     );
   }
 }
