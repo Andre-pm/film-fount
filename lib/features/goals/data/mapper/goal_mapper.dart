@@ -7,12 +7,13 @@ import 'package:film_fount/features/search/domain/entities/movie_entity.dart';
 extension GoalMapper on GoalModel {
   GoalEntity toEntity() {
     return GoalEntity(
-      id: id,
       title: title,
       description: description,
       createdAt: createdAt,
       deadline: deadline,
       isCompleted: isCompleted,
+      isPublic: isPublic,
+      userName: userName,
       movies: movies
           .map(
             (e) => MovieEntity(
@@ -20,6 +21,7 @@ extension GoalMapper on GoalModel {
               title: e.title.orEmpty,
               posterPath: e.posterPath.orEmpty,
               overview: e.overview.orEmpty,
+              isWatched: false,
             ),
           )
           .toList(),
@@ -28,12 +30,13 @@ extension GoalMapper on GoalModel {
 
   static GoalModel fromEntity(GoalEntity goal) {
     return GoalModel(
-      id: goal.id,
       title: goal.title,
       description: goal.description,
       createdAt: goal.createdAt,
       deadline: goal.deadline,
       isCompleted: goal.isCompleted,
+      isPublic: goal.isPublic,
+      userName: goal.userName,
       movies: goal.movies
           .map(
             (e) =>
