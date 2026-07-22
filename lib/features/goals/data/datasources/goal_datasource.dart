@@ -16,13 +16,13 @@ class GoalDatasource {
 
     try {
       goalsRef.push().set({
-        'id': goal.id,
         'title': goal.title,
         'description': goal.description,
         'createdAt': goal.createdAt.toIso8601String(),
         'deadline': goal.deadline.toIso8601String(),
         'isCompleted': goal.isCompleted,
-        'movies': goal.movies,
+        'isPublic': goal.isPublic,
+        'movies': goal.movies.map((m) => m.toJson()).toList(),
       });
       return true;
     } catch (e) {
@@ -41,18 +41,14 @@ class GoalDatasource {
         final List<GoalModel> goals = goalsData.entries.map((entry) {
           final data = entry.value as Map;
           return GoalModel(
-            id: data['id'].toString().orEmpty,
             title: (data['title']?.toString()).orEmpty,
             description: data['description']?.toString().orEmpty,
             createdAt: DateTime.parse(data['createdAt']),
             deadline: DateTime.parse(data['deadline']),
             isCompleted: data['isCompleted'] == true,
+            isPublic: data['isPublic'] == true,
             movies: (data['movies'] as List<dynamic>? ?? []).map((e) {
-              return MovieModel(
-                id: int.tryParse(e['id'].toString()) ?? 0,
-                title: e['title']?.toString(),
-                posterPath: e['posterPath']?.toString(),
-              );
+              return MovieModel.fromJson(Map<String, dynamic>.from(e));
             }).toList(),
           );
         }).toList();
@@ -71,13 +67,13 @@ class GoalDatasource {
 
     try {
       goalsRef.update({
-        'id': goal.id,
         'title': goal.title,
         'description': goal.description,
         'createdAt': goal.createdAt.toIso8601String(),
         'deadline': goal.deadline.toIso8601String(),
         'isCompleted': goal.isCompleted,
-        'movies': goal.movies,
+        'isPublic': goal.isPublic,
+        'movies': goal.movies.map((m) => m.toJson()).toList(),
       });
       return true;
     } catch (e) {
