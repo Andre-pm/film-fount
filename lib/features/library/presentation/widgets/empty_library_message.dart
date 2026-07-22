@@ -1,10 +1,10 @@
 import 'package:film_fount/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
-class EmptyLibraryState extends StatelessWidget {
+class EmptyLibraryMessage extends StatelessWidget {
   final int selectedOption;
 
-  const EmptyLibraryState({super.key, required this.selectedOption});
+  const EmptyLibraryMessage({super.key, required this.selectedOption});
 
   @override
   Widget build(BuildContext context) {
@@ -34,10 +34,7 @@ class EmptyLibraryState extends StatelessWidget {
             selectedOption == 1
                 ? strings.libraryWatchedSectionEmptyDescription
                 : strings.libraryNotWatchedSectionEmptyDescription,
-            style: TextStyle(
-              color: theme.colorScheme.onSurface,
-              fontSize: 10,
-            ),
+            style: TextStyle(color: theme.colorScheme.onSurface, fontSize: 10),
             textAlign: TextAlign.center,
           ),
         ],

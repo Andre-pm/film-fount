@@ -7,7 +7,7 @@ import 'package:film_fount/core/presentation/widgets/menu_bar_widget.dart';
 import 'package:film_fount/core/presentation/widgets/navbar_app_version_widget.dart';
 import 'package:film_fount/core/utils/platform_utils.dart';
 import 'package:film_fount/features/library/presentation/providers/library_providers.dart';
-import 'package:film_fount/features/library/presentation/widgets/empty_library_state.dart';
+import 'package:film_fount/features/library/presentation/widgets/empty_library_message.dart';
 import 'package:film_fount/features/library/presentation/widgets/library_category_selector.dart';
 import 'package:film_fount/features/library/presentation/widgets/pwa_warning_widget.dart';
 import 'package:film_fount/features/movie_detail/presentation/events/watch_list_updated_event.dart';
@@ -210,7 +210,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                                 ),
                           )
                         : SliverFillRemaining(
-                            child: EmptyLibraryState(
+                            child: EmptyLibraryMessage(
                               selectedOption: selectedOption,
                             ),
                           ),
