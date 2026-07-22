@@ -1,0 +1,155 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:film_fount/core/domain/enums/menu_option.dart';
+import 'package:film_fount/core/presentation/widgets/menu_bar_widget.dart';
+import 'package:film_fount/core/presentation/widgets/navbar_app_version_widget.dart';
+import 'package:film_fount/core/utils/platform_utils.dart';
+import 'package:film_fount/features/goals/presentation/providers/goal_providers.dart';
+import 'package:film_fount/features/goals/presentation/widgets/empty_goal_message.dart';
+import 'package:film_fount/l10n/app_localizations.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+class GoalScreen extends ConsumerStatefulWidget {
+  const GoalScreen({super.key});
+
+  @override
+  ConsumerState<GoalScreen> createState() => _GoalScreenState();
+}
+
+class _GoalScreenState extends ConsumerState<GoalScreen> {
+  late bool isAppVersion;
+
+  @override
+  void initState() {
+    super.initState();
+    //TODO - Alterar para isPWA
+    isAppVersion = isMobile();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final strings = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final goalState = ref.watch(goalNotifierProvider);
+    final goalNotifier = ref.read(goalNotifierProvider.notifier);
+
+    return Scaffold(
+      bottomNavigationBar: isAppVersion
+          ? NavBarAppVersionWidget(
+              theme: theme,
+              strings: strings,
+              selectedIndex: 3,
+            )
+          : null,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final bool isLargeScreen = constraints.maxWidth > 1200;
+          return CustomScrollView(
+            slivers: [
+              isAppVersion
+                  ? SliverToBoxAdapter(child: SizedBox.shrink())
+                  : MenuBarWidget(
+                      isLargeVersion: isLargeScreen,
+                      option: MenuOptions.goals,
+                    ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 25,
+                    horizontal: 25,
+                  ).copyWith(bottom: isLargeScreen ? 45 : 15),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Metas',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              goalState.when(
+                initial: () => const SliverToBoxAdapter(child: Text('Initial')),
+                loading: () => const SliverToBoxAdapter(
+                  child: Center(child: CircularProgressIndicator()),
+                ),
+                data: (data) => SliverPadding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 25,
+                    vertical: 15,
+                  ),
+                  sliver: data.goals.isNotEmpty
+                      ? SliverList(
+                          delegate: SliverChildBuilderDelegate((
+                            context,
+                            index,
+                          ) {
+                            final goal = data.goals[index];
+                            final goalMovie = goal.movies[index];
+                            return SliverGrid(
+                              delegate: SliverChildBuilderDelegate((
+                                context,
+                                index,
+                              ) {
+                                return InkWell(
+                                  onTap: () => Navigator.of(context).pushNamed(
+                                    '/movie_details',
+                                    arguments: goalMovie.id,
+                                  ),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                      color: Color.fromRGBO(22, 22, 22, 1),
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(8),
+                                      child: CachedNetworkImage(
+                                        imageUrl: goalMovie.posterPath!,
+                                        fit: BoxFit.cover,
+                                        memCacheHeight: 400,
+                                        placeholder: (context, url) =>
+                                            Container(
+                                              color: Color.fromRGBO(
+                                                22,
+                                                22,
+                                                22,
+                                                1,
+                                              ),
+                                            ),
+                                        errorWidget: (context, url, error) =>
+                                            const Icon(
+                                              Icons.image_not_supported,
+                                            ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }, childCount: goal.movies.length),
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: isLargeScreen ? 8 : 3,
+                                    crossAxisSpacing: 5,
+                                    mainAxisSpacing: 10,
+                                    childAspectRatio: isLargeScreen
+                                        ? 165 / 245.5
+                                        : 100 / 150,
+                                  ),
+                            );
+                          }, childCount: data.goals.length),
+                        )
+                      : SliverToBoxAdapter(child: EmptyGoalMessage()),
+                ),
+                error: (_) => SliverToBoxAdapter(child: Text('Error')),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
